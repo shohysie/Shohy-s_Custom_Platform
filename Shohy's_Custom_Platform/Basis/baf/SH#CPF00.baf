@@ -1,0 +1,29 @@
+//写入全局脚本，仅战斗中生效，战斗外施法生效
+IF
+	Global("SH#CPF00","GLOBAL",0)
+	!CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobal("SH#CPF00","GLOBAL",1)
+		ReallyForceSpellRes("SH#CPF00",Player1)	//主角获得召唤技能SH#CPF0Z进行全局调整
+		Continue()
+END
+
+IF
+	!Global("SH#CPF00","GLOBAL",2)	//值为2关闭全部机能
+	!GlobalTimerNotExpired("SH#CPF0T","GLOBAL")
+	!Exists("SH#CPF0A")
+	OR(7)
+		!CombatCounter(0)
+		SpellCastRES("0",Player1)
+		SpellCastRES("0",Player2)
+		SpellCastRES("0",Player3)
+		SpellCastRES("0",Player4)
+		SpellCastRES("0",Player5)
+		SpellCastRES("0",Player6)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("SH#CPF0T","GLOBAL",6)
+		CreateCreatureObject("SH#CPF0A",Player1,0,0,0) 
+		Continue()
+END

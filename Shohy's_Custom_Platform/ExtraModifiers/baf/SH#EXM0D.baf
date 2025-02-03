@@ -1,0 +1,25 @@
+//唱歌跳舞属性额外调整，对Player1~6，加入到SH#WPROD.baf
+//诗人：唱歌时，魅力修正30呎内队员在对抗附魔系/咒法系/死灵系的法术时的豁免奖励
+//萨满：跳舞时，感知修正所召唤灵魂的等级（每级获得命中、伤害、防御、豁免各1点奖励，不过实际等级数字并未增加）
+//单体法术，只对唱歌跳舞的人物施法一次，法术内部自行判断人物属性施展范围buff
+IF
+	!GlobalGT("SH#CASTONCE","LOCALS",0)
+	Class(Player%n%,BARD_ALL)
+	ModalStateObject(Player%n%,BATTLESONG)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#EXM10",Player%n%)
+		SetGlobal("SH#CASTONCE","LOCALS",1)
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#CASTONCE","LOCALS",0)
+	Class(Player%n%,SHAMAN)
+	ModalStateObject(Player%n%,SHAMANDANCE)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#EXM20",Player%n%)
+		SetGlobal("SH#CASTONCE","LOCALS",1)
+		Continue()
+END

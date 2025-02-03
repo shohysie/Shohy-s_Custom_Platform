@@ -1,0 +1,8 @@
+//SH#CPF0D为生物其它脚本。建议凡是不适合放SH#CPF0B和SH#CPF0C的修正都放这个脚本里
+//如果需要计时器和计数器建议使用现有的SH#SECOND（计时1秒）、SH#CASTONCE（计数1次）之类，或者自行添加
+IF
+	False()
+THEN
+	RESPONSE #100
+		Continue()
+END

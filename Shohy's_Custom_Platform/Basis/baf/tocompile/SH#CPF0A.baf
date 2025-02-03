@@ -1,0 +1,138 @@
+//生物初始化脚本为SH#CPF0A，包含必要机能，勿改
+//SOLO时，SH#CPF0A（鸟A）在某些地图不会产生，必须在主角身上附加每轮召唤新的SH#CPF0C（鸟C），种族为鸟，脚本同B
+
+//SH#CPF0A（鸟A）在工作完成后消失，给主角施加法术SH#CPF0B，内容为遇敌每轮对自己施展SH#CPF0C（包括法术和eff）召唤SH#CPF0C（鸟C）
+IF
+	!Race(Myself,BIRD)
+	OR(2)
+		GlobalGT("SH#COUNT","LOCALS",5)
+		GlobalTimerExpired("SH#CPF0T","GLOBAL")
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPF0B",Player1)
+		DestroySelf()
+END
+//SH#CPF0A（鸟A）在功能关闭时消失，给主角施加法术SH#CPF0D移除SH#CPF0B避免召唤SH#CPF0C（鸟C）
+IF
+	!Race(Myself,BIRD)
+	Global("SH#CPF00","GLOBAL",2)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPF0D",Player1)
+		DestroySelf()
+END
+//SH#CPF0C（鸟C）工作完成或功能关闭或看到SH#CPF0A（鸟A）就直接消失，不影响主角身上的附加法术
+IF
+	Race(Myself,BIRD)
+	OR(3)
+		Exists("SH#CPF0A")
+		Global("SH#CPF00","GLOBAL",2)
+		GlobalGT("SH#COUNT","LOCALS",5)
+THEN
+	RESPONSE #100
+		DestroySelf()
+END
+
+//SH#CPF0A（鸟A）产生时，重置全局计时器，并给主角施加法术SH#CPF0D移除SH#CPF0B，避免正常地图召唤SH#CPF0C（鸟C）（鸟C不需要全局计时）
+IF
+	OnCreation()
+	!Race(Myself,BIRD)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPF0D",Player1)
+		SetGlobalTimer("SH#CPF0T","GLOBAL",6)
+		Continue()
+END
+
+//跟随
+IF
+	OnScreen(Player1)
+	!InMyArea(Player1)
+THEN
+	RESPONSE #100
+		CreateCreatureObject("SH#CPF0A",Player1,0,0,0)
+		DestroySelf()
+END
+
+IF
+	OnScreen(Player2)
+	!InMyArea(Player2)
+	!OnScreen(Player1)
+THEN
+	RESPONSE #100
+		CreateCreatureObject("SH#CPF0A",Player2,0,0,0)
+		DestroySelf()
+END
+
+IF
+	OnScreen(Player3)
+	!InMyArea(Player3)
+	!OnScreen(Player1)
+	!OnScreen(Player2)
+THEN
+	RESPONSE #100
+		CreateCreatureObject("SH#CPF0A",Player3,0,0,0)
+		DestroySelf()
+END
+
+IF
+	OnScreen(Player4)
+	!InMyArea(Player4)
+	!OnScreen(Player1)
+	!OnScreen(Player2)
+	!OnScreen(Player3)
+THEN
+	RESPONSE #100
+		CreateCreatureObject("SH#CPF0A",Player4,0,0,0)
+		DestroySelf()
+END
+
+IF
+	OnScreen(Player5)
+	!InMyArea(Player5)
+	!OnScreen(Player1)
+	!OnScreen(Player2)
+	!OnScreen(Player3)
+	!OnScreen(Player4)
+THEN
+	RESPONSE #100
+		CreateCreatureObject("SH#CPF0A",Player5,0,0,0)
+		DestroySelf()
+END
+
+IF
+	OnScreen(Player6)
+	!InMyArea(Player6)
+	!OnScreen(Player1)
+	!OnScreen(Player2)
+	!OnScreen(Player3)
+	!OnScreen(Player4)
+	!OnScreen(Player5)
+THEN
+	RESPONSE #100
+		CreateCreatureObject("SH#CPF0A",Player6,0,0,0)
+		DestroySelf()
+END
+
+//SH#CPF0A（鸟A）在没有敌人时消失，重置全局计时，并给主角施加法术SH#CPF0B每轮召唤SH#CPF0C（鸟C）
+IF
+	!Race(Myself,BIRD)
+	!Detect([EVILCUTOFF])
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPF0B",Player1)
+		SetGlobalTimer("SH#CPF0T","GLOBAL",0)
+		DestroySelf()
+END
+//SH#CPF0C（鸟C）在没有敌人时消失，只重置全局计时，不影响主角身上的附加法术
+IF
+	Race(Myself,BIRD)
+	!Detect([EVILCUTOFF])
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("SH#CPF0T","GLOBAL",0)
+		DestroySelf()
+END
+

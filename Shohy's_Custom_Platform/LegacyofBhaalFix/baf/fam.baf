@@ -1,0 +1,11 @@
+IF
+	NightmareModeOn()
+	!Global("LOB#fixplus","GLOBAL",1)
+	!Global("LOB#fixed%famtype%","GLOBAL",1)
+	Exists("%famtype%")
+THEN
+	RESPONSE #100
+		SetGlobal("LOB#fixed%famtype%","GLOBAL",1)
+		ActionOverride("%famtype%",ReallyForceSpellRes("LOBfix#O",Myself))
+		Continue()
+END

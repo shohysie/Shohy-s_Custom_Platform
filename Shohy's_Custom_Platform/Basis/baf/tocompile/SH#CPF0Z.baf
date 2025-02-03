@@ -1,0 +1,15 @@
+//如果需要在此脚本添加动作以执行，请在SH#CPF0Z.dlg对话完毕后将局部变量EXISTING设为1，以此为条件执行完毕将EXISTING设为2即消失
+IF
+	GlobalGT("EXISTING","LOCALS",1)
+THEN
+	RESPONSE #100
+		DestroySelf()
+END
+
+IF
+	!GlobalGT("EXISTING","LOCALS",0)
+THEN
+	RESPONSE #100
+		SetGlobal("EXISTING","LOCALS",1)
+		StartDialogNoName("SH#CPF0Z",Player1)
+END

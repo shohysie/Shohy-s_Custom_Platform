@@ -1,0 +1,47 @@
+//武器细节调整，对Player1~6，每秒计数并生效一次。加入到SH#CPF0B.bcs
+
+//右手对鸟无效为双手武器
+IF
+	OR(2)
+		Global("SH#WPROP","GLOBAL",0)
+		Global("SH#WPROP","GLOBAL",2)
+	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
+	!TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("SH#SECOND","LOCALS",1)
+		ReallyForceSpellRes("SH#WD2HA",Player%n%)
+		Continue()
+END
+
+//左右手都对鸟有效为双武器
+IF
+	OR(2)
+		Global("SH#WPROP","GLOBAL",0)
+		Global("SH#WPROP","GLOBAL",2)
+	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",OFFHAND))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("SH#SECOND","LOCALS",1)
+		ReallyForceSpellRes("SH#WD2WA",Player%n%)
+		Continue()
+END
+
+//右手对鸟有效同时左手对鸟无效是剑盾或单手
+IF
+	OR(2)
+		Global("SH#WPROP","GLOBAL",0)
+		Global("SH#WPROP","GLOBAL",2)
+	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
+	!TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",OFFHAND))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("SH#SECOND","LOCALS",1)
+		ReallyForceSpellRes("SH#WD1HA",Player%n%)
+		Continue()
+END

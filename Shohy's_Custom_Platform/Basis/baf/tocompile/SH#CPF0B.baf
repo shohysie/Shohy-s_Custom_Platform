@@ -1,0 +1,13 @@
+//用于每秒施展一次的脚本，建议对Player1-6施加的调整放在这里
+
+//SH#SECOND每秒计数一次SH#COUNT，每秒具体施法跟在这段后面
+IF
+	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("SH#SECOND","LOCALS",1)
+		IncrementGlobal("SH#COUNT","LOCALS",1)
+		Continue()
+END
+//新增施法须判断!GlobalTimerNotExpired("SH#SECOND","LOCALS")。施法后不需要加SetGlobalTimer("SH#SECOND","LOCALS",1)但一定要加Continue()，以控制每秒1次施法
+

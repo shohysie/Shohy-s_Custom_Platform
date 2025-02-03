@@ -1,0 +1,24 @@
+//需要让鸟给予修正后再消失
+//SH#CPF0A（鸟A）在没有敌人时消失，重置全局计时，并给主角施加法术SH#CPF0B每轮召唤SH#CPF0C（鸟C）
+IF
+	!Race(Myself,BIRD)
+	!Detect([EVILCUTOFF])
+	CombatCounter(0)
+	GlobalGT("SH#CASTONCE","LOCALS",0)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPF0B",Player1)
+		SetGlobalTimer("SH#CPF0T","GLOBAL",0)
+		DestroySelf()
+END
+//SH#CPF0C（鸟C）在没有敌人时消失，只重置全局计时，不影响主角身上的附加法术
+IF
+	Race(Myself,BIRD)
+	!Detect([EVILCUTOFF])
+	CombatCounter(0)
+	GlobalGT("SH#CASTONCE","LOCALS",0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("SH#CPF0T","GLOBAL",0)
+		DestroySelf()
+END

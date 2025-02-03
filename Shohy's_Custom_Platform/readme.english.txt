@@ -1,4 +1,4 @@
-//////////////Shohy's customized adjustment platform v0.1///////////////
+﻿//////////////Shohy's customized adjustment platform v0.1///////////////
 
 Some customized adjustments can be carried by this platform as modules. The platform is activated on combat and casting, allowing adjustments of each carried module to take effect.
 While not in battle, the platform shuts down immediately after making necessary adjustments, in order to save game resources. 

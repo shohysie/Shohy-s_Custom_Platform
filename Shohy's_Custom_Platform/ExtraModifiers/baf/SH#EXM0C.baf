@@ -1,0 +1,35 @@
+//玩家和附近敌人的属性调整，以Player1~6为中心施展范围法术
+/*
+法师、牧师/德鲁伊/圣武士/游侠/萨满、术士/诗人：智力、感知、魅力/智力分别修正施法等级
+圣武士和牧师：魅力修正超度等级
+武僧：感知修正防御
+相应属性达到13/15/17/19/21/23/25时，人物获得1/2/3/4/5/6/7点修正。
+感知的额外修正：数值达到15/16/17/18时，人物对法术的豁免检定+1/2/3/4有利；数值达到19/20/21/22/23/24/25时，人物免疫命死术、恐吓术、魅惑人类、催眠术/人类定身术、衰弱射线、恐惧术/强力魅惑/心智控制、困惑术、情绪控制/混乱术、弱智术、怪物定身术/控制术/死亡术
+*/
+IF
+	!GlobalGT("SH#CASTONCE","LOCALS",0)
+	Global("SH#EXM0","GLOBAL",0)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#EXM00",Player1)
+		ReallyForceSpellRes("SH#EXM00",Player2)
+		ReallyForceSpellRes("SH#EXM00",Player3)
+		ReallyForceSpellRes("SH#EXM00",Player4)
+		ReallyForceSpellRes("SH#EXM00",Player5)
+		ReallyForceSpellRes("SH#EXM00",Player6)
+		Continue()
+END
+//术士和诗人改成也由智力修正施法等级
+IF
+	!GlobalGT("SH#CASTONCE","LOCALS",0)
+	Global("SH#EXM0","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#EXM_0",Player1)
+		ReallyForceSpellRes("SH#EXM_0",Player2)
+		ReallyForceSpellRes("SH#EXM_0",Player3)
+		ReallyForceSpellRes("SH#EXM_0",Player4)
+		ReallyForceSpellRes("SH#EXM_0",Player5)
+		ReallyForceSpellRes("SH#EXM_0",Player6)
+		Continue()
+END

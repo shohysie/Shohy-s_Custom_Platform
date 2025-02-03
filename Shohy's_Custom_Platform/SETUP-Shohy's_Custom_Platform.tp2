@@ -1,0 +1,1600 @@
+BACKUP ~Shohy's_Custom_Platform/backup~
+AUTHOR ~shohy@126.com~
+
+VERSION ~v0.1~
+AUTO_EVAL_STRINGS
+
+README ~%MOD_FOLDER%/README.%LANGUAGE%.txt~
+AUTO_TRA ~%MOD_FOLDER%/languages/%s~
+
+ALWAYS	
+	INCLUDE ~%MOD_FOLDER%/lib/_functions.tpa~
+END
+
+
+LANGUAGE ~American English~ ~english~ ~%MOD_FOLDER%/languages/english/basis.tra~
+                                      ~%MOD_FOLDER%/languages/english/extramodifiers.tra~
+                                      ~%MOD_FOLDER%/languages/english/improvedenemies.tra~
+                                      ~%MOD_FOLDER%/languages/english/weaponstylerebalance.tra~
+                                      ~%MOD_FOLDER%/languages/english/legacyofbhaalfix.tra~
+
+LANGUAGE ~Simplified Chinese~ ~schinese~ ~%MOD_FOLDER%/languages/schinese/basis.tra~
+                                         ~%MOD_FOLDER%/languages/schinese/extramodifiers.tra~
+                                         ~%MOD_FOLDER%/languages/schinese/improvedenemies.tra~
+                                         ~%MOD_FOLDER%/languages/schinese/weaponstylerebalance.tra~
+                                         ~%MOD_FOLDER%/languages/schinese/legacyofbhaalfix.tra~
+
+/* *********************全局有效平台******************* */
+
+/*原理：
+脚本SH#CPF00/SH#CPF00分别为随时有效/仅战斗中有效，加入到全局脚本中
+产生隐形生物SH#CPF0A（生物A）承载脚本，以SH#CPF0T全局计时6秒
+以下####内为全局有效机理，可以略过
+
+#############################################################################################################################
+	战斗中生效：
+	战斗中主角身边每轮产生生物A（法师职业）
+	生物A在每轮工作完成后消失，此时给主角施加法术SH#CPF0B，内容为遇敌每轮对自己施展SH#CPF0C（包括法术和eff）召唤SH#CPF0C（生物C）
+	生物A产生时，重置全局计时器SH#CPF0T为6，并给主角施加法术SH#CPF0D移除SH#CPF0B，避免正常地图召唤生物C
+	关闭所有功能时，生物A如果存在会消失，此时也给主角施加法术SH#CPF0D移除SH#CPF0B避免召唤生物C
+	生物A安装时复制出生物C（复制时改变种族），两者使用完全相同的脚本，用种族进行区分
+	生物C不看全局计时器SH#CPF0T，而是每秒用SH#SECOND计时提升SH#COUNT，SH#COUNT到6就完成工作消失
+	生物C完成工作或发现功能关闭或看到生物A都是直接消失，不影响主角身上的附加法术
+	战斗之外：
+	施展任意法术，也会产生生物A，由于没在战斗中，会立刻消失
+	“模块：智力、感知、魅力带来额外修正”把它改成施法进行调整之后再消失
+#############################################################################################################################
+使用此平台添加自定义效果的操作如下：
+
+生物初始化脚本为SH#CPF0A，包含必要机能，勿改。
+
+SH#CPF0B为生物每秒施法脚本。建议需要给队员添加的修正放这个脚本里。即判断!GlobalTimerNotExpired("SH#SECOND","LOCALS")再施法。
+
+SH#CPF0C为生物每轮施法脚本（鸟只存在一轮所以仅需要施法一次，局部变量SH#CASTONCE变1表示施法完毕）。建议对队友以外的调整放在这里，让鸟对Player1~6施展范围法术对附近生物起效。
+范围法术的投射可以使用SH#CPF00.pro，对50呎内所有生物有效，如果需要区分敌我建议使用#318、#326之类（因为鸟是中立生物）
+
+SH#CPF0D为生物其它脚本，建议凡是不适合放SH#CPF0B和SH#CPF0C的修正都放这个脚本里。如果需要计时器和计数器建议使用现有的SH#SECOND、SH#CASTONCE之类，或自行添加
+
+用于给玩家提供调整选项：
+主角身上会添加特殊能力SH#CPF0Z，使用后召唤隐形生物SH#CPF0Z
+隐形生物的对话SH#CPF0Z用于调整自定义的全局变量，脚本SH#CPF0Z作为补充调整手段。在脚本SH#CPF0B/C/D中根据全局变量施展相应法术。
+添加对话的写法参考以下几个模块的.d文件。
+
+主平台文件全在basis目录下，其它模块放在各自目录下即可。tra文件请自行添加路径和避免重复
+*/
+
+
+
+
+
+//#########################################################
+//#########################################################
+/* ******************全局调整平台，必装***************** */
+//#########################################################
+//#########################################################
+
+BEGIN @1	//Shohy的全局自定义调整平台
+REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet~ @8	//版本不对
+
+ADD_PROJECTILE ~%MOD_FOLDER%/basis/pro/SH#CPF00.pro~
+
+COPY ~%MOD_FOLDER%/basis/cre~ ~override~
+COPY_EXISTING ~SH#CPF0A.cre~ ~override/SH#CPF0B.cre~	//在全局脚本不启动时，主角身上附加每轮召唤的鸟以启动脚本
+	WRITE_BYTE 0x272 170
+
+COMPILE ~%MOD_FOLDER%/basis/dlg~
+
+COMPILE ~%MOD_FOLDER%/basis/baf/tocompile~
+
+COPY ~%MOD_FOLDER%/basis/bam~ ~override~
+
+COPY ~%MOD_FOLDER%/basis/spl/noname~ ~override~
+
+COPY ~%MOD_FOLDER%/basis/spl/SH#CPF0Z.spl~ ~override~
+SAY NAME1 @11
+
+COPY_EXISTING ~CAMPAIGN.2da~ ~override~
+	COUNT_2DA_ROWS 10 camprowmax	//至少10列column，row行数读入camprowmax
+	PATCH_IF camprowmax > 1 BEGIN
+		FOR (camprows = 1 ; camprows < camprowmax ; ++camprows) BEGIN
+			READ_2DA_ENTRY camprows 1 10 campscript	//WORLDSCRIPT名称
+			SET "%campscript%added" = 0
+		END
+		FOR (camprows = 1 ; camprows < camprowmax ; ++camprows) BEGIN
+			READ_2DA_ENTRY camprows 1 10 campscript	//WORLDSCRIPT名称
+			PATCH_IF "%campscript%added" = 0 BEGIN
+				INNER_ACTION BEGIN
+					EXTEND_TOP ~%campscript%.bcs~ ~%MOD_FOLDER%/basis/baf/SH#CPF00.baf~	//添加全局控制
+				END
+				SET "%campscript%added" = 1
+			END
+		END
+	END ELSE BEGIN
+		INNER_ACTION BEGIN
+			EXTEND_TOP ~baldur.bcs~ ~%MOD_FOLDER%/basis/baf/SH#CPF00.baf~
+			EXTEND_TOP ~baldur25.bcs~ ~%MOD_FOLDER%/basis/baf/SH#CPF00.baf~
+		END
+	END
+BUT_ONLY
+
+
+
+
+//#########################################################
+//#########################################################
+/***********模块：智力、感知、魅力带来额外修正************/
+//#########################################################
+//#########################################################
+/*
+法师、牧师/德鲁伊/圣武士/游侠/萨满、术士/诗人：智力、感知、魅力/智力分别修正施法等级
+圣武士和牧师：魅力修正超度等级
+武僧：感知修正防御
+相应属性达到13/15/17/19/21/23/25时，人物获得+1/+2/+3/+4/+5/+6/+7有利修正。属性低至7/6/5/4/3/2/1时，人物获得-1/-2/-3/-4/-5/-6/-7不利修正。
+感知的额外修正：数值达到15/16/17/18时，人物对法术的豁免检定+1/+2/+3/+4有利；低至7/4/3/2/1时，人物对法术的豁免检定-1/-2/-3/-4/-6不利；数值达到19/20/21/22/23/24/25时，人物免疫命死术、恐吓术、魅惑人类、催眠术/人类定身术、衰弱射线、恐惧术/强力魅惑/心智控制、困惑术、情绪控制/混乱术、弱智术、怪物定身术/控制术/死亡术
+*/
+BEGIN @21	//智力/感知/魅力带来额外修正
+REQUIRE_PREDICATE (IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~)) > 0 @9
+
+COPY ~%MOD_FOLDER%/ExtraModifiers/spl/noname~ ~override~
+COPY ~%MOD_FOLDER%/ExtraModifiers/eff~ ~override~
+
+//进行范围调整的法术，使用投射SH#CPF00
+OUTER_SET SH#CPF00 = IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~) +1
+COPY ~%MOD_FOLDER%/ExtraModifiers/spl/SH#EXM00.spl~ ~override~ ~%MOD_FOLDER%/ExtraModifiers/spl/SH#EXM_0.spl~ ~override~
+	WRITE_SHORT   0x98 ~%SH#CPF00%~
+
+//施展法术，放在SH#CPF0C.bcs
+EXTEND_BOTTOM ~SH#CPF0C.bcs~ ~%MOD_FOLDER%/ExtraModifiers/baf/SH#EXM0C.baf~
+
+//唱歌跳舞带来的额外修正，需要用脚本判断施展，放在SH#CPF0D.bcs
+COPY_EXISTING ~SH#CPF0D.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		FOR (n=1;n<7;++n) BEGIN
+			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/ExtraModifiers/baf/SH#EXM0D.baf~
+		END
+	END
+BUT_ONLY
+
+//需要让鸟给予修正后再消失
+COPY_EXISTING ~SH#CPF0A.bcs~ ~override~
+	R_B_B ~%MOD_FOLDER%/ExtraModifiers/baf/later0.baf~ ~%MOD_FOLDER%/ExtraModifiers/baf/later1.baf~ ON_MISMATCH END
+BUT_ONLY
+
+//给鸟添加对话控制
+COMPILE ~%MOD_FOLDER%/ExtraModifiers/dlg~
+
+
+/* *************智力、感知、魅力额外修正补充模块：将提升施法等级的装备改为提升智力/感知************ */
+BEGIN @22	//因为智力/感知/魅力带来的施法等级修正无法累加，将装备上的提升施法等级效果改为提升智力/感知。建议在物品MOD之后安装
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~SH#EXM00.spl~ @23	//要先安装“智力、感知、魅力带来额外修正”
+
+COPY_EXISTING_REGEXP GLOB ~.*\.itm~ ~override~
+	SPRINT textwiz @38
+	SPRINT textprs @39
+	PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
+		READ_SHORT 0x1c itemtype
+		READ_LONG 0x6a effectoffset
+		READ_SHORT 0x70 effectamount
+		PATCH_IF (itemtype != 0) & (itemtype != 8) & (itemtype != 9) & (itemtype != 10) & (itemtype != 11) & (itemtype != 13) & (itemtype != 14) & (itemtype != 31) & (itemtype != 34) & (itemtype != 35) & (itemtype != 36) & (itemtype != 37) & (itemtype != 50) BEGIN
+			PATCH_IF effectamount > 0 BEGIN
+				FOR (effects = 1 ; effects < effectamount ; ++effects) BEGIN
+					READ_SHORT (effectoffset + 0x30 * (effects - 1)) effecttype
+					PATCH_IF effecttype == 191 BEGIN	//发现修改施法等级效果
+						READ_LONG (8 + effectoffset + 0x30 * (effects - 1)) spllvtype
+						READ_LONG 0x54 descref
+						PATCH_IF spllvtype == 0 BEGIN	//是修改法师施法等级
+							WRITE_SHORT (effectoffset + 0x30 * (effects - 1)) 19
+							PATCH_IF (descref >= 0 && descref < 2147483646) BEGIN
+								READ_STRREF 0x54 desc
+								SPRINT newdesc ~%desc%~^~%textwiz%~	//添加描述：提升施法等级改为提升智力
+								INNER_ACTION BEGIN
+									STRING_SET_EVALUATE descref ~%newdesc%~	//写入新描述
+								END
+							END
+						END ELSE BEGIN	//是修改牧师施法等级
+							WRITE_SHORT (effectoffset + 0x30 * (effects - 1)) 49
+							WRITE_LONG (8 + effectoffset + 0x30 * (effects - 1)) 0
+							PATCH_IF (descref >= 0 && descref < 2147483646) BEGIN
+								READ_STRREF 0x54 desc
+								SPRINT newdesc ~%desc%~^~%textprs%~	//添加描述：提升施法等级改为提升感知
+								INNER_ACTION BEGIN
+									STRING_SET_EVALUATE descref ~%newdesc%~	//写入新描述
+								END
+							END
+						END
+
+					END
+				END
+			END
+		END
+	END
+BUT_ONLY
+
+
+
+
+
+//#########################################################
+//#########################################################
+/**************模块：增加敌人数值以提升难度***************/
+//#########################################################
+//#########################################################
+
+BEGIN @41	//增加敌人数值以提升难度
+REQUIRE_PREDICATE (IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~)) > 0 @9
+
+//进行范围调整的法术，使用投射SH#CPF00
+OUTER_SET SH#CPF00 = IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~) +1
+
+COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SH#IMPE1.spl~ ~override/SH#IMPE1.spl~
+	WRITE_SHORT   0x98 ~%SH#CPF00%~
+	//敌人数值少许提升
+	SET IMPEHP = 10			//每等级增加IMPEHP%生命值
+	SET IMPETHAC0 = 7		//每IMPETHAC0等级命中+1有利
+	SET IMPEDAMAMGE = 1		//每等级增加IMPEDAMAMGE%伤害
+	SET IMPEAC = 7			//每IMPEAC等级防御+1有利
+	SET IMPESAVES = 10		//每IMPESAVES等级豁免+1有利
+	SET IMPEMAGICRESIST = 4	//每IMPEMAGICRESIST等级魔抗+1%
+	FOR (headernum = 1 ; headernum < 33 ; ++headernum) BEGIN
+		PATCH_IF headernum != 1 BEGIN LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END END
+		//施展1级调整需生物1级，施展2级调整需生物6级
+		PATCH_IF headernum = 2 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = 6 END END
+		//施展3级调整需生物10级，后继每增加1级调整需生物提升2级，直到18级调整需生物40级
+		PATCH_IF headernum > 2 && headernum < 19 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (headernum * 2 + 4) END END	
+		//施展19-32级调整需生物41-54级
+		PATCH_IF headernum > 18 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (headernum + 22) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 parameter1 = (IMPEHP * headernum + 100) parameter2 = 2 END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 parameter1 = (headernum / IMPETHAC0) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 332 parameter1 = (IMPEDAMAMGE * headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 parameter1 = (headernum / IMPEAC) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 parameter1 = (headernum / IMPESAVES) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 166 parameter1 = (headernum / IMPEMAGICRESIST) END
+	END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 2 parameter2 = 102 STR_VAR resource = "SH#IMPE1" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 3 parameter2 = 102 STR_VAR resource = "SH#IMPE1" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 4 parameter2 = 102 STR_VAR resource = "SH#IMPE1" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 5 parameter2 = 102 STR_VAR resource = "SH#IMPE1" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 6 parameter2 = 102 STR_VAR resource = "SH#IMPE1" END	//魅惑生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 29 parameter2 = 102 STR_VAR resource = "SH#IMPE1" END	//中立生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 128 parameter2 = 102 STR_VAR resource = "SH#IMPE1" END	//中立生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 STR_VAR resource = "SH#IMPE2" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 STR_VAR resource = "SH#IMPE3" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 1 STR_VAR resource = "SH#IMPE1" END	//不会重复作用
+
+COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SH#IMPE1.spl~ ~override/SH#IMPE2.spl~
+	WRITE_SHORT   0x98 ~%SH#CPF00%~
+	//敌人数值中等提升
+	SET IMPEHP = 20			//每等级增加IMPEHP%生命值
+	SET IMPETHAC0 = 5		//每IMPETHAC0等级命中+1有利
+	SET IMPEDAMAMGE = 2		//每等级增加IMPEDAMAMGE%伤害
+	SET IMPEAC = 5			//每IMPEAC等级防御+1有利
+	SET IMPESAVES = 6		//每IMPESAVES等级豁免+1有利
+	SET IMPEMAGICRESIST = 2	//每IMPEMAGICRESIST等级魔抗+1%
+	FOR (headernum = 1 ; headernum < 33 ; ++headernum) BEGIN
+		PATCH_IF headernum != 1 BEGIN LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END END
+		//施展1级调整需生物1级，施展2级调整需生物6级
+		PATCH_IF headernum = 2 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = 6 END END
+		//施展3级调整需生物10级，后继每增加1级调整需生物提升2级，直到18级调整需生物40级
+		PATCH_IF headernum > 2 && headernum < 19 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (headernum * 2 + 4) END END	
+		//施展19-32级调整需生物41-54级
+		PATCH_IF headernum > 18 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (headernum + 22) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 parameter1 = (IMPEHP * headernum + 100) parameter2 = 2 END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 parameter1 = (headernum / IMPETHAC0) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 332 parameter1 = (IMPEDAMAMGE * headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 parameter1 = (headernum / IMPEAC) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 parameter1 = (headernum / IMPESAVES) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 166 parameter1 = (headernum / IMPEMAGICRESIST) END
+	END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 2 parameter2 = 102 STR_VAR resource = "SH#IMPE2" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 3 parameter2 = 102 STR_VAR resource = "SH#IMPE2" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 4 parameter2 = 102 STR_VAR resource = "SH#IMPE2" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 5 parameter2 = 102 STR_VAR resource = "SH#IMPE2" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 6 parameter2 = 102 STR_VAR resource = "SH#IMPE2" END	//魅惑生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 29 parameter2 = 102 STR_VAR resource = "SH#IMPE2" END	//中立生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 128 parameter2 = 102 STR_VAR resource = "SH#IMPE2" END	//中立生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 STR_VAR resource = "SH#IMPE1" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 STR_VAR resource = "SH#IMPE3" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 1 STR_VAR resource = "SH#IMPE2" END	//不会重复作用
+
+COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SH#IMPE1.spl~ ~override/SH#IMPE3.spl~
+	WRITE_SHORT   0x98 ~%SH#CPF00%~
+	//敌人数值大幅提升
+	SET IMPEHP = 50			//每等级增加IMPEHP%生命值
+	SET IMPETHAC0 = 3		//每IMPETHAC0等级命中+1有利
+	SET IMPEDAMAMGE = 4		//每等级增加IMPEDAMAMGE%伤害
+	SET IMPEAC = 3			//每IMPEAC等级防御+1有利
+	SET IMPESAVES = 4		//每IMPESAVES等级豁免+1有利
+	SET IMPEMAGICRESIST = 1	//每IMPEMAGICRESIST等级魔抗+1%
+	FOR (headernum = 1 ; headernum < 33 ; ++headernum) BEGIN
+		PATCH_IF headernum != 1 BEGIN LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END END
+		//施展1级调整需生物1级，施展2级调整需生物6级
+		PATCH_IF headernum = 2 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = 6 END END
+		//施展3级调整需生物10级，后继每增加1级调整需生物提升2级，直到18级调整需生物40级
+		PATCH_IF headernum > 2 && headernum < 19 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (headernum * 2 + 4) END END	
+		//施展19-32级调整需生物41-54级
+		PATCH_IF headernum > 18 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (headernum + 22) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 parameter1 = (IMPEHP * headernum + 100) parameter2 = 2 END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 parameter1 = (headernum / IMPETHAC0) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 332 parameter1 = (IMPEDAMAMGE * headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 parameter1 = (headernum / IMPEAC) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 parameter1 = (headernum / IMPESAVES) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 166 parameter1 = (headernum / IMPEMAGICRESIST) END
+	END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 2 parameter2 = 102 STR_VAR resource = "SH#IMPE3" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 3 parameter2 = 102 STR_VAR resource = "SH#IMPE3" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 4 parameter2 = 102 STR_VAR resource = "SH#IMPE3" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 5 parameter2 = 102 STR_VAR resource = "SH#IMPE3" END	//友方生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 6 parameter2 = 102 STR_VAR resource = "SH#IMPE3" END	//魅惑生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 29 parameter2 = 102 STR_VAR resource = "SH#IMPE3" END	//中立生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 128 parameter2 = 102 STR_VAR resource = "SH#IMPE3" END	//中立生物不受影响
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 STR_VAR resource = "SH#IMPE1" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 STR_VAR resource = "SH#IMPE2" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 1 STR_VAR resource = "SH#IMPE3" END	//不会重复作用
+
+COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/noname~ ~override~
+//给SH#CPF0A添加等级调整功能，可按主角等级或经验进行等级修正（比战士升级慢则按战士经验表格决定等级，比战士升级快则按实际等级）
+//在到达40级后不再修正等级，而是每50w经验提升1施法等级，直到1500w经验封顶，此时有40等级+14施法等级（法师职业）。
+EXTEND_BOTTOM ~SH#CPF0A.bcs~ ~%MOD_FOLDER%/ImprovedEnemies/baf/SH#IMPEA.baf~
+
+//施展法术，放在SH#CPF0C.bcs
+EXTEND_BOTTOM ~SH#CPF0C.bcs~ ~%MOD_FOLDER%/ImprovedEnemies/baf/SH#IMPEC.baf~
+
+//给鸟添加对话控制
+COMPILE ~%MOD_FOLDER%/ImprovedEnemies/dlg/SH#IMPE0.d~
+
+
+// ********增加敌人数值以提升难度追加模块：敌人死亡时给予最后攻击者更多经验值**********
+BEGIN @42	//敌人死亡时给予最后攻击者更多经验值
+REQUIRE_PREDICATE (IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~)) > 0 @9
+
+//进行范围调整的法术，使用投射SH#CPF00
+OUTER_SET SH#CPF00 = IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~) +1
+
+COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SH#IMXP1.spl~ ~override~ ~%MOD_FOLDER%/ImprovedEnemies/spl/SH#IMXP2.spl~ ~override~ ~%MOD_FOLDER%/ImprovedEnemies/spl/SH#IMXP3.spl~ ~override~ ~%MOD_FOLDER%/ImprovedEnemies/spl/SH#IMXP4.spl~ ~override~
+	WRITE_SHORT   0x98 ~%SH#CPF00%~
+
+COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SH#IMXP5.spl~ ~override/SH#IMXP5.spl~
+	FOR (headernum = 1 ; headernum < 41 ; ++headernum) BEGIN
+		PATCH_IF headernum > 1 BEGIN LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = headernum END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 104 target = 2 timing = 1 parameter1 = headernum * 50 END
+	END
+
+COPY_EXISTING ~SH#IMXP5.spl~ ~override/SH#IMXP6.spl~
+	FOR (headernum = 1 ; headernum < 41 ; ++headernum) BEGIN
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 104 target = 2 timing = 1 parameter1 = headernum * 200 END
+	END
+
+COPY_EXISTING ~SH#IMXP5.spl~ ~override/SH#IMXP7.spl~
+	FOR (headernum = 1 ; headernum < 41 ; ++headernum) BEGIN
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 104 target = 2 timing = 1 parameter1 = headernum * 500 END
+	END
+
+COPY_EXISTING ~SH#IMXP5.spl~ ~override/SH#IMXP8.spl~
+	FOR (headernum = 1 ; headernum < 41 ; ++headernum) BEGIN
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 104 target = 2 timing = 1 parameter1 = headernum * 1000 END
+	END
+
+//施展法术，放在SH#CPF0C.bcs
+EXTEND_BOTTOM ~SH#CPF0C.bcs~ ~%MOD_FOLDER%/ImprovedEnemies/baf/SH#IMXPC.baf~
+
+//给鸟添加对话控制
+COMPILE ~%MOD_FOLDER%/ImprovedEnemies/dlg/SH#IMXP0.d~
+
+
+
+
+
+//#########################################################
+//#########################################################
+/*********************模块：武器流派平衡******************/
+//#########################################################
+//#########################################################
+BEGIN @101
+REQUIRE_PREDICATE (IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~)) > 0 @9
+
+// ***武器流派平衡
+
+ADD_PROJECTILE ~%MOD_FOLDER%/WeaponStyleRebalance/pro/SH#WPSDA.pro~
+
+//给鸟添加免疫以判断人物使用的武器类型
+COPY_EXISTING ~SH#CPF0A.cre~ ~override~ ~SH#CPF0B.cre~ ~override~
+	LPF ADD_CRE_EFFECT INT_VAR opcode = 120 timing = 9 parameter2 = 6 END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eff~ ~override~
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/noname~ ~override~
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WP1HC.spl~ ~override~
+	SAY NAME1 @131	//绊摔
+	SAY UNIDENTIFIED_DESC @131
+	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN	//随等级提升豁免难度
+		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 39 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 126 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 146 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 185 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
+	END
+//专职盗贼、诗人、武僧在豁免失败时转到SH#WP1HM.spl对死亡进行豁免检定
+COPY_EXISTING ~SH#WP1HC.spl~ ~override/SH#WP1HM.spl~
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 318 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 324 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 326 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 185 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 savingthrow = 4 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+//特殊生物免疫，力量更高免疫，修改所免疫的法术文件名
+COPY_EXISTING ~SH#WP1HC.spl~ ~override/SH#WP1HG.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SH#WP1HG" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+COPY_EXISTING ~SH#WP1HC.spl~ ~override/SH#WP1HF.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SH#WP1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 5 opcode = 324 target = 2 parameter1 = 23 parameter2 = 124 STR_VAR resource = "SH#WP1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+COPY_EXISTING ~SH#WP1HC.spl~ ~override/SH#WP1HE.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SH#WP1HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 5 opcode = 324 target = 2 parameter1 = 20 parameter2 = 124 STR_VAR resource = "SH#WP1HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+COPY_EXISTING ~SH#WP1HC.spl~ ~override/SH#WP1HD.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SH#WP1HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 5 opcode = 324 target = 2 parameter1 = 17 parameter2 = 124 STR_VAR resource = "SH#WP1HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+COPY_EXISTING ~SH#WP1HC.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 5 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SH#WP1HC" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WP1HH.spl~ ~override~
+	SAY NAME1 @131	//绊摔
+	SAY UNIDENTIFIED_DESC @131
+	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN	//随等级提升豁免难度
+		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 39 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 45 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 126 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 146 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 165 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
+	END
+//专职盗贼、诗人、武僧在豁免失败时转到SH#WP1HN.spl对死亡进行豁免检定
+COPY_EXISTING ~SH#WP1HH.spl~ ~override/SH#WP1HN.spl~
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 318 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 324 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 326 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 185 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 savingthrow = 4 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+//特殊生物免疫，力量更高免疫，修改所免疫的法术文件名
+COPY_EXISTING ~SH#WP1HH.spl~ ~override/SH#WP1HL.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SH#WP1HL" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+COPY_EXISTING ~SH#WP1HH.spl~ ~override/SH#WP1HK.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SH#WP1HK" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 5 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SH#WP1HK" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+COPY_EXISTING ~SH#WP1HH.spl~ ~override/SH#WP1HJ.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SH#WP1HJ" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 5 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SH#WP1HJ" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+COPY_EXISTING ~SH#WP1HH.spl~ ~override/SH#WP1HI.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SH#WP1HI" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 5 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SH#WP1HI" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+COPY_EXISTING ~SH#WP1HH.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 5 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SH#WP1HH" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SH#WP1HX" END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WTRIP.spl~ ~override~
+	SAY NAME1 @132	//卸除武器
+	SAY UNIDENTIFIED_DESC @132
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDE.spl~ ~override~
+	WRITE_SHORT 0x98 ~%SH#WPSDA%~
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDF.spl~ ~override~	//1星盾击，豁免随等级
+	SAY NAME1 @134	//盾击
+	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 235 savebonus = (7 - headernum) END
+	END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDH.spl~ ~override~	//2星盾击无豁免部分，并且随人物等级以不同豁免，以等级1调用SH#WPSDO（伤害档次0）
+	WRITE_SHORT 0x98 ~%SH#WPSDA%~
+	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 146 savebonus = (7 - headernum) END
+	END
+//2星盾击无豁免部分，以等级2~7调用SH#WPSDO（伤害档次不同）
+COPY_EXISTING ~SH#WPSDH.spl~ ~override/SH#WPSDI.spl~ LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 2 END
+COPY_EXISTING ~SH#WPSDH.spl~ ~override/SH#WPSDJ.spl~ LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 3 END
+COPY_EXISTING ~SH#WPSDH.spl~ ~override/SH#WPSDK.spl~ LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 4 END
+COPY_EXISTING ~SH#WPSDH.spl~ ~override/SH#WPSDL.spl~ LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 5 END
+COPY_EXISTING ~SH#WPSDH.spl~ ~override/SH#WPSDM.spl~ LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 6 END
+COPY_EXISTING ~SH#WPSDH.spl~ ~override/SH#WPSDN.spl~ LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 7 END
+	
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDO.spl~ ~override~	//2星盾击有豁免部分
+	SAY NAME1 @134	//盾击
+	
+COPY_EXISTING ~SH#CPF0B.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		FOR (n=1;n<7;++n) BEGIN
+			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPROB.baf~	//队友的武器流派平衡，每秒判断进行
+		END
+	END
+BUT_ONLY
+
+// ***武器细节调整
+
+ADD_PROJECTILE ~%MOD_FOLDER%/WeaponStyleRebalance/pro/SH#WE1HC.pro~
+ADD_PROJECTILE ~%MOD_FOLDER%/WeaponStyleRebalance/pro/SH#WE2HC.pro~
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/bam/~ ~override~
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eff1/~ ~override~
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/noname1~ ~override~
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WE1HC.spl~ ~override~
+	SAY NAME1 @135	//回旋斩
+	WRITE_SHORT   0x98 ~%SH#WE1HC%~
+
+COPY_EXISTING ~SH#WE1HC.spl~ ~override/SH#WE1HD.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 1 END
+COPY_EXISTING ~SH#WE1HC.spl~ ~override/SH#WE1HE.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 2 END
+COPY_EXISTING ~SH#WE1HC.spl~ ~override/SH#WE1HF.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 4 END
+COPY_EXISTING ~SH#WE1HC.spl~ ~override/SH#WE1HG.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 5 END
+COPY_EXISTING ~SH#WE1HC.spl~ ~override/SH#WE1HH.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 6 END
+COPY_EXISTING ~SH#WE1HC.spl~ ~override/SH#WE1HI.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 7 END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WE2HC.spl~ ~override~
+	SAY NAME1 @135	//回旋斩
+	WRITE_SHORT   0x98 ~%SH#WE2HC%~
+
+COPY_EXISTING ~SH#WE2HC.spl~ ~override/SH#WE2HD.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 1 END
+COPY_EXISTING ~SH#WE2HC.spl~ ~override/SH#WE2HE.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 3 END
+COPY_EXISTING ~SH#WE2HC.spl~ ~override/SH#WE2HF.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 6 END
+COPY_EXISTING ~SH#WE2HC.spl~ ~override/SH#WE2HG.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 8 END
+COPY_EXISTING ~SH#WE2HC.spl~ ~override/SH#WE2HH.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 9 END
+COPY_EXISTING ~SH#WE2HC.spl~ ~override/SH#WE2HI.spl~	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode =12 parameter1 = 11 END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WM1HC.spl~ ~override~
+	SAY NAME1 @136	//锤击
+	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 235 savebonus = (7 - headernum) END
+	END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WM2HC.spl~ ~override~
+	SAY NAME1 @136	//锤击
+	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 39 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 45 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
+	END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = "SH#SMITE" END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WH1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WH2HC.spl~ ~override~
+	SAY NAME1 @137	//勾拽
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@138) END
+//单手勾，随等级提升豁免难度
+COPY_EXISTING ~SH#WH1HC.spl~ ~override~
+	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 39 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 139 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 235 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
+	END
+//专职盗贼、诗人、武僧在豁免失败时转到SH#WH1HM.spl对死亡进行豁免检定
+COPY_EXISTING ~SH#WH1HC.spl~ ~override/SH#WH1HM.spl~
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 318 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 324 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 326 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 235 savingthrow = 4 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 insert_point = 12 STR_VAR resource = "SH#SMITE" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH1HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH1HB" END
+//力量更高免疫，修改所免疫的法术文件名
+COPY_EXISTING ~SH#WH1HC.spl~ ~override/SH#WH1HG.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 target = 0 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 insert_point = 12 STR_VAR resource = "SH#SMITE" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH1HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH1HB" END
+COPY_EXISTING ~SH#WH1HC.spl~ ~override/SH#WH1HF.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 23 STR_VAR resource = "SH#WH1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 insert_point = 12 STR_VAR resource = "SH#SMITE" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH1HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH1HB" END
+COPY_EXISTING ~SH#WH1HC.spl~ ~override/SH#WH1HE.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 20 STR_VAR resource = "SH#WH1HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 insert_point = 12 STR_VAR resource = "SH#SMITE" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH1HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH1HB" END
+COPY_EXISTING ~SH#WH1HC.spl~ ~override/SH#WH1HD.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 17 STR_VAR resource = "SH#WH1HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 insert_point = 12 STR_VAR resource = "SH#SMITE" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH1HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH1HB" END
+COPY_EXISTING ~SH#WH1HC.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 insert_point = 12 STR_VAR resource = "SH#SMITE" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH1HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH1HB" END
+//双手勾，随等级提升豁免难度
+COPY_EXISTING ~SH#WH2HC.spl~ ~override~
+	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 39 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 45 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 139 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 235 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
+	END
+//专职盗贼、诗人、武僧在豁免失败时转到SH#WH2HM.spl对死亡进行豁免检定
+COPY_EXISTING ~SH#WH2HC.spl~ ~override/SH#WH2HM.spl~
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 318 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 324 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 326 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 savingthrow = 4 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 235 savingthrow = 4 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH2HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH2HB" END
+//力量更高免疫，修改所免疫的法术文件名
+COPY_EXISTING ~SH#WH2HC.spl~ ~override/SH#WH2HG.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 target = 0 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH2HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH2HB" END
+COPY_EXISTING ~SH#WH2HC.spl~ ~override/SH#WH2HF.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 23 STR_VAR resource = "SH#WH2HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH2HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH2HB" END
+COPY_EXISTING ~SH#WH2HC.spl~ ~override/SH#WH2HE.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 20 STR_VAR resource = "SH#WH2HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH2HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH2HB" END
+COPY_EXISTING ~SH#WH2HC.spl~ ~override/SH#WH2HD.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 17 STR_VAR resource = "SH#WH2HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH2HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH2HB" END
+COPY_EXISTING ~SH#WH2HC.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SH#WH2HB" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SH#WH2HB" END
+
+COPY_EXISTING ~SH#CPF0B.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		FOR (n=1;n<7;++n) BEGIN
+			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPROE.baf~	//队友的武器细节调整，每秒判断进行
+		END
+	END
+BUT_ONLY
+
+// ***友军和敌军也获得类似能力
+
+OUTER_SET SH#CPF00 = IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~) +1
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPE00.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPE02.spl~ ~override~
+	WRITE_SHORT   0x98 ~%SH#CPF00%~
+	
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/noname2~ ~override~
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eff2/~ ~override~
+
+EXTEND_BOTTOM ~SH#CPF0C.bcs~ ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPROC.baf~	//附近敌我的武器流派调整和武器细节调整
+
+
+// ******************武器流派平衡补充模块：四种武器流派可投入更多星数***************
+
+// ***扣星模式，兼容性好
+BEGIN @103
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~SH#WPSDA.pro~ @105
+SUBCOMPONENT @102
+
+COPY_EXISTING ~SH#CPF0B.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		FOR (n=1;n<7;++n) BEGIN
+			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPROF.baf~	//扣星模式专用的扣星补偿
+		END
+	END
+BUT_ONLY
+
+COPY_EXISTING ~SH#CPF0D.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		FOR (n=1;n<7;++n) BEGIN
+			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPROD.baf~	//扣星
+		END
+	END
+BUT_ONLY
+
+COPY_EXISTING ~SH#CPF0Z.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		FOR (n=1;n<7;++n) BEGIN
+			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPROZ.baf~	//扣星返还
+		END
+	END
+BUT_ONLY
+//对话返还扣星
+COMPILE ~%MOD_FOLDER%/WeaponStyleRebalance/dlg/SH#WPRO0.d~
+//返还扣星用法术
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/noname3~ ~override~
+
+//***加星模式，兼容性差
+BEGIN @104
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~SH#WPSDA.pro~ @105
+SUBCOMPONENT @102
+
+//去除脚本中已有的扣星相关内容
+OUTER_FOR (n=1;n<7;++n) BEGIN
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/baf/blank.baf~ ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPRO%n%.baf~
+	APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPROX.baf~
+	COPY_EXISTING ~SH#CPF0B.BCS~ ~override~
+	REPLACE_BCS_BLOCK CASE_INSENSITIVE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPRO%n%.baf~ ~%MOD_FOLDER%/WeaponStyleRebalance/baf/blank.baf~
+END
+
+COPY_EXISTING ~SH#CPF0B.BCS~ ~override~
+	FOR (n=1;n<7;++n) BEGIN
+		DECOMPILE_AND_PATCH BEGIN
+			REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~!ProficiencyGT(Player%n%,PROFICIENCY2WEAPON,2)~ ~!ProficiencyGT(Player%n%,PROFICIENCY2WEAPON,4)~
+			REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~Proficiency(Player%n%,PROFICIENCY2HANDED,1)~ ~OR(2)
+				Proficiency(Player%n%,PROFICIENCY2HANDED,1)
+				Proficiency(Player%n%,PROFICIENCY2HANDED,2)~
+			REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~ProficiencyGT(Player%n%,PROFICIENCY2HANDED,1)~ ~ProficiencyGT(Player%n%,PROFICIENCY2HANDED,2)~
+			REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~Proficiency(Player%n%,PROFICIENCYSWORDANDSHIELD,1)~ ~OR(2)
+				Proficiency(Player%n%,PROFICIENCYSWORDANDSHIELD,1)
+				Proficiency(Player%n%,PROFICIENCYSWORDANDSHIELD,2)~
+			REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~ProficiencyGT(Player%n%,PROFICIENCYSWORDANDSHIELD,1)~ ~ProficiencyGT(Player%n%,PROFICIENCYSWORDANDSHIELD,2)~
+			REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~Proficiency(Player%n%,PROFICIENCYSINGLEWEAPON,1)~ ~OR(2)
+				Proficiency(Player%n%,PROFICIENCYSINGLEWEAPON,1)
+				Proficiency(Player%n%,PROFICIENCYSINGLEWEAPON,2)~
+			REPLACE_TEXTUALLY CASE_INSENSITIVE EVALUATE_REGEXP ~ProficiencyGT(Player%n%,PROFICIENCYSINGLEWEAPON,1)~ ~ProficiencyGT(Player%n%,PROFICIENCYSINGLEWEAPON,2)~
+		END
+	END
+BUT_ONLY
+//对话不需要返还扣星
+COMPILE ~%MOD_FOLDER%/WeaponStyleRebalance/dlg/SH#WPRO1.d~
+
+//修改2DA以投入更多星数
+OUTER_SET "ALREADY2H3" = 0
+OUTER_SET "ALREADY1H3" = 0
+OUTER_SET "ALREADYSD3" = 0
+OUTER_SET "ALREADY2W4" = 0
+OUTER_SET "ALREADY2W5" = 0
+COPY_EXISTING ~STYLBONU.2DA~ ~override~
+	COUNT_2DA_ROWS 7 stylmax
+	FOR (stylrow = 1 ; stylrow < stylmax ; ++stylrow) BEGIN
+		READ_2DA_ENTRY stylrow 0 7 readstyl
+		PATCH_IF ("%readstyl%" STRING_COMPARE "TWOHANDED-2" = 0) BEGIN
+			SET_2DA_ENTRY "stylrow" 1 7 2
+			SET_2DA_ENTRY "stylrow" 3 7 "-1"
+			SET_2DA_ENTRY "stylrow" 5 7 "-1"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "TWOHANDED-3" = 0) BEGIN
+			SET "ALREADY2H3" = 1
+			SET_2DA_ENTRY "stylrow" 1 7 2
+			SET_2DA_ENTRY "stylrow" 3 7 "-1"
+			SET_2DA_ENTRY "stylrow" 5 7 "-1"
+			SET_2DA_ENTRY "stylrow" 7 7 "-5"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "SINGLEWEAPON-2" = 0) BEGIN
+			SET_2DA_ENTRY "stylrow" 1 7 1
+			SET_2DA_ENTRY "stylrow" 3 7 "-1"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "SINGLEWEAPON-3" = 0) BEGIN
+			SET "ALREADY1H3" = 1
+			SET_2DA_ENTRY "stylrow" 1 7 1
+			SET_2DA_ENTRY "stylrow" 3 7 "-1"
+			SET_2DA_ENTRY "stylrow" 5 7 "-3"
+			SET_2DA_ENTRY "stylrow" 7 7 "-1"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "SWORDANDSHIELD-2" = 0) BEGIN
+			SET_2DA_ENTRY "stylrow" 1 7 1
+			SET_2DA_ENTRY "stylrow" 3 7 "-1"
+			SET_2DA_ENTRY "stylrow" 7 7 "-1"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "SWORDANDSHIELD-3" = 0) BEGIN
+			SET "ALREADYSD3" = 1
+			SET_2DA_ENTRY "stylrow" 1 7 1
+			SET_2DA_ENTRY "stylrow" 3 7 "-1"
+			SET_2DA_ENTRY "stylrow" 5 7 "-1"
+			SET_2DA_ENTRY "stylrow" 7 7 "-1"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "TWOWEAPON-0" = 0) BEGIN
+			SET_2DA_ENTRY "stylrow" 1 7 "-2"
+			SET_2DA_ENTRY "stylrow" 2 7 "-2"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "TWOWEAPON-1" = 0) BEGIN
+			SET_2DA_ENTRY "stylrow" 1 7 "-2"
+			SET_2DA_ENTRY "stylrow" 2 7 "-2"
+			SET_2DA_ENTRY "stylrow" 5 7 "-1"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "TWOWEAPON-2" = 0) BEGIN
+			SET_2DA_ENTRY "stylrow" 1 7 "-1"
+			SET_2DA_ENTRY "stylrow" 2 7 "-1"
+			SET_2DA_ENTRY "stylrow" 5 7 "-2"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "TWOWEAPON-3" = 0) BEGIN
+			SET_2DA_ENTRY "stylrow" 5 7 "-2"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "TWOWEAPON-4" = 0) BEGIN
+			SET "ALREADY2W4" = 1
+			SET_2DA_ENTRY "stylrow" 1 7 1
+			SET_2DA_ENTRY "stylrow" 2 7 1
+			SET_2DA_ENTRY "stylrow" 3 7 "-1"
+			SET_2DA_ENTRY "stylrow" 4 7 "-1"
+			SET_2DA_ENTRY "stylrow" 5 7 "-3"
+			SET_2DA_ENTRY "stylrow" 7 7 "-1"
+		END
+		PATCH_IF ("%readstyl%" STRING_COMPARE "TWOWEAPON-5" = 0) BEGIN
+			SET "ALREADY2W5" = 1
+			SET_2DA_ENTRY "stylrow" 1 7 1
+			SET_2DA_ENTRY "stylrow" 2 7 1
+			SET_2DA_ENTRY "stylrow" 3 7 "-1"
+			SET_2DA_ENTRY "stylrow" 4 7 "-1"
+			SET_2DA_ENTRY "stylrow" 5 7 "-3"
+			SET_2DA_ENTRY "stylrow" 7 7 "-1"
+		END
+	END
+BUT_ONLY
+
+ACTION_IF "ALREADY2H3" != 1 BEGIN APPEND ~STYLBONU.2DA~ ~TWOHANDED-3      2                0                -1               0                -1               0                -5               1~ END
+ACTION_IF "ALREADY1H3" != 1 BEGIN APPEND ~STYLBONU.2DA~ ~SINGLEWEAPON-3   1                0                -1               0                -3               0                -1               1~ END
+ACTION_IF "ALREADYSD3" != 1 BEGIN APPEND ~STYLBONU.2DA~ ~SWORDANDSHIELD-3 1                0                -1               0                -1               -4               -1               0~ END
+ACTION_IF "ALREADY2W4" != 1 BEGIN APPEND ~STYLBONU.2DA~ ~TWOWEAPON-4      1                1                -1               -1               -3               0                -1               0~ END
+ACTION_IF "ALREADY2W5" != 1 BEGIN APPEND ~STYLBONU.2DA~ ~TWOWEAPON-5      1                1                -1               -1               -3               0                -1               0~ END
+
+COPY_EXISTING ~WEAPPROF.2DA~ ~override~
+	COUNT_2DA_COLS kitmax
+	FOR (kitcol = 4 ; kitcol < kitmax ; ++kitcol) BEGIN
+		READ_2DA_ENTRY 29 kitcol 10 prof2h
+		PATCH_IF prof2h = 2 BEGIN SET_2DA_ENTRY 29 kitcol 10 3 END
+		READ_2DA_ENTRY 30 kitcol 10 profsd
+		PATCH_IF profsd = 2 BEGIN SET_2DA_ENTRY 30 kitcol 10 3 END
+		READ_2DA_ENTRY 31 kitcol 10 prof1h
+		PATCH_IF prof1h = 2 BEGIN SET_2DA_ENTRY 31 kitcol 10 3 END
+		READ_2DA_ENTRY 32 kitcol 10 prof2w
+		PATCH_IF (prof2w = 3) OR (prof2w = 4) BEGIN SET_2DA_ENTRY 32 kitcol 10 5 END
+	END
+BUT_ONLY
+
+
+
+
+
+//#########################################################
+//#########################################################
+/***模块：巴尔遗产BUG修正、敌人随玩家提升等级并使用技能***/
+//#########################################################
+//#########################################################
+BEGIN @201
+REQUIRE_PREDICATE (IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~)) > 0 @9
+
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/2da/LOBf#excl.2da~ ~override/LOBf#excl.2da~
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/2da/LOBf#excp.2da~ ~override/LOBf#excp.2da~
+
+//战役脚本放入排除列表
+ACTION_IF FILE_EXISTS_IN_GAME ~CAMPAIGN.2DA~ BEGIN
+	COPY_EXISTING ~CAMPAIGN.2da~ ~override~
+		COUNT_2DA_ROWS 10 camprowmax	//至少10列column，row行数读入camprowmax
+		PATCH_IF camprowmax > 1 BEGIN
+			FOR (camprows = 1 ; camprows < camprowmax ; ++camprows) BEGIN
+				READ_2DA_ENTRY camprows 1 10 campscript	//WORLDSCRIPT名称
+				PATCH_IF NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%campscript%~) BEGIN
+					INNER_ACTION BEGIN
+						APPEND ~LOBf#excl.2da~ ~%campscript%~
+					END
+				END
+			END
+		END
+	BUT_ONLY
+END
+
+//地图脚本放入排除列表
+COPY_EXISTING_REGEXP GLOB ~.*\.are~ ~override~
+	READ_ASCII 0x94 areabcs
+	PATCH_IF (FILE_EXISTS_IN_GAME ~%areabcs%.bcs~) BEGIN
+		PATCH_IF NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%areabcs%~) BEGIN
+			INNER_ACTION BEGIN
+				APPEND ~LOBf#excl.2da~ ~%areabcs%~
+			END
+		END
+	END
+BUT_ONLY
+
+//生物有不随难度变化标记，或者读取生物对话有JoinParty()，则读取该生物所有脚本并放入排除列表。SHOUT脚本不算
+//同时给生物添加免疫
+COPY_EXISTING_REGEXP GLOB ~.*\.cre~ ~override~
+	READ_BYTE 0x12 creflag3
+	READ_ASCII 0x2cc credialog
+	READ_ASCII 0x248 scoverride
+	READ_ASCII 0x250 scclass
+	READ_ASCII 0x258 scrace
+	READ_ASCII 0x260 scgeneral
+	READ_ASCII 0x268 scdefault
+	PATCH_IF FILE_EXISTS_IN_GAME ~%credialog%.dlg~ BEGIN
+		PATCH_IF ((creflag3 & 0b01000000) = 0b01000000) OR (FILE_CONTAINS_EVALUATED (~%credialog%.dlg~ ~JoinParty()~)) BEGIN
+			LPF ADD_CRE_EFFECT INT_VAR opcode = 206 timing = 9 STR_VAR resource = ~LOBfix#1~ END
+			INNER_ACTION BEGIN
+				APPEND ~LOBf#excp.2da~ ~%SOURCE_RES%~
+			END
+			PATCH_IF (FILE_EXISTS_IN_GAME ~%scoverride%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scoverride%~)) BEGIN
+				INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scoverride%~ END
+			END
+			PATCH_IF (FILE_EXISTS_IN_GAME ~%scclass%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scclass%~)) BEGIN
+				INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scclass%~ END
+			END
+			PATCH_IF (FILE_EXISTS_IN_GAME ~%scrace%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scrace%~)) BEGIN
+				INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scrace%~ END
+			END
+			PATCH_IF (FILE_EXISTS_IN_GAME ~%scgeneral%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scgeneral%~)) BEGIN
+				INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scgeneral%~ END
+			END
+			PATCH_IF (FILE_EXISTS_IN_GAME ~%scdefault%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scdefault%~)) BEGIN
+				INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scdefault%~ END
+			END
+		END
+	END
+BUT_ONLY
+
+//标记战斗相关脚本
+COPY_EXISTING_REGEXP GLOB ~.*\.bcs~ ~override~
+	PATCH_IF NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%SOURCE_RES%~) BEGIN
+		DECOMPILE_AND_PATCH BEGIN
+			//可能是生物战斗脚本，标记
+			REPLACE_TEXTUALLY ~!Allegiance(Myself,ENEMY)~ ~!Allegiance囧(Myself,ENEMY)~
+			REPLACE_TEXTUALLY ~Allegiance(Myself,ENEMY)~ ~Allegiance(Myself,ENEMY)
+			!GlobalGT("LOBfin#1","LOCALS",0)~
+			REPLACE_TEXTUALLY ~!Allegiance囧(Myself,ENEMY)~ ~!Allegiance(Myself,ENEMY)~
+
+			REPLACE_TEXTUALLY ~,Enemy()~ ~,Enemy(囧)~
+			REPLACE_TEXTUALLY ~Enemy()~ ~Enemy()
+			SetGlobal("LOBfin#2","LOCALS",0)~
+			REPLACE_TEXTUALLY ~,Enemy(囧)~ ~,Enemy()~
+
+			REPLACE_TEXTUALLY ~GroupAttack(~ ~GroupAttack囧(~
+			REPLACE_TEXTUALLY ~,Attack(~ ~,Attack囧(~
+			REPLACE_TEXTUALLY ~Attack(~ ~SetGlobal("LOBfin#3","LOCALS",0)
+			Attack(~
+			REPLACE_TEXTUALLY ~GroupAttack囧(~ ~GroupAttack(~
+			REPLACE_TEXTUALLY ~,Attack囧(~ ~,Attack(~
+
+			REPLACE_TEXTUALLY ~,AttackOneRound(~ ~,AttackOneRound囧(~
+			REPLACE_TEXTUALLY ~AttackOneRound(~ ~SetGlobal("LOBfin#4","LOCALS",0)
+			AttackOneRound(~
+			REPLACE_TEXTUALLY ~,AttackOneRound囧(~ ~,AttackOneRound(~
+
+			REPLACE_TEXTUALLY ~,AttackReevaluate(~ ~,AttackReevaluate囧(~
+			REPLACE_TEXTUALLY ~AttackReevaluate(~ ~SetGlobal("LOBfin#5","LOCALS",0)
+			AttackReevaluate(~
+			REPLACE_TEXTUALLY ~,AttackReevaluate囧(~ ~,AttackReevaluate(~
+
+			REPLACE_TEXTUALLY ~,AttackNoSound(~ ~,AttackNoSound囧(~
+			REPLACE_TEXTUALLY ~AttackNoSound(~ ~SetGlobal("LOBfin#6","LOCALS",0)
+			AttackNoSound(~
+			REPLACE_TEXTUALLY ~,AttackNoSound囧(~ ~,AttackNoSound(~
+			//是CutScene，标记待放入排除列表，之后需要还原
+			REPLACE_TEXTUALLY ~CutSceneId(~ ~CutSceneId("LOBfie#7")
+			CutSceneId(~
+			//InParty(Myself)是队友，标记，需要读生物脚本放入排除列表，之后还需要还原
+			REPLACE_TEXTUALLY ~InParty(Myself)~ ~InParty(Myself)
+			!GlobalGT("LOBfie#8","LOCALS",0)~
+		END
+	END
+BUT_ONLY
+
+//找到被标记的InParty(Myself)队友，读取生物所有脚本并放入排除列表
+COPY_EXISTING_REGEXP GLOB ~.*\.cre~ ~override~
+	SET credone = 0
+	READ_ASCII 0x248 scoverride
+	READ_ASCII 0x250 scclass
+	READ_ASCII 0x258 scrace
+	READ_ASCII 0x260 scgeneral
+	READ_ASCII 0x268 scdefault
+	//有LOBfie#8标记，是队友
+	PATCH_IF FILE_EXISTS_IN_GAME ~%scoverride%.bcs~ BEGIN
+		PATCH_IF FILE_CONTAINS_EVALUATED (~%scoverride%.bcs~ ~LOBfie#8~) BEGIN SET credone = 1 END
+	END
+	PATCH_IF FILE_EXISTS_IN_GAME ~%scclass%.bcs~ BEGIN
+		PATCH_IF FILE_CONTAINS_EVALUATED (~%scclass%.bcs~ ~LOBfie#8~) BEGIN SET credone = 1 END
+	END
+	PATCH_IF FILE_EXISTS_IN_GAME ~%scrace%.bcs~ BEGIN
+		PATCH_IF FILE_CONTAINS_EVALUATED (~%scrace%.bcs~ ~LOBfie#8~) BEGIN SET credone = 1 END
+	END
+	PATCH_IF FILE_EXISTS_IN_GAME ~%scgeneral%.bcs~ BEGIN
+		PATCH_IF FILE_CONTAINS_EVALUATED (~%scgeneral%.bcs~ ~LOBfie#8~) BEGIN SET credone = 1 END
+	END
+	PATCH_IF FILE_EXISTS_IN_GAME ~%scdefault%.bcs~ BEGIN
+		PATCH_IF FILE_CONTAINS_EVALUATED (~%scdefault.bcs~ ~LOBfie#8~) BEGIN SET credone = 1 END
+	END
+	PATCH_IF credone == 1 BEGIN
+		INNER_ACTION BEGIN
+			APPEND ~LOBf#excp.2da~ ~%SOURCE_RES%~
+		END
+		PATCH_IF (FILE_EXISTS_IN_GAME ~%scoverride%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scoverride%~)) BEGIN
+			INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scoverride%~ END
+		END
+		PATCH_IF (FILE_EXISTS_IN_GAME ~%scclass%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scclass%~)) BEGIN
+			INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scclass%~ END
+		END
+		PATCH_IF (FILE_EXISTS_IN_GAME ~%scrace%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scrace%~)) BEGIN
+			INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scrace%~ END
+		END
+		PATCH_IF (FILE_EXISTS_IN_GAME ~%scgeneral%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scgeneral%~)) BEGIN
+			INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scgeneral%~ END
+		END
+		PATCH_IF (FILE_EXISTS_IN_GAME ~%scdefault%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scdefault%~)) BEGIN
+			INNER_ACTION BEGIN APPEND ~LOBf#excl.2da~ ~%scdefault%~ END
+		END
+	END
+BUT_ONLY
+
+//将标记过的脚本放入待添加列表，排除CutScene和队友入队后AI
+COPY_EXISTING_REGEXP GLOB ~.*\.bcs~ ~override~
+	//有标记LOBfie#7，是CutScene，先放入排除列表。如果在PARTYAI.2DA（队友入队后AI）里也放入排除列表
+	PATCH_IF FILE_CONTAINS_EVALUATED (~%SOURCE_RES%.bcs~ ~LOBfie#7~) OR FILE_CONTAINS_EVALUATED (~PARTYAI.2DA~ ~%SOURCE_RES%~) BEGIN
+		INNER_ACTION BEGIN
+			APPEND ~LOBf#excl.2da~ ~%SOURCE_RES%~
+		END
+	END
+	PATCH_IF FILE_CONTAINS_EVALUATED (~%SOURCE_RES%.bcs~ ~LOBfin#~) BEGIN	//找到被标记的生物战斗脚本，列入LOBfixArray数组
+		DEFINE_ASSOCIATIVE_ARRAY LOBfixArray BEGIN "%SOURCE_RES%" => 0 END
+	END
+BUT_ONLY
+
+//遍历生物战斗脚本，修改并移除标记
+ACTION_PHP_EACH LOBfixArray AS bcsfile => foo BEGIN
+	//在待添加列表且不在排除列表（排除CutScene和队友脚本），正式添加
+	ACTION_IF NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%bcsfile%~) BEGIN
+		EXTEND_TOP ~%bcsfile%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~
+	END
+END
+
+//待添加列表全部移除标记，包括CutScene和InParty(Myself)队友
+COPY_EXISTING_REGEXP GLOB ~.*\.bcs~ ~override~
+	PATCH_IF (FILE_CONTAINS_EVALUATED (~%SOURCE_RES%.bcs~ ~LOBfie#~)) OR (FILE_CONTAINS_EVALUATED (~%scoverride%.bcs~ ~LOBfin#~)) BEGIN
+		DECOMPILE_AND_PATCH BEGIN
+			REPLACE_TEXTUALLY ~!GlobalGT("LOBfin#1","LOCALS",0)~ ~~
+			REPLACE_TEXTUALLY ~SetGlobal("LOBfin#2","LOCALS",0)~ ~~
+			REPLACE_TEXTUALLY ~SetGlobal("LOBfin#3","LOCALS",0)~ ~~
+			REPLACE_TEXTUALLY ~SetGlobal("LOBfin#4","LOCALS",0)~ ~~
+			REPLACE_TEXTUALLY ~SetGlobal("LOBfin#5","LOCALS",0)~ ~~
+			REPLACE_TEXTUALLY ~SetGlobal("LOBfin#6","LOCALS",0)~ ~~
+			REPLACE_TEXTUALLY ~CutSceneId("LOBfie#7")~ ~~
+			REPLACE_TEXTUALLY ~!GlobalGT("LOBfie#8","LOCALS",0)~ ~~
+		END
+	END
+BUT_ONLY
+
+//有没有漏网之鱼？
+//遍历队友以外所有生物，遍历其5个脚本，没动过就要添加
+COPY_EXISTING_REGEXP GLOB ~.*\.cre~ ~override~
+	PATCH_IF NOT FILE_CONTAINS_EVALUATED (~LOBf#excp.2da~ ~%SOURCE_RES%~) BEGIN
+		//SPRINT crename ~%SOURCE_RES%~
+		SET credone = 0
+		READ_ASCII 0x248 scoverride
+		READ_ASCII 0x250 scclass
+		READ_ASCII 0x258 scrace
+		READ_ASCII 0x260 scgeneral
+		READ_ASCII 0x268 scdefault
+		//脚本名STRING_CONTAINS_REGEXP "[a-zA-Z0-9]"是1，表示脚本不包含正常字符，加上NOT才是正常字符。再NOT STRING_EQUAL_CASE ~none~表示脚本存在
+		PATCH_IF FILE_EXISTS_IN_GAME ~%scoverride%.bcs~ BEGIN
+			PATCH_IF FILE_CONTAINS_EVALUATED (~%scoverride%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+		END
+		PATCH_IF FILE_EXISTS_IN_GAME ~%scclass%.bcs~ BEGIN
+			PATCH_IF FILE_CONTAINS_EVALUATED (~%scclass%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+		END
+		PATCH_IF FILE_EXISTS_IN_GAME ~%scrace%.bcs~ BEGIN
+			PATCH_IF FILE_CONTAINS_EVALUATED (~%scrace%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+		END
+		PATCH_IF FILE_EXISTS_IN_GAME ~%scgeneral%.bcs~ BEGIN
+			PATCH_IF FILE_CONTAINS_EVALUATED (~%scgeneral%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+		END
+		PATCH_IF FILE_EXISTS_IN_GAME ~%scdefault%.bcs~ BEGIN
+			PATCH_IF FILE_CONTAINS_EVALUATED (~%scdefault%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+		END
+		PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%scoverride%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%scoverride%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scoverride%~)) BEGIN
+			INNER_ACTION BEGIN EXTEND_TOP ~%scoverride%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+		END
+		PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%scclass%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%scclass%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scclass%~)) BEGIN
+			INNER_ACTION BEGIN EXTEND_TOP ~%scclass%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+		END
+		PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%scrace%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%scrace%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scrace%~)) BEGIN
+			INNER_ACTION BEGIN EXTEND_TOP ~%scrace%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+		END
+		PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%scgeneral%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%scgeneral%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scgeneral%~)) BEGIN
+			INNER_ACTION BEGIN EXTEND_TOP ~%scgeneral%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+		END
+		PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%scdefault%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%scdefault%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%scdefault%~)) BEGIN
+			INNER_ACTION BEGIN EXTEND_TOP ~%scdefault%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+		END
+	END
+BUT_ONLY
+//遍历所有地图生物（排除队友），遍历其6个脚本，没动过就要添加 & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%bcsfile%~)) 
+COPY_EXISTING_REGEXP GLOB ~.*\.are~ ~override~
+	READ_LONG 0x0054 actoroffset
+	READ_SHORT 0x0058 actorcount
+	PATCH_IF actorcount > 0 BEGIN
+		FOR (actorindex = 0 ; actorindex < actorcount ; ++actorindex) BEGIN
+			SET credone = 0
+			READ_ASCII (0x0080 + actorindex * 0x110 + actoroffset) actorcre
+			READ_ASCII (0x0050 + actorindex * 0x110 + actoroffset) ascoverride
+			READ_ASCII (0x0058 + actorindex * 0x110 + actoroffset) ascgeneral
+			READ_ASCII (0x0060 + actorindex * 0x110 + actoroffset) ascclass
+			READ_ASCII (0x0068 + actorindex * 0x110 + actoroffset) ascrace
+			READ_ASCII (0x0070 + actorindex * 0x110 + actoroffset) ascdefault
+			READ_ASCII (0x0078 + actorindex * 0x110 + actoroffset) ascspecific
+			PATCH_IF (FILE_EXISTS_IN_GAME ~%actorcre%.cre~) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excp.2da~ ~%actorcre%~)) BEGIN
+				//脚本名STRING_CONTAINS_REGEXP "[a-zA-Z0-9]"是1，表示脚本不包含正常字符，加上NOT才是正常字符。再NOT STRING_EQUAL_CASE ~none~表示脚本存在
+				PATCH_IF FILE_EXISTS_IN_GAME ~%ascoverride%.bcs~ BEGIN
+					PATCH_IF FILE_CONTAINS_EVALUATED (~%ascoverride%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+				END
+				PATCH_IF FILE_EXISTS_IN_GAME ~%ascgeneral%.bcs~ BEGIN
+					PATCH_IF FILE_CONTAINS_EVALUATED (~%ascgeneral%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+				END
+				PATCH_IF FILE_EXISTS_IN_GAME ~%ascclass%.bcs~ BEGIN
+					PATCH_IF FILE_CONTAINS_EVALUATED (~%ascclass%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+				END
+				PATCH_IF FILE_EXISTS_IN_GAME ~%ascrace%.bcs~ BEGIN
+					PATCH_IF FILE_CONTAINS_EVALUATED (~%ascrace%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+				END
+				PATCH_IF FILE_EXISTS_IN_GAME ~%ascdefault%.bcs~ BEGIN
+					PATCH_IF FILE_CONTAINS_EVALUATED (~%ascdefault%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+				END
+				PATCH_IF FILE_EXISTS_IN_GAME ~%ascspecific%.bcs~ BEGIN
+					PATCH_IF FILE_CONTAINS_EVALUATED (~%ascspecific%.bcs~ ~LOB#fixed~) BEGIN SET credone = 1 END
+				END
+				PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%ascoverride%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%ascoverride%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%ascoverride%~)) BEGIN
+					INNER_ACTION BEGIN EXTEND_TOP ~%ascoverride%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+				END
+				PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%ascgeneral%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%ascgeneral%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%ascgeneral%~)) BEGIN
+					INNER_ACTION BEGIN EXTEND_TOP ~%ascgeneral%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+				END
+				PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%ascclass%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%ascclass%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%ascclass%~)) BEGIN
+					INNER_ACTION BEGIN EXTEND_TOP ~%ascclass%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+				END
+				PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%ascrace%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%ascrace%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%ascrace%~)) BEGIN
+					INNER_ACTION BEGIN EXTEND_TOP ~%ascrace%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+				END
+				PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%ascdefault%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%ascdefault%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%ascdefault%~)) BEGIN
+					INNER_ACTION BEGIN EXTEND_TOP ~%ascdefault%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+				END
+				PATCH_IF (credone != 1) & (FILE_EXISTS_IN_GAME ~%ascspecific%.bcs~) & (NOT FILE_CONTAINS_EVALUATED (~%ascspecific%.bcs~ ~LOB#fixed~)) & (NOT FILE_CONTAINS_EVALUATED (~LOBf#excl.2da~ ~%ascspecific%~)) BEGIN
+					INNER_ACTION BEGIN EXTEND_TOP ~%ascspecific%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ END SET credone = 1
+				END
+			END
+		END
+	END
+BUT_ONLY
+
+//控制spl，根据职业使用LOBFIX#A-M.spl修正豁免
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#0.spl~ ~override~
+
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#N.spl~ ~override~
+
+//豁免修正spl
+COPY_EXISTING ~SAVEMONK.2DA~ ~override~
+	FOR (index = 0; index < 22; ++index) BEGIN
+		READ_2DA_ENTRY 0 index 40 crelevel
+		READ_2DA_ENTRY 1 (index + 1) 40 save1
+		READ_2DA_ENTRY 2 (index + 1) 40 save2
+		READ_2DA_ENTRY 3 (index + 1) 40 save3
+		READ_2DA_ENTRY 4 (index + 1) 40 save4
+		READ_2DA_ENTRY 5 (index + 1) 40 save5
+		SPRINT $savemonk1("%crelevel%") "%save1%"
+		SPRINT $savemonk2("%crelevel%") "%save2%"
+		SPRINT $savemonk3("%crelevel%") "%save3%"
+		SPRINT $savemonk4("%crelevel%") "%save4%"
+		SPRINT $savemonk5("%crelevel%") "%save5%"
+	END
+BUT_ONLY
+
+COPY_EXISTING ~SAVEPRS.2DA~ ~override~
+	FOR (index = 0; index < 22; ++index) BEGIN
+		READ_2DA_ENTRY 0 index 40 crelevel
+		READ_2DA_ENTRY 1 (index + 1) 40 save1
+		READ_2DA_ENTRY 2 (index + 1) 40 save2
+		READ_2DA_ENTRY 3 (index + 1) 40 save3
+		READ_2DA_ENTRY 4 (index + 1) 40 save4
+		READ_2DA_ENTRY 5 (index + 1) 40 save5
+		SPRINT $saveprs1("%crelevel%") "%save1%"
+		SPRINT $saveprs2("%crelevel%") "%save2%"
+		SPRINT $saveprs3("%crelevel%") "%save3%"
+		SPRINT $saveprs4("%crelevel%") "%save4%"
+		SPRINT $saveprs5("%crelevel%") "%save5%"
+	END
+BUT_ONLY
+
+COPY_EXISTING ~SAVEROG.2DA~ ~override~
+	FOR (index = 0; index < 22; ++index) BEGIN
+		READ_2DA_ENTRY 0 index 40 crelevel
+		READ_2DA_ENTRY 1 (index + 1) 40 save1
+		READ_2DA_ENTRY 2 (index + 1) 40 save2
+		READ_2DA_ENTRY 3 (index + 1) 40 save3
+		READ_2DA_ENTRY 4 (index + 1) 40 save4
+		READ_2DA_ENTRY 5 (index + 1) 40 save5
+		SPRINT $saverog1("%crelevel%") "%save1%"
+		SPRINT $saverog2("%crelevel%") "%save2%"
+		SPRINT $saverog3("%crelevel%") "%save3%"
+		SPRINT $saverog4("%crelevel%") "%save4%"
+		SPRINT $saverog5("%crelevel%") "%save5%"
+	END
+BUT_ONLY
+
+COPY_EXISTING ~SAVEWAR.2DA~ ~override~
+	FOR (index = 0; index < 22; ++index) BEGIN
+		READ_2DA_ENTRY 0 index 40 crelevel
+		READ_2DA_ENTRY 1 (index + 1) 40 save1
+		READ_2DA_ENTRY 2 (index + 1) 40 save2
+		READ_2DA_ENTRY 3 (index + 1) 40 save3
+		READ_2DA_ENTRY 4 (index + 1) 40 save4
+		READ_2DA_ENTRY 5 (index + 1) 40 save5
+		SPRINT $savewar1("%crelevel%") "%save1%"
+		SPRINT $savewar2("%crelevel%") "%save2%"
+		SPRINT $savewar3("%crelevel%") "%save3%"
+		SPRINT $savewar4("%crelevel%") "%save4%"
+		SPRINT $savewar5("%crelevel%") "%save5%"
+	END
+BUT_ONLY
+
+COPY_EXISTING ~SAVEWIZ.2DA~ ~override~
+	FOR (index = 0; index < 22; ++index) BEGIN
+		READ_2DA_ENTRY 0 index 40 crelevel
+		READ_2DA_ENTRY 1 (index + 1) 40 save1
+		READ_2DA_ENTRY 2 (index + 1) 40 save2
+		READ_2DA_ENTRY 3 (index + 1) 40 save3
+		READ_2DA_ENTRY 4 (index + 1) 40 save4
+		READ_2DA_ENTRY 5 (index + 1) 40 save5
+		SPRINT $savewiz1("%crelevel%") "%save1%"
+		SPRINT $savewiz2("%crelevel%") "%save2%"
+		SPRINT $savewiz3("%crelevel%") "%save3%"
+		SPRINT $savewiz4("%crelevel%") "%save4%"
+		SPRINT $savewiz5("%crelevel%") "%save5%"
+	END
+BUT_ONLY
+
+//A	10FIGHTER_MAGE_THIEF
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#A.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = ($savewar1("%index%") < ($savewiz1("%index%") < $saverog1("%index%") ? $savewiz1("%index%") : $saverog1("%index%")) ? $savewar1("%index%") : ($savewiz1("%index%") < $saverog1("%index%") ? $savewiz1("%index%") : $saverog1("%index%"))) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = ($savewar2("%index%") < ($savewiz2("%index%") < $saverog2("%index%") ? $savewiz2("%index%") : $saverog2("%index%")) ? $savewar2("%index%") : ($savewiz2("%index%") < $saverog2("%index%") ? $savewiz2("%index%") : $saverog2("%index%"))) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = ($savewar3("%index%") < ($savewiz3("%index%") < $saverog3("%index%") ? $savewiz3("%index%") : $saverog3("%index%")) ? $savewar3("%index%") : ($savewiz3("%index%") < $saverog3("%index%") ? $savewiz3("%index%") : $saverog3("%index%"))) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = ($savewar4("%index%") < ($savewiz4("%index%") < $saverog4("%index%") ? $savewiz4("%index%") : $saverog4("%index%")) ? $savewar4("%index%") : ($savewiz4("%index%") < $saverog4("%index%") ? $savewiz4("%index%") : $saverog4("%index%"))) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = ($savewar5("%index%") < ($savewiz5("%index%") < $saverog5("%index%") ? $savewiz5("%index%") : $saverog5("%index%")) ? $savewar5("%index%") : ($savewiz5("%index%") < $saverog5("%index%") ? $savewiz5("%index%") : $saverog5("%index%"))) END
+	END
+BUT_ONLY
+//B	17FIGHTER_MAGE_CLERIC
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#B.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = ($savewar1("%index%") < ($savewiz1("%index%") < $saveprs1("%index%") ? $savewiz1("%index%") : $saveprs1("%index%")) ? $savewar1("%index%") : ($savewiz1("%index%") < $saveprs1("%index%") ? $savewiz1("%index%") : $saveprs1("%index%"))) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = ($savewar2("%index%") < ($savewiz2("%index%") < $saveprs2("%index%") ? $savewiz2("%index%") : $saveprs2("%index%")) ? $savewar2("%index%") : ($savewiz2("%index%") < $saveprs2("%index%") ? $savewiz2("%index%") : $saveprs2("%index%"))) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = ($savewar3("%index%") < ($savewiz3("%index%") < $saveprs3("%index%") ? $savewiz3("%index%") : $saveprs3("%index%")) ? $savewar3("%index%") : ($savewiz3("%index%") < $saveprs3("%index%") ? $savewiz3("%index%") : $saveprs3("%index%"))) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = ($savewar4("%index%") < ($savewiz4("%index%") < $saveprs4("%index%") ? $savewiz4("%index%") : $saveprs4("%index%")) ? $savewar4("%index%") : ($savewiz4("%index%") < $saveprs4("%index%") ? $savewiz4("%index%") : $saveprs4("%index%"))) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = ($savewar5("%index%") < ($savewiz5("%index%") < $saveprs5("%index%") ? $savewiz5("%index%") : $saveprs5("%index%")) ? $savewar5("%index%") : ($savewiz5("%index%") < $saveprs5("%index%") ? $savewiz5("%index%") : $saveprs5("%index%"))) END
+	END
+BUT_ONLY
+//C	7FIGHTER_MAGE
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#C.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = ($savewar1("%index%") < $savewiz1("%index%") ? $savewar1("%index%") : $savewiz1("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = ($savewar2("%index%") < $savewiz2("%index%") ? $savewar2("%index%") : $savewiz2("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = ($savewar3("%index%") < $savewiz3("%index%") ? $savewar3("%index%") : $savewiz3("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = ($savewar4("%index%") < $savewiz4("%index%") ? $savewar4("%index%") : $savewiz4("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = ($savewar5("%index%") < $savewiz5("%index%") ? $savewar5("%index%") : $savewiz5("%index%")) END
+	END
+BUT_ONLY
+//D	8FIGHTER_CLERIC			16FIGHTER_DRUID		18CLERIC_RANGER
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#D.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = ($savewar1("%index%") < $saveprs1("%index%") ? $savewar1("%index%") : $saveprs1("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = ($savewar2("%index%") < $saveprs2("%index%") ? $savewar2("%index%") : $saveprs2("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = ($savewar3("%index%") < $saveprs3("%index%") ? $savewar3("%index%") : $saveprs3("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = ($savewar4("%index%") < $saveprs4("%index%") ? $savewar4("%index%") : $saveprs4("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = ($savewar5("%index%") < $saveprs5("%index%") ? $savewar5("%index%") : $saveprs5("%index%")) END
+	END
+BUT_ONLY
+//E	9FIGHTER_THIEF
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#E.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = ($savewar1("%index%") < $saverog1("%index%") ? $savewar1("%index%") : $saverog1("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = ($savewar2("%index%") < $saverog2("%index%") ? $savewar2("%index%") : $saverog2("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = ($savewar3("%index%") < $saverog3("%index%") ? $savewar3("%index%") : $saverog3("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = ($savewar4("%index%") < $saverog4("%index%") ? $savewar4("%index%") : $saverog4("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = ($savewar5("%index%") < $saverog5("%index%") ? $savewar5("%index%") : $saverog5("%index%")) END
+	END
+BUT_ONLY
+//F	13MAGE_THIEF
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#F.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = ($savewiz1("%index%") < $saverog1("%index%") ? $savewiz1("%index%") : $saverog1("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = ($savewiz2("%index%") < $saverog2("%index%") ? $savewiz2("%index%") : $saverog2("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = ($savewiz3("%index%") < $saverog3("%index%") ? $savewiz3("%index%") : $saverog3("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = ($savewiz4("%index%") < $saverog4("%index%") ? $savewiz4("%index%") : $saverog4("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = ($savewiz5("%index%") < $saverog5("%index%") ? $savewiz5("%index%") : $saverog5("%index%")) END
+	END
+BUT_ONLY
+//G	14CLERIC_MAGE
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#G.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = ($savewiz1("%index%") < $saveprs1("%index%") ? $savewiz1("%index%") : $saveprs1("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = ($savewiz2("%index%") < $saveprs2("%index%") ? $savewiz2("%index%") : $saveprs2("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = ($savewiz3("%index%") < $saveprs3("%index%") ? $savewiz3("%index%") : $saveprs3("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = ($savewiz4("%index%") < $saveprs4("%index%") ? $savewiz4("%index%") : $saveprs4("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = ($savewiz5("%index%") < $saveprs5("%index%") ? $savewiz5("%index%") : $saveprs5("%index%")) END
+	END
+BUT_ONLY
+//H	15CLERIC_THIEF
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#H.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = ($saveprs1("%index%") < $saverog1("%index%") ? $saveprs1("%index%") : $saverog1("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = ($saveprs2("%index%") < $saverog2("%index%") ? $saveprs2("%index%") : $saverog2("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = ($saveprs3("%index%") < $saverog3("%index%") ? $saveprs3("%index%") : $saverog3("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = ($saveprs4("%index%") < $saverog4("%index%") ? $saveprs4("%index%") : $saverog4("%index%")) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = ($saveprs5("%index%") < $saverog5("%index%") ? $saveprs5("%index%") : $saverog5("%index%")) END
+	END
+BUT_ONLY
+//I	202MAGE_ALL
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#I.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = $savewiz1("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = $savewiz2("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = $savewiz3("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = $savewiz4("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = $savewiz5("%index%") END
+	END
+BUT_ONLY
+//J	21SHAMAN	204CLERIC_ALL		208DRUID_ALL
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#J.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = $saveprs1("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = $saveprs2("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = $saveprs3("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = $saveprs4("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = $saveprs5("%index%") END
+	END
+BUT_ONLY
+//K	205THIEF_ALL		206BARD_ALL
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#K.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = $saverog1("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = $saverog2("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = $saverog3("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = $saverog4("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = $saverog5("%index%") END
+	END
+BUT_ONLY
+//L	20MONK
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#L.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = $savemonk1("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = $savemonk2("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = $savemonk3("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = $savemonk4("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = $savemonk5("%index%") END
+	END
+BUT_ONLY
+//M	203FIGHTER_ALL		207PALADIN_ALL		209RANGER_ALL
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#A.spl~ ~override/LOBFIX#M.spl~
+	FOR (index = 1; index < 22; ++index) BEGIN
+		PATCH_IF index > 1 BEGIN LPF ALTER_SPELL_HEADER INT_VAR header = index min_level = (index + 12) END END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 33 parameter1 = $savewar1("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 34 parameter1 = $savewar2("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 35 parameter1 = $savewar3("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 36 parameter1 = $savewar4("%index%") END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = index match_opcode = 37 parameter1 = $savewar5("%index%") END
+	END
+BUT_ONLY
+
+MOVE ~override/LOBf#excl.2da~ ~%MOD_FOLDER%/LegacyofBhaalFix/2da/LOBd#excl.2da~
+MOVE ~override/LOBf#excp.2da~ ~%MOD_FOLDER%/LegacyofBhaalFix/2da/LOBd#excp.2da~
+
+//给鸟添加对话控制，LOB#fixoff为1表示关闭
+COMPILE ~%MOD_FOLDER%/LegacyofBhaalFix/dlg/lobfix.d~
+
+
+BEGIN @202
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~LOBFIX#0.spl~ @203
+COPY_EXISTING_REGEXP GLOB ~.*\.bcs~ ~override~
+	R_B_B ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix1.baf~ ON_MISMATCH END
+BUT_ONLY
+
+//spl0按职业分配splA-M
+//splA-M修正为原等级豁免，顺便调用splN为-5豁免永久效果且不得累加
+//spl1随等级修正调整值，不得累加
+//spl1复制成splO给魔宠用，永久效果，不得累加
+
+//随等级调整数值spl
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#1.spl~ ~override~
+
+//永久效果给魔宠
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/LOBFIX#1.spl~ ~override/LOBFIX#O.spl~
+LPF ALTER_SPELL_EFFECT INT_VAR timing = 9 END
+LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 target = 2 timing = 1 insert_point = 0 STR_VAR resource = ~LOBfix#1~ END
+LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 9 STR_VAR resource = ~LOBfix#O~ END
+
+ACTION_IF FILE_EXISTS_IN_GAME ~CAMPAIGN.2DA~ BEGIN
+	COPY_EXISTING ~CAMPAIGN.2da~ ~override~
+		COUNT_2DA_ROWS 10 camprowmax	//至少10列column，row行数读入camprowmax
+		PATCH_IF camprowmax > 1 BEGIN
+			FOR (camprows = 1 ; camprows < camprowmax ; ++camprows) BEGIN
+				READ_2DA_ENTRY camprows 1 10 campscript	//WORLDSCRIPT名称				
+				PATCH_IF FILE_EXISTS_IN_GAME ~FAMILIAR.2DA~ BEGIN
+					INNER_ACTION BEGIN
+						COPY_EXISTING ~FAMILIAR.2DA~ ~override~
+							COUNT_2DA_ROWS 1 maxfams
+							FOR (index = 0 ; index < maxfams ; ++index) BEGIN
+								READ_2DA_ENTRY index 0 1 famtype									
+								INNER_ACTION BEGIN
+									EXTEND_TOP ~%campscript%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fam.baf~ EVALUATE_BUFFER
+								END
+							END
+						BUT_ONLY
+					END
+				END ELSE BEGIN
+					PATCH_FOR_EACH famtype IN ~FAMCAT~ ~FAMDUST~ ~FAMFAIR~ ~FAMFER~ ~FAMIMP~ ~FAMPSD~ ~FAMQUAS~ ~FAMRAB~ BEGIN
+						PATCH_IF FILE_EXISTS_IN_GAME ~%famtype%.cre~ BEGIN
+							INNER_ACTION BEGIN
+								EXTEND_TOP ~%campscript%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fam.baf~ EVALUATE_BUFFER
+							END
+						END
+					END
+				END
+			END
+		END
+	BUT_ONLY
+END
+ACTION_IF (NOT FILE_EXISTS_IN_GAME ~CAMPAIGN.2DA~) OR (camprowmax < 2) BEGIN
+	ACTION_FOR_EACH campscript IN ~baldur~ ~baldur25~ BEGIN
+		ACTION_IF FILE_EXISTS_IN_GAME ~FAMILIAR.2DA~ BEGIN
+			COPY_EXISTING ~FAMILIAR.2DA~ ~override~
+				COUNT_2DA_ROWS 1 maxfams
+				FOR (index = 0 ; index < maxfams ; ++index) BEGIN
+					READ_2DA_ENTRY index 0 1 famtype									
+					INNER_ACTION BEGIN
+						EXTEND_TOP ~%campscript%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fam.baf~ EVALUATE_BUFFER
+					END
+				END
+			BUT_ONLY
+		END ELSE BEGIN
+			ACTION_FOR_EACH famtype IN ~FAMCAT~ ~FAMDUST~ ~FAMFAIR~ ~FAMFER~ ~FAMIMP~ ~FAMPSD~ ~FAMQUAS~ ~FAMRAB~ BEGIN
+				ACTION_IF FILE_EXISTS_IN_GAME ~%famtype%.cre~ BEGIN
+					EXTEND_TOP ~%campscript%.bcs~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fam.baf~ EVALUATE_BUFFER
+				END
+			END
+		END		
+	END
+END
+
+//给鸟添加对话控制，LOB#fixplus为1表示开启
+COMPILE ~%MOD_FOLDER%/LegacyofBhaalFix/dlg/lobplus.d~
+
+
+BEGIN @204	//敌人数值提升且会使用职业技能和高阶技能。需要以“巴尔遗产模式豁免BUG修正”为基底
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~LOBFIX#0.spl~ @203
+
+COPY_EXISTING_REGEXP GLOB ~.*\.bcs~ ~override~
+	PATCH_IF FILE_CONTAINS_EVALUATED (~%SOURCE_RES%.bcs~ ~LOBfixedInterval~) THEN BEGIN
+		R_B_B ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix1.baf~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fixskl1.baf~ ON_MISMATCH END
+	END ELSE BEGIN
+		R_B_B ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fix0.baf~ ~%MOD_FOLDER%/LegacyofBhaalFix/baf/fixskl0.baf~ ON_MISMATCH END
+	END
+BUT_ONLY
+
+ACTION_FOR_EACH ~playerlv~ IN 3 5 7 9 BEGIN
+	COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/SH#LFX00.spl~ ~override/SH#LFX0%playerlv%.spl~
+		FOR (headernum = 1 ; headernum < (playerlv + 1); ++headernum) BEGIN
+			PATCH_IF headernum > 1 BEGIN LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END END
+			LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = headernum END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 0 END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 96 parameter1 = (playerlv - headernum) parameter2 = 0 END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 parameter1 = 8 * (playerlv - headernum) END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 parameter1 = (playerlv - headernum) END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 parameter1 = ((playerlv - headernum) / 2) END
+			PATCH_IF (headernum < 7)&&(playerlv > 6) BEGIN
+				LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 6 END
+			END
+		END
+		LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 206 STR_VAR resource = ~SH#LFX0%playerlv%~ END
+	BUT_ONLY
+END
+
+ACTION_FOR_EACH ~playerlv~ IN 11 13 15 17 20 24 28 32 36 40 BEGIN
+	COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/SH#LFX00.spl~ ~override/SH#LFX%playerlv%.spl~
+		FOR (headernum = 1 ; headernum < (playerlv + 1); ++headernum) BEGIN
+			PATCH_IF headernum > 1 BEGIN LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END END
+			LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = headernum END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 0 END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 96 parameter1 = (playerlv - headernum) parameter2 = 0 END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 parameter1 = (headernum < 10 ? ((10 - headernum)* 8 + (playerlv - 10)* 3 ) : ((playerlv - headernum)* 3)) END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 parameter1 = (headernum < 20 ? ((20 - headernum)* 3 / 4) : 0) END
+			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 parameter1 = (headernum < 21 ? ((21 - headernum) / 2) : 0) END
+			PATCH_IF (headernum < 7)&&(playerlv > 6)&&(playerlv < 13) BEGIN
+				LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 6 END
+			END
+			PATCH_IF (headernum > 6)&&(headernum < 13)&&(playerlv > 12) BEGIN
+				LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 6 END
+			END
+			PATCH_IF (headernum < 7)&&(playerlv > 12) BEGIN
+				LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 1 END
+			END
+		END
+		LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 206 STR_VAR resource = ~SH#LFX%playerlv%~ END
+	BUT_ONLY
+END
+
+ADD_PROJECTILE ~%MOD_FOLDER%/LegacyofBhaalFix/pro/SH#LFIX1.pro~
+
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/SH#LFIX1.spl~ ~override~ ~%MOD_FOLDER%/LegacyofBhaalFix/spl/SH#LFIH1.spl~ ~override~
+	WRITE_SHORT 0x98 ~SH#LFIX1~	//#183需要范围pro才能起效
+	
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/SH#LFXBA.spl~ ~override~ ~%MOD_FOLDER%/LegacyofBhaalFix/spl/SH#LFXBR.spl~ ~override~
+LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@207) END
+
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/SH#LFHBA.spl~ ~override~
+LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@208) END
+
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/SH#LFXWS.spl~ ~override~
+	SAY NAME1 @209	//干扰施法
+	SAY UNIDENTIFIED_DESC @209
+
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/normal~ ~override~
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/spl/high~ ~override~
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/eff/normal~ ~override~
+COPY ~%MOD_FOLDER%/LegacyofBhaalFix/eff/high~ ~override~
+
+//给鸟添加对话控制，SH#LVFIX为1表示开启等级修正，SH#SKILLNLA表示施展普通技能概率，SH#SKILLHLA表示施展高阶技能数量，SH#SKILLRACE表示种族区分技能
+COMPILE ~%MOD_FOLDER%/LegacyofBhaalFix/dlg/enemylv.d~

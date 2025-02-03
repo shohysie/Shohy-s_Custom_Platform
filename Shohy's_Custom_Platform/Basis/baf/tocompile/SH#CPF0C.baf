@@ -1,0 +1,12 @@
+//用于每轮（即每只鸟）只施展一次的脚本，建议对队友以外的调整放在这里。可以做成范围法术，让鸟对Player1~6施展，以他们为中心对附近生物起效。
+//范围法术的投射可以使用SH#GPF00.pro，对50呎内所有生物有效，如果需要区分敌我建议使用#318、#326之类
+
+//SH#CASTONCE用于控制只施展一次，具体施法跟在后面
+IF
+	!GlobalGT("SH#CASTONCE","LOCALS",0)
+THEN
+	RESPONSE #100
+		SetGlobal("SH#CASTONCE","LOCALS",1)
+		Continue()
+END
+//新增施法须判断!Global("SH#CASTONCE","LOCALS",1)，施法后不需要加SetGlobal("SH#CASTONCE","LOCALS",1)但一定要加Continue()，以控制每只鸟1次施法

@@ -1,0 +1,58 @@
+//玩家和附近敌人的属性调整，以Player1~6为中心施展范围法术
+
+//敌人给予少许经验
+IF
+	!GlobalGT("SH#CASTONCE","LOCALS",0)
+	Global("SH#IMXP0","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#IMXP1",Player1)
+		ReallyForceSpellRes("SH#IMXP1",Player2)
+		ReallyForceSpellRes("SH#IMXP1",Player3)
+		ReallyForceSpellRes("SH#IMXP1",Player4)
+		ReallyForceSpellRes("SH#IMXP1",Player5)
+		ReallyForceSpellRes("SH#IMXP1",Player6)
+		Continue()
+END
+//敌人给予较少经验
+IF
+	!GlobalGT("SH#CASTONCE","LOCALS",0)
+	Global("SH#IMXP0","GLOBAL",2)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#IMXP2",Player1)
+		ReallyForceSpellRes("SH#IMXP2",Player2)
+		ReallyForceSpellRes("SH#IMXP2",Player3)
+		ReallyForceSpellRes("SH#IMXP2",Player4)
+		ReallyForceSpellRes("SH#IMXP2",Player5)
+		ReallyForceSpellRes("SH#IMXP2",Player6)
+		Continue()
+END
+//敌人给予中等经验
+IF
+	!GlobalGT("SH#CASTONCE","LOCALS",0)
+	Global("SH#IMXP0","GLOBAL",3)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#IMXP3",Player1)
+		ReallyForceSpellRes("SH#IMXP3",Player2)
+		ReallyForceSpellRes("SH#IMXP3",Player3)
+		ReallyForceSpellRes("SH#IMXP3",Player4)
+		ReallyForceSpellRes("SH#IMXP3",Player5)
+		ReallyForceSpellRes("SH#IMXP3",Player6)
+		Continue()
+END
+//敌人给予较多经验
+IF
+	!GlobalGT("SH#CASTONCE","LOCALS",0)
+	Global("SH#IMXP0","GLOBAL",4)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#IMXP4",Player1)
+		ReallyForceSpellRes("SH#IMXP4",Player2)
+		ReallyForceSpellRes("SH#IMXP4",Player3)
+		ReallyForceSpellRes("SH#IMXP4",Player4)
+		ReallyForceSpellRes("SH#IMXP4",Player5)
+		ReallyForceSpellRes("SH#IMXP4",Player6)
+		Continue()
+END

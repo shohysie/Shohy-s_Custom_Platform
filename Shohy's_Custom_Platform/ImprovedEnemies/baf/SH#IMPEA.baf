@@ -1,0 +1,624 @@
+//根据玩家经验和等级调整自身等级，可以添加到SH#CPF0A.bcs
+//非必要不加？
+//玩家升级速度≤战士时，鸟以战士经验表格升级直到40级为止。玩家升级速度>战士时，鸟随玩家升级直到40级为止。
+//超过40级和800万经验之后，仅提升奥术施法等级，每50万经验提升1级，到1500万经验54级结束
+//SH#CPFL0为等级修正1，SH#CPFL1~e为奥术施法等级修正1~14
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+THEN
+	RESPONSE #100
+		SetGlobal("SH#LVADJUST","LOCALS",1)	//LV1
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,1999)
+		LevelGT(Player1,1)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV2
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,3999)
+		LevelGT(Player1,2)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV3
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,7999)
+		LevelGT(Player1,3)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV4
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,15999)
+		LevelGT(Player1,4)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV5
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,31999)
+		LevelGT(Player1,5)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV6
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,63999)
+		LevelGT(Player1,6)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV7
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,124999)
+		LevelGT(Player1,7)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV8
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,249999)
+		LevelGT(Player1,8)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV9
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,499999)
+		LevelGT(Player1,9)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV10
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,749999)
+		LevelGT(Player1,10)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV11
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,999999)
+		LevelGT(Player1,11)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV12
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,1249999)
+		LevelGT(Player1,12)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV13
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,1499999)
+		LevelGT(Player1,13)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV14
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,1749999)
+		LevelGT(Player1,14)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV15
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,1999999)
+		LevelGT(Player1,15)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV16
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,2249999)
+		LevelGT(Player1,16)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV17
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,2499999)
+		LevelGT(Player1,17)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV18
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,2749999)
+		LevelGT(Player1,18)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV19
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,2999999)
+		LevelGT(Player1,19)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV20
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,3249999)
+		LevelGT(Player1,20)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV21
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,3499999)
+		LevelGT(Player1,21)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV22
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,3749999)
+		LevelGT(Player1,22)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV23
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,3999999)
+		LevelGT(Player1,23)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV24
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,4249999)
+		LevelGT(Player1,24)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV25
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,4499999)
+		LevelGT(Player1,25)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV26
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,4749999)
+		LevelGT(Player1,26)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV27
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,4999999)
+		LevelGT(Player1,27)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV28
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,5249999)
+		LevelGT(Player1,28)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV29
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,5499999)
+		LevelGT(Player1,29)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV30
+		Continue()
+END
+
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,5749999)
+		LevelGT(Player1,30)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV31
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,5999999)
+		LevelGT(Player1,31)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV32
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,6249999)
+		LevelGT(Player1,32)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV33
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,6499999)
+		LevelGT(Player1,33)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV34
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,6749999)
+		LevelGT(Player1,34)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV35
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,6999999)
+		LevelGT(Player1,35)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV36
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,7249999)
+		LevelGT(Player1,36)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV37
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,7499999)
+		LevelGT(Player1,37)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV38
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,7749999)
+		LevelGT(Player1,38)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV39
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	OR(2)
+		XPGT(Player1,7999999)
+		LevelGT(Player1,39)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV40
+		Continue()
+END
+
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,8499999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL1",Myself)	//CLV41
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,8999999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL2",Myself)	//CLV42
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,9499999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL3",Myself)	//CLV43
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,9999999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL4",Myself)	//CLV44
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,10499999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL5",Myself)	//CLV45
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,10999999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL6",Myself)	//CLV46
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,11499999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL7",Myself)	//CLV47
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,11999999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL8",Myself)	//CLV48
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,12499999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFL9",Myself)	//CLV49
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,12999999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFLA",Myself)	//CLV50
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,13499999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFLB",Myself)	//CLV51
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,13999999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFLC",Myself)	//CLV52
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,14499999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFLD",Myself)	//CLV53
+		Continue()
+END
+
+IF
+	!GlobalGT("SH#LVADJUST","LOCALS",0)
+	GlobalGT("SH#IMPE0","GLOBAL",0)
+	XPGT(Player1,14999999)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#CPFLE",Myself)	//CLV54
+		Continue()
+END
