@@ -14,3 +14,5 @@ A blue button of is obtained in innate ability bar in the first battle. Click it
 If the entire platform is turned off, the carried modules will also be invalid. There are two exceptions:
 The first is the permanent effect. The creatures affected by permanent effects will not be restored by shutting down the platform.
 The second is that adjustments of some modules are not realized through the platform, only their setting options are placed in the platform. 
+
+Note: Some modules included in this platform were previously independent MODs. Do not install this platform with such independent MODs (such as Weapon Style Rebalance), as conflicts may arise.
