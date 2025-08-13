@@ -1,6 +1,15 @@
 //武器流派调整，对Player1~6，每秒计数并生效一次。加入到SH#CPF0B.bcs
 //必定安装，兼容武器流派可投入更多星数的扣星模式。选择加星模式时需要修改SH#CPF0B将下列内容中和SH#WPROX.baf一致的部分删除，并修改星数判断
 
+IF
+	GlobalGT("SH#WPICON","GLOBAL",0)
+	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#WPICO",Player%n%)	//显示图标
+		Continue()
+END
+
 //右手对鸟无效为双手武器
 //双手武器攻击次数调整
 IF
@@ -136,10 +145,12 @@ THEN
 END
 
 //右手对鸟有效同时左手有东西但对鸟无效/正装备盾牌是剑盾
-//剑盾流特效可以在持有远程武器时施展（限飞刀投石索等。法术文件中排除弓弩）
+//剑盾流特效可以在持有远程武器时施展（限飞刀投石索等。排除弓弩）
 IF
 	!Global("SH#WPROP","GLOBAL",1)
 	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	!HasItemCategory(Player%n%,BOW,TRUE)
+	!HasItemCategory(Player%n%,XBOW,TRUE)
 	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
 	//HasItemCategory(Player%n%,SHIELD,TRUE)
 	HasItemSlot(Player%n%,SLOT_SHIELD)
@@ -154,6 +165,8 @@ END
 IF
 	!Global("SH#WPROP","GLOBAL",1)
 	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	!HasItemCategory(Player%n%,BOW,TRUE)
+	!HasItemCategory(Player%n%,XBOW,TRUE)
 	ModalStateObject(Player%n%,NONE)
 	NotStateCheck(Player%n%,STATE_DISABLED)
 	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
@@ -170,6 +183,8 @@ END
 IF
 	!Global("SH#WPROP","GLOBAL",1)
 	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	!HasItemCategory(Player%n%,BOW,TRUE)
+	!HasItemCategory(Player%n%,XBOW,TRUE)
 	ModalStateObject(Player%n%,NONE)
 	NotStateCheck(Player%n%,STATE_DISABLED)
 	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
@@ -211,6 +226,34 @@ THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#WPAR1",Player%n%)
 		ReallyForceSpellRes("SH#WP1HB",Player%n%)
+		Continue()
+END
+//单手武器在单对单战斗时获得AC和THAC0奖励
+IF
+	!Global("SH#WPROP","GLOBAL",1)
+	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
+	!HasItemSlot(Player%n%,SLOT_SHIELD)
+	Proficiency(Player%n%,PROFICIENCYSINGLEWEAPON,1)
+	!TriggerOverride(Player%n%,Range(SecondNearestEnemyOf(Player%n%),4))
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#WP1H1",Player%n%)
+		Continue()
+END
+
+IF
+	!Global("SH#WPROP","GLOBAL",1)
+	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
+	!HasItemSlot(Player%n%,SLOT_SHIELD)
+	ProficiencyGT(Player%n%,PROFICIENCYSINGLEWEAPON,1)
+	!TriggerOverride(Player%n%,Range(SecondNearestEnemyOf(Player%n%),4))
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#WP1H2",Player%n%)
 		Continue()
 END
 

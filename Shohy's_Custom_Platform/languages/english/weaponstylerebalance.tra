@@ -22,8 +22,10 @@
 @134 = "Shield Bash"
 @135 = "Cleave"
 @136 = "Mighty blow"
-@137 = "Hook attack"
-@138 = "Loses balance"
+@137 = "Hook"
+@138 = "Limb Strike"
+@139 = "Loses balance"
+@139 = "Limbs wounded"
 
 @141 = "Settings for 'Rebalance for Weapon Styles and Detailed Ajustments for Weapon Types' (enabled by default)"
 @142 = "Settings for 'Rebalance for Weapon Styles and Detailed Ajustments for Weapon Types'"
@@ -32,16 +34,20 @@
 @145 = "Turn off the Weapon Styles Rebalance and Detailed Ajustments for Weapon Types"
 @146 = "Activate the Weapon Styles Rebalance and Detailed Ajustments for Weapon Types, effective for all (enabled by default)"
 @147 = "Activate the Weapon Styles Rebalance and Detailed Ajustments for Weapon Types, effective for teammates only"
-@148 = "Turn off Detailed Ajustments for Weapon Types, only keep the Weapon Styles Rebalance, effective for all"
-@149 = "Turn off Detailed Ajustments for Weapon Types, only keep the Weapon Styles Rebalance, effective for teammates only"
+@148 = "Turn off Detailed Ajustments for Weapon Types, keep the Weapon Styles Rebalance only, effective for all"
+@149 = "Turn off Detailed Ajustments for Weapon Types, keep the Weapon Styles Rebalance only, effective for teammates only"
 
 @151 = "Read the detailed description of 'Weapon Styles Rebalance'"
 @152 = "Read the detailed description of 'Detailed Ajustments for Weapon Types'"
 @153 = "Read the detailed description of 'More proficiency points can be spent to all Weapon Styles'"
 
+@156 = "Icon display on Weapon Style Rebalance taking effects"
+@157 = "Display 'Heroism' icon on teammates' portrait"
+@158 = "Do not display icons (Default)"
+
 @161 = "[Single-Weapon Style]
-1 Slot: +2 to attack speed, one special attack in each round for tripping your enemy, grappling him temporarily ( provides -2 penalty to his THAC0 and AC and make him unmovable ), and 75% chance to paralyze him or flip him to the floor.
-2 Slots: +4 to attack speed, one special attack in each round for tripping your enemy, grappling him temporarily ( provides -4 penalty to his THAC0 and AC and make him unmovable ), stunning or flip him to the floor, with 10% chance to disarm his weapons (only affects humanoids). 
+1 Slot: +2 to attack speed, one special attack in each round for tripping your enemy, grappling him temporarily ( provides -2 penalty to his THAC0 and AC and make him unmovable ), and 75% chance to paralyze him or flip him to the floor. Additionally, when engaged in single combat (no other enemies within 4 feet), you gain a +1 bonus to attack rolls and AC for each Single-Weapon Style Slot.
+2 Slots: +4 to attack speed, one special attack in each round for tripping your enemy, grappling him temporarily ( provides -4 penalty to his THAC0 and AC and make him unmovable ), stunning or flip him to the floor, with 10% chance to disarm his weapons (only affects humanoids). Additionally, when engaged in single combat (no other enemies within 4 feet), you gain a +2 bonus to attack rolls and AC.
 The tripping takes effect when the enemy's strength does not exceed the character's strength by more than 2 points. The enemy can also make a save vs. breath with a +6 bonus to avoid being tripped (-1 save penalty for every 4 levels of the attacker).
 If you successfully tripped your opponent, or he is is already in a helpless state (stunned / hold / unconsciousness), you can continue to cast tripping without the limitation of once per round.
 A hasted character can make two trip attacks in one round.
@@ -67,23 +73,34 @@ Twice special attacks in each round for tripping your enemy. When the monk has o
 For a monk armed with 2 weaopns, he losses his tripping attack ability."
 
 @171 = "[Light weapons]
-If you have an one-handed light weapon (dagger, short sword, wakizashi, etc., or with bare hands) in one hand with another hand unarmed, your dexterity modifier bonus is added to THAC0 (the bonus is 1, 2, 3, 4, 5 when dexterity reaches 16, 17, 19, 21, 24); if the other hand is armed, there is no dexterity modifier, but +1 bonus to melee AC and off-hand THAC0. 
-If you're using a two-handed light weapon (spear, staff), you gets +1 bonus to melee AC and THAC0.
-If you're using an two-handed spear, you get +2 to damage specially."
+Holding an one-handed light weapon (dagger, short sword, wakizashi, etc., or with bare hands) with another hand holding a shield or empty, your Dexterity Modifier is added to THAC0 (the bonus is 1, 2, 3, 4, 5 when dexterity reaches 16, 17, 19, 21, 24); with another hand also armed, there is no Dexterity Modifier, but +1 bonus to melee AC and off-hand THAC0.
+Holding a two-handed light weapon (spear, staff), you gets +1 bonus to melee AC and THAC0."
 @172 = "[Long-edged weapons]
-If you have an long-edged weapon (scimitar, long sword, bastar sword, katana, etc.) in one hand with another hand unarmed, you have 33% chance to exert a small AOE with slashing damage of 1D6 plus 50% of strength modifier. However, the direct damage of this attack is reduced by 3 points and minus 50% of strength modifier. If the other hand is also armed, the probability of exerting AOE is halved. 
-If you're using a two-handed long-edged weapon (two-handed sword in original game, two-handed katana and bastar sword provided by other MODs),  you have 66% chance to exert a larger AOE with slashing damage of 1D10 plus 50% of strength modifier (as the Component of 'Rebalance for Weapon Styles' raises the two-handed strength modifier to 150%, the modifier here is actually 75% of the original strength modifier). However, the direct damage of this attack is reduced by 5 points and minus 50% of strength modifier. There is also an AOE with a two-handed halberds, but the probability is 33%.
-For convenience, such AOEs won't hurt teammates.
-If an AOE is triggered on a critical strike, it will be cast once more."
+Holding an long-edged weapon (scimitar, long sword, bastar sword, katana, etc.) only, you have 50% chance each hit to exert a small AOE with slashing damage of 1D6 plus 50% of strength modifier; with another hand also armed or holding a shield, the probability of exerting AOE is halved. 
+Holding a two-handed long-edged weapon (two-handed sword in original game, two-handed katana and bastar sword provided by other MODs), you have 50% chance each hit to exert a larger AOE with slashing damage of 1D10 plus 50% of strength modifier (as two-handed strength modifier is raised to 150%, the modifier here is actually 75% of the original strength modifier). There is also an AOE with a two-handed halberds, but the probability is halved.
+Such AOEs won't hurt teammates and your direct target."
 @173 = "[Bludgeon weapons]
-If you have an one-handed bludgeon weapon (war hammer, mace, flail, morning star, etc.) in one hand with another hand unarmed, you have chance (grows with your strength, 0% at 10 str, 30% at 25 str, half for axes) to exert a mighty blow, which can break down your enemy's defense (-2 penalty to AC) for a while and knock him back (save vs. breath). If the other hand is also armed, the probability of mighty blow is halved. 
-If you're using a two-handed hammer (provided by other MODs), you have chance (grows with your strength, 0% at 10 str, 45% at 25 str, half for two-handed axes from Icewind Dale or other MODs) to exert a mighty blow, which can stun your enemy or even knock them down. The enemy who makes a save vs. breath only suffers a short penalty of -2 to AC and knocking back."
+Holding an one-handed bludgeon weapon (war hammer, mace, flail, morning star, etc.) only, you can exert one mighty blow each round, which stuns a target (Duration: 1/2 + Strength modifier to hit / 2 seconds. e.g., 25 STR - 4 seconds; 7 STR - 0 seconds), break down his defense (-2 penalty to AC) for a while and knock him back. A successful saving throw negates all effects; with another hand also armed or holding a shield, the probability of mighty blow is halved. 
+Holding a two-handed hammer (provided by other MODs), you can exert one mighty blow each round, which stuns a target (150% of the duration of one-handed weapons). The target who makes a save vs. breath negates stunning, but still suffers a short penalty of -2 to AC and knocking back.
+The enemy can save vs. breath with a +6 bonus to avoid being stun (-1 save penalty for every 4 levels of the attacker).
+A hasted character can exert two mighty blows in one round."
 @174 = "[Hooking weapons]
-If you're using an one-handed weapon with hooking property (axe, war hammer, or one-handed halberd provided by other MODs), you obtain one special attack in each round that can hook your foe's weapon, aromr or limbs to drag him. The enemy loses his balance (-4 penalty to AC and THAC0) for a short while unless saves vs. breath.
-If you're using an two-handed weapon with hooking property (halberd, or two-handed axe and war hammer provided by other MODs), you obtain one special attack in each round that can hook your foe's weapon, aromr or limbs to drag him down to the floor unless saves vs. breath, with 10% chance to disarm his weapons (only affects humanoids). 
+Holding an one-handed weapon with hooking property (axe, or one-handed halberd provided by other MODs) only, you can exert one special attack in each round that can hook your foe's weapon, aromr or limbs to drag him. The target loses his balance (-4 penalty to AC and THAC0) for a short while unless saves vs. breath; with another hand also armed or holding a shield, the probability of hooking is halved. 
+Holding an two-handed weapon with hooking property (halberd, or two-handed axe provided by other MODs), you can exert one special attack in each round that can hook your foe's weapon, aromr or limbs to drag him down to the floor unless saves vs. breath, with 10% chance to disarm his weapons (only affects humanoids). 
 The dragging takes effect when the enemy's strength does not exceed the character's strength by more than 2 points.
+The enemy can save vs. breath with a +6 bonus to avoid being dragged down (-1 save penalty for every 4 levels of the attacker).
 Tripping (Single-Weapon Style) has priority over dragging when they're both available. If the tripping fails, then dragging becomes effective on the next attack.
-A hasted character can make two dragging attacks in one round."
+A hasted character can exert two dragging attacks in one round."
+@175 = "[Piercing Weapons]
+Holding an one-handed piercing weapon (dagger, short sword, wakizashi, etc.), on a critical hit, you deal an additional 1d4 + 50% Strength modifier piercing damage.
+Holding a two-handed piercing weapon (spear, etc.), on a critical hit, you deal an additional 1d8 + 50% Strength modifier piercing damage (as two-handed Strength modifier is raised to 150%, the modifier here is actually 75% of the original Strength modifier).
+Additionally, when holding a two-handed spear, you always get +2 to damage."
+@176 = "[Long stick Weapons]
+Holding an one-handed staff (e.g. 'Staff Mace +2') only, you can exert one special attack in each round that target an enemy's limbs, attempting to impose a limb penalty. The target suffers a -1 penalty to 1d3 randomly chosen attributes from: Attack rolls, AC, or Movement speed. These penalties last for a while (Duration: 1/2 + Strength modifier to hit / 2 rounds. e.g., 25 STR - 4 rounds; 7 STR - 0 rounds) and stack; with another hand also armed or holding a shield, the probability of beating the limbs is halved. 
+Holding a two-handed staff, you can exert one special attack in each round that target an enemy's limbs, attempting to impose a limb penalty. The target suffers a -2 penalty to 1d3 randomly chosen attributes from: Attack rolls, AC, or Movement speed. These penalties last for a while (150% of the duration of one-handed weapons) and stack.
+The enemy can save vs. breath with a +6 bonus to avoid all effects (-1 save penalty for every 4 levels of the attacker). Constructs/undead creatures, or creatures lacking limbs, are completely not affected.
+A hasted character can target the limbs twice in one round."
+@177 = "To summarize, the weapon detail effects activate normally when wielding a single weapon. When a shield or off-hand weapon is carried in the secondary hand, the probability of these effects triggering decreases; whereas when dual-wielding weapons, the frequency of effect performance increases."
 
 @181 = "Not actually increase the rank limit of Weapon Styles, it automatically deducts one rank when reaches rank 2 or 3 in exchange for additional rewards. Compatible with everything.
 When each Weapon Style reaches rank 2, it automaticly decreases to rank 1 in exchange for +1 bonus to melee damage, melee AC, tohit and attack speed (in battle only). There's no more decline when it reaches rank 2 again."

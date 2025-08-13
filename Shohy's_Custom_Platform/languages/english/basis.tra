@@ -1,6 +1,6 @@
 @1 = "Shohy's customized adjustment platform (base for functional modules)"
-@2 = "Effective in combat only"
-@3 = "Valid at any time"
+@2 = "Detected incompatible old version of Weapon Style Rebalance, please uninstall it first"
+
 @8 = "Available only for EE series"
 @9 = "The adjustment platform must be installed first"
 
@@ -12,7 +12,5 @@
 @15 = "Read the detailed instructions"
 
 @18 = "This platform is activated on combat and casting, allowing adjustments of each carried module to take effect.
-While not in battle, it becomes inactive immediately after making necessary adjustments, in order to save game resources. "
-@19 = "If the platform is entirely turned off, the carried modules will also be invalid. There are two exceptions:
-The first is the permanent effect. The creatures affected by permanent effects will not be restored by shutting down the platform.
-The second is that adjustments of some modules are not realized through the platform, only their setting options are placed in the platform. "
+While not in battle, it becomes inactive, in order to save game resources. "
+@19 = "If the platform is entirely turned off, the carried modules will also be invalid, unless they're persistent or permanent effects."

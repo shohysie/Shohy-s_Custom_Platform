@@ -1,24 +1,17 @@
-@41 = "Attributes of enemies grow with experience or level of the protagonist"
-@42 = "Give the last attacker a certain amount of experience when an enemy dies"
+@41 = "Enemy stats grow with protagonist XP"
+@42 = "Kill XP granted to last attacker"
 
-@45 = "Relationship between the 'difficulty level' and experience is as follows：
-
-difficulty level 1 2 3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18
-fighter level    1 6 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40
-
-difficulty level 19  20  21  22  23  24  25  26  27  28  29  30  31  32
-XP (million)     8.5 9.0 9.5 10 10.5 11 11.5 12 12.5 13 13.5 14 14.5 15"
-@46 = "If the protagonist is a single-class fighter (or his leveling up speed is slower than a single-class fighter), when he reaches 0/32,000/500,000 experience points, the 'difficulty level' runs to 1/2/3; then, every 500,000 experience points he obtains, the 'difficulty level' increases by 1, until the 'difficulty level' of 32 is reached at 15 million experience points.
-When the protagonist's leveling up is faster than a single-class fighter, his class level of 1/6/10 corresponds to the 'difficulty level' 1/2/3; after that, every 2 class levels he obtains, the 'difficulty level' increases by 1, until the class level is capped; then the increasing of 'difficulty level' is based on the experience value (same as the fighter class). "
-@47 = "Easy: for each 'difficulty level' the enemies gets 10% health and 1% of all damage; for every 4 'difficulty levels' the enemies get 1 point of magic resistance; for every 7 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 10 'difficulty levels' they get +1 bonus to all saving throws.
-For example: When the protagonist reaches level 40 or 8 million experience points, the enemies increase their HP by 230%, all damage made by 23%, magic resistance by 5%. They also get +3 bonus on  AC and THACO, +2 bonus on all saving throws. "
-@48 = "Normal: for each 'difficulty level' the enemies gets 20% health and 2% of all damage; for every 2 'difficulty levels' the enemies get 1 point of magic resistance; for every 5 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 6 'difficulty levels' they get +1 bonus to all saving throws.
-For example: When the protagonist reaches level 40 or 8 million experience points, the enemies increase their HP by 460%, all damage made by 46%, magic resistance by 11%. They also get +4 bonus on  AC and THACO, +3 bonus on all saving throws. "
-@49 = "Hard: for each 'difficulty level' the enemies gets 50% health and 4% of all damage; for every 'difficulty levels' the enemies get 1 point of magic resistance; for every 3 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 4 'difficulty levels' they get +1 bonus to all saving throws.
-For example: When the protagonist reaches level 40 or 8 million experience points, the enemies increase their HP by 1150%, all damage made by 92%, magic resistance by 23%. They also get +7 bonus on  AC and THACO, +5 bonus on all saving throws. "
+@45 = "'Enemy Enhancement Level' = (Level of a pure-class fighter with protagonist's XP) / 2.
+After the protagonist accumulates 8 million XP, +1 'Enemy Enhancement Level' per 500k XP, capped at Lv40 at 18 million XP."
+@46 = "Easy: for each 'Enemy Enhance Level' the enemies gets 10% health and 1% of all damage; for every 4 'difficulty levels' the enemies get 1 point of magic resistance; for every 7 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 10 'difficulty levels' they get +1 bonus to all saving throws.
+For example: When the protagonist reaches 8 million experience points, the enemies increase their HP by 200%, all damage made by 20%, magic resistance by 5%. They also get +2 bonus on  AC and THACO, +2 bonus on all saving throws. "
+@47 = "Normal: for each 'Enemy Enhance Level' the enemies gets 20% health and 2% of all damage; for every 2 'difficulty levels' the enemies get 1 point of magic resistance; for every 5 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 8 'difficulty levels' they get +1 bonus to all saving throws.
+For example: When the protagonist reaches 8 million experience points, the enemies increase their HP by 400%, all damage made by 40%, magic resistance by 10%. They also get +4 bonus on  AC and THACO, +2 bonus on all saving throws. "
+@48 = "Hard: for each 'Enemy Enhance Level' the enemies gets 50% health and 4% of all damage; for every 'difficulty levels' the enemies get 1 point of magic resistance; for every 3 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 5 'difficulty levels' they get +1 bonus to all saving throws.
+For example: When the protagonist reaches 8 million experience points, the enemies increase their HP by 1000%, all damage made by 100%, magic resistance by 20%. They also get +7 bonus on  AC and THACO, +4 bonus on all saving throws. "
 
 @51 = "Settings of 'Attributes of enemies grow with experience or level of the protagonist' (disabled by default)"
-@52 = "Settings of 'Attributes of enemies grow with experience or level of the protagonist"
+@52 = "Settings of 'Attributes of enemies grow with experience or level of the protagonist' (apply as 5-minute temporary effects and reapplied if in combat)"
 @53 = "Turns off, attributes of enemies won't increase"
 @54 = "Easy, attributes of enemies increase slightly"
 @55 = "Noraml, attributes of enemies increase normally"
@@ -28,6 +21,6 @@ For example: When the protagonist reaches level 40 or 8 million experience point
 @62 = "Settings of 'Give the last attacker a certain amount of experience when an enemy dies'"
 @63 = "Turns off, no extra experience from enemies"
 @64 = "50 experience points per enemy level"
-@65 = "200 experience points per enemy level"
-@66 = "500 experience points per enemy level"
-@67 = "1000 experience points per enemy level"
+@65 = "100 experience points per enemy level"
+@66 = "200 experience points per enemy level"
+@67 = "500 experience points per enemy level"

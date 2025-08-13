@@ -30,11 +30,6 @@ APPEND ~SH#CPF0Z~
 	
 	IF ~~ THEN BEGIN detail3
 		SAY @48
-		IF ~~ THEN GOTO detail4
-	END
-	
-	IF ~~ THEN BEGIN detail4
-		SAY @49
 		IF ~~ THEN GOTO improveenemy
 	END
 

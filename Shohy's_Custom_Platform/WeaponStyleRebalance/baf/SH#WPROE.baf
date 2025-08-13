@@ -31,17 +31,34 @@ THEN
 		Continue()
 END
 
-//右手对鸟有效同时左手对鸟无效是剑盾或单手
+//右手对鸟有效且左手无物品是单手武器
 IF
 	OR(2)
 		Global("SH#WPROP","GLOBAL",0)
 		Global("SH#WPROP","GLOBAL",2)
 	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
 	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
+	!HasItemSlot(Player%n%,SLOT_SHIELD)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SH#WD1HA",Player%n%)
+		Continue()
+END
+
+//右手对鸟有效同时左手有东西但对鸟无效/正装备盾牌是剑盾
+IF
+	OR(2)
+		Global("SH#WPROP","GLOBAL",0)
+		Global("SH#WPROP","GLOBAL",2)
+	!GlobalTimerNotExpired("SH#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",MAINHAND))
+	//HasItemCategory(Player%n%,SHIELD,TRUE)
+	HasItemSlot(Player%n%,SLOT_SHIELD)
 	!TriggerOverride(Player%n%,WeaponEffectiveVs("SH#CPF0A",OFFHAND))
 THEN
 	RESPONSE #100
-		SetGlobalTimer("SH#SECOND","LOCALS",1)
-		ReallyForceSpellRes("SH#WD1HA",Player%n%)
+		ReallyForceSpellRes("SH#WDSDA",Player%n%)
 		Continue()
 END

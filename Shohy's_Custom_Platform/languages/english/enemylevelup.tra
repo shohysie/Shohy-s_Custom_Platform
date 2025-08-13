@@ -1,0 +1,35 @@
+@204 = "Enemies elevate their levels with the protagonist (permanent effect), and cast innate abilities."
+
+@207 = "Bard Song"	//11798
+@208 = "Enhanced Bard Song"	//65599
+@209 = "Disturb Casting"
+
+@221 = "Settings of 'Enemies elevate their levels with the protagonist (permanent effect), and cast innate abilities'"
+@222 = "Settings of low-level enemies' growth"
+@223 = "Low-level enemies do not grow up (default)"
+@224 = "Low-level enemies elevate their levels with the protagonist, and the level related attributes also increase. (Permanent effect: Even deactivated, upgraded enemies won't drop back)"
+@225 = "Settings of enabling enemies to cast normal innate abilities (e.g. Enrage, Called Shot and Poison Weapon)"
+@226 = "Settings of enabling enemies to cast normal innate abilities"
+@227 = "Enemies will not cast normal innate abilities (default)"
+@228 = "An enemy has a 20%-50% probability of casting normal innate abilities, the probability increases with the enemy's level"
+@229 = "An enemy has a 40%-100% probability of casting normal innate abilities, the probability increases with the enemy's level"
+@230 = "Settings of enabling enemies to cast high-level abilities (e.g. Enrage, Called Shot and Assassination)"
+@231 = "Settings of enabling enemies to cast high-level abilities"
+@232 = "Enemies will not cast high-level abilities (default)"
+@233 = "An enemy casts 1-3 skills during a while, including normal and high-level abilities"
+@234 = "An enemy casts about 4 skills during a while, including normal and high-level abilities"
+@235 = "Settings of whether the enemies' skills are affected by race"
+@236 = "Civilized races cast abilities well, savage races cast abilities with halved changce, and non-sapient races cast no abilities (default)"
+@237 = "All races cast abilities well"
+
+@241 = "Read the detailed description of 'enemies elevate their levels with the protagonist'"
+@242 = "Read the detailed description of 'enabling enemies to cast innate abilities'"
+
+@261 = "Low-level enemies elevate their level based on the protagonist's experience and level. HP, THAC0, saves and APR also grow with level.
+Attributes such as AC and damage that are not related to class levels never grow. "
+@262 = "Due to problems with the Level Change opcode of Infinite Engine, the enemies' level may not really increase, but the relevant attributes surely increase. "
+
+@266 = "Enemies cast innate abilities during the battle. You can use various options to set the probability of skill and whether their casting is affect by race.
+If the battle does not end within 6 rounds, the enemies may cast their abilities again. "
+@267 = "If some enemies already have innate abilities casting in their original AI, this component may cause repeatedly casting skills but no stacked up.
+Berserker Enrage and Barbarian Rage may occur at the same time, but won't stacked up either. "

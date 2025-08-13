@@ -27,11 +27,11 @@ IF
 	Global("SH#WPROP","GLOBAL",3)
 THEN
 	RESPONSE #100
-		ReallyForceSpellRes("SH#WPE00",Player1)
-		ReallyForceSpellRes("SH#WPE00",Player2)
-		ReallyForceSpellRes("SH#WPE00",Player3)
-		ReallyForceSpellRes("SH#WPE00",Player4)
-		ReallyForceSpellRes("SH#WPE00",Player5)
-		ReallyForceSpellRes("SH#WPE00",Player6)
+		ReallyForceSpellRes("SH#WPE02",Player1)
+		ReallyForceSpellRes("SH#WPE02",Player2)
+		ReallyForceSpellRes("SH#WPE02",Player3)
+		ReallyForceSpellRes("SH#WPE02",Player4)
+		ReallyForceSpellRes("SH#WPE02",Player5)
+		ReallyForceSpellRes("SH#WPE02",Player6)
 		Continue()
 END

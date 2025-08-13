@@ -1,8 +1,6 @@
 //根据玩家经验和等级调整自身等级，可以添加到SH#CPF0A.bcs
-//非必要不加？
-//玩家升级速度≤战士时，鸟以战士经验表格升级直到40级为止。玩家升级速度>战士时，鸟随玩家升级直到40级为止。
-//超过40级和800万经验之后，仅提升奥术施法等级，每50万经验提升1级，到1500万经验54级结束
-//SH#CPFL0为等级修正1，SH#CPFL1~e为奥术施法等级修正1~14
+//升级列表：战士等级的一半
+//SH#CPFL0为等级修正1
 
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
@@ -16,9 +14,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,1999)
-		LevelGT(Player1,1)
+	XPGT(Player1,7999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV2
@@ -28,9 +24,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,3999)
-		LevelGT(Player1,2)
+	XPGT(Player1,31999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV3
@@ -40,9 +34,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,7999)
-		LevelGT(Player1,3)
+	XPGT(Player1,124999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV4
@@ -52,9 +44,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,15999)
-		LevelGT(Player1,4)
+	XPGT(Player1,499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV5
@@ -64,9 +54,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,31999)
-		LevelGT(Player1,5)
+	XPGT(Player1,999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV6
@@ -76,9 +64,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,63999)
-		LevelGT(Player1,6)
+	XPGT(Player1,1499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV7
@@ -88,9 +74,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,124999)
-		LevelGT(Player1,7)
+	XPGT(Player1,1999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV8
@@ -100,9 +84,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,249999)
-		LevelGT(Player1,8)
+	XPGT(Player1,2499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV9
@@ -112,9 +94,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,499999)
-		LevelGT(Player1,9)
+	XPGT(Player1,2999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV10
@@ -124,9 +104,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,749999)
-		LevelGT(Player1,10)
+	XPGT(Player1,3499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV11
@@ -136,9 +114,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,999999)
-		LevelGT(Player1,11)
+	XPGT(Player1,3999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV12
@@ -148,9 +124,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,1249999)
-		LevelGT(Player1,12)
+	XPGT(Player1,4499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV13
@@ -160,9 +134,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,1499999)
-		LevelGT(Player1,13)
+	XPGT(Player1,4999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV14
@@ -172,9 +144,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,1749999)
-		LevelGT(Player1,14)
+	XPGT(Player1,5499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV15
@@ -184,9 +154,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,1999999)
-		LevelGT(Player1,15)
+	XPGT(Player1,5999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV16
@@ -196,9 +164,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,2249999)
-		LevelGT(Player1,16)
+	XPGT(Player1,6499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV17
@@ -208,9 +174,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,2499999)
-		LevelGT(Player1,17)
+	XPGT(Player1,6999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV18
@@ -220,9 +184,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,2749999)
-		LevelGT(Player1,18)
+	XPGT(Player1,7499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV19
@@ -232,9 +194,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,2999999)
-		LevelGT(Player1,19)
+	XPGT(Player1,7999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV20
@@ -244,9 +204,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,3249999)
-		LevelGT(Player1,20)
+	XPGT(Player1,8499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV21
@@ -256,9 +214,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,3499999)
-		LevelGT(Player1,21)
+	XPGT(Player1,8999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV22
@@ -268,9 +224,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,3749999)
-		LevelGT(Player1,22)
+	XPGT(Player1,9499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV23
@@ -280,9 +234,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,3999999)
-		LevelGT(Player1,23)
+	XPGT(Player1,9999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV24
@@ -292,9 +244,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,4249999)
-		LevelGT(Player1,24)
+	XPGT(Player1,10499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV25
@@ -304,9 +254,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,4499999)
-		LevelGT(Player1,25)
+	XPGT(Player1,10999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV26
@@ -316,9 +264,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,4749999)
-		LevelGT(Player1,26)
+	XPGT(Player1,11499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV27
@@ -328,9 +274,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,4999999)
-		LevelGT(Player1,27)
+	XPGT(Player1,11999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV28
@@ -340,9 +284,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,5249999)
-		LevelGT(Player1,28)
+	XPGT(Player1,12499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV29
@@ -352,9 +294,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,5499999)
-		LevelGT(Player1,29)
+	XPGT(Player1,12999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV30
@@ -365,9 +305,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,5749999)
-		LevelGT(Player1,30)
+	XPGT(Player1,13499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV31
@@ -377,9 +315,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,5999999)
-		LevelGT(Player1,31)
+	XPGT(Player1,13999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV32
@@ -389,9 +325,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,6249999)
-		LevelGT(Player1,32)
+	XPGT(Player1,14499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV33
@@ -401,9 +335,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,6499999)
-		LevelGT(Player1,33)
+	XPGT(Player1,14999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV34
@@ -413,9 +345,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,6749999)
-		LevelGT(Player1,34)
+	XPGT(Player1,15499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV35
@@ -425,9 +355,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,6999999)
-		LevelGT(Player1,35)
+	XPGT(Player1,15999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV36
@@ -437,9 +365,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,7249999)
-		LevelGT(Player1,36)
+	XPGT(Player1,16499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV37
@@ -449,9 +375,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,7499999)
-		LevelGT(Player1,37)
+	XPGT(Player1,16999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV38
@@ -461,9 +385,7 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,7749999)
-		LevelGT(Player1,38)
+	XPGT(Player1,17499999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV39
@@ -473,152 +395,9 @@ END
 IF
 	!GlobalGT("SH#LVADJUST","LOCALS",0)
 	GlobalGT("SH#IMPE0","GLOBAL",0)
-	OR(2)
-		XPGT(Player1,7999999)
-		LevelGT(Player1,39)
+	XPGT(Player1,17999999)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPFL0",Myself)	//LV40
-		Continue()
-END
-
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,8499999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFL1",Myself)	//CLV41
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,8999999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFL2",Myself)	//CLV42
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,9499999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFL3",Myself)	//CLV43
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,9999999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFL4",Myself)	//CLV44
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,10499999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFL5",Myself)	//CLV45
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,10999999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFL6",Myself)	//CLV46
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,11499999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFL7",Myself)	//CLV47
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,11999999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFL8",Myself)	//CLV48
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,12499999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFL9",Myself)	//CLV49
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,12999999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFLA",Myself)	//CLV50
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,13499999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFLB",Myself)	//CLV51
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,13999999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFLC",Myself)	//CLV52
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,14499999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFLD",Myself)	//CLV53
-		Continue()
-END
-
-IF
-	!GlobalGT("SH#LVADJUST","LOCALS",0)
-	GlobalGT("SH#IMPE0","GLOBAL",0)
-	XPGT(Player1,14999999)
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SH#CPFLE",Myself)	//CLV54
 		Continue()
 END

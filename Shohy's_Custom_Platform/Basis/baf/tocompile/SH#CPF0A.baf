@@ -24,10 +24,11 @@ END
 //SH#CPF0C（鸟C）工作完成或功能关闭或看到SH#CPF0A（鸟A）就直接消失，不影响主角身上的附加法术
 IF
 	Race(Myself,BIRD)
-	OR(3)
+	OR(4)
 		Exists("SH#CPF0A")
 		Global("SH#CPF00","GLOBAL",2)
 		GlobalGT("SH#COUNT","LOCALS",5)
+		GlobalTimerExpired("SH#TIMEC","LOCALS")
 THEN
 	RESPONSE #100
 		DestroySelf()
@@ -41,6 +42,16 @@ THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SH#CPF0D",Player1)
 		SetGlobalTimer("SH#CPF0T","GLOBAL",6)
+		Continue()
+END
+
+//以防止意外，鸟C还是加个本地计时器
+IF
+	OnCreation()
+	Race(Myself,BIRD)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("SH#TIMEC","LOCALS",6)
 		Continue()
 END
 
