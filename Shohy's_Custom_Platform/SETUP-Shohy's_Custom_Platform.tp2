@@ -396,6 +396,53 @@ REQUIRE_PREDICATE (IDS_OF_SYMBOL (~projectl~ ~SH#CPF00~)) > 0 @9
 
 // ***武器流派平衡
 
+//添加石肤和圣域的标记（镜影不用添加）
+OUTER_SET "splprot_stonskins" = 0
+COPY_EXISTING ~splprot.2da~ ~override~
+	COUNT_2DA_ROWS 4 rows
+	FOR ( index = 0 ; index < rows ; index = index + 1 ) BEGIN
+		READ_2DA_ENTRY "%index%" 1 4 "splprot_stat"
+		READ_2DA_ENTRY "%index%" 2 4 "splprot_value"
+		READ_2DA_ENTRY "%index%" 3 4 "splprot_relation"
+	  //PATCH_PRINT ~%index% %splprot_stat% %splprot_value% %splprot_relation%~
+		PATCH_IF ("%splprot_stat%" STRING_COMPARE_CASE "88" = 0) & ("%splprot_value%" STRING_COMPARE_CASE "-1" = 0) & ("%splprot_relation%" STRING_COMPARE_CASE "4" = 0) BEGIN	//有现成的STONESKINS判断行
+			SET "splprot_stonskins" = "%index%"
+			SET "index" = "%rows%" + 1 // kills loop
+		END
+	END
+	PATCH_IF (splprot_stonskins = 0) BEGIN
+		SET "splprot_stonskins" = "%rows%"
+		INSERT_2DA_ROW rows 4 ~%rows%_STONESKINS=n                           88                                            -1                                            4~
+	END
+BUT_ONLY	//splprot_stonskins为splprot.2da新增STONESKINS判断行的编号
+
+OUTER_SET "splprot_sanctuary" = 0
+COPY_EXISTING ~splprot.2da~ ~override~
+	COUNT_2DA_ROWS 4 rows
+	FOR ( index = 0 ; index < rows ; index = index + 1 ) BEGIN
+		READ_2DA_ENTRY "%index%" 1 4 "splprot_stat"
+		READ_2DA_ENTRY "%index%" 2 4 "splprot_value"
+		READ_2DA_ENTRY "%index%" 3 4 "splprot_relation"
+	  //PATCH_PRINT ~%index% %splprot_stat% %splprot_value% %splprot_relation%~
+		PATCH_IF ("%splprot_stat%" STRING_COMPARE_CASE "63" = 0) & ("%splprot_value%" STRING_COMPARE_CASE "1" = 0) & ("%splprot_relation%" STRING_COMPARE_CASE "4" = 0) BEGIN	//有现成的SANCTUARY判断行
+			SET "splprot_sanctuary" = "%index%"
+			SET "index" = "%rows%" + 1 // kills loop
+		END
+		PATCH_IF ("%splprot_stat%" STRING_COMPARE_CASE "63" = 0) & ("%splprot_value%" STRING_COMPARE_CASE "0" = 0) & ("%splprot_relation%" STRING_COMPARE_CASE "3" = 0) BEGIN	//有现成的SANCTUARY判断行
+			SET "splprot_sanctuary" = "%index%"
+			SET "index" = "%rows%" + 1 // kills loop
+		END
+		PATCH_IF ("%splprot_stat%" STRING_COMPARE_CASE "63" = 0) & ("%splprot_value%" STRING_COMPARE_CASE "1" = 0) & ("%splprot_relation%" STRING_COMPARE_CASE "1" = 0) BEGIN	//有现成的SANCTUARY判断行
+			SET "splprot_sanctuary" = "%index%"
+			SET "index" = "%rows%" + 1 // kills loop
+		END
+	END
+	PATCH_IF (splprot_sanctuary = 0) BEGIN
+		SET "splprot_sanctuary" = "%rows%"
+		INSERT_2DA_ROW rows 4 ~%rows%_SANCTUARY=1                            63                                            1                                            1~
+	END
+BUT_ONLY	//splprot_sanctuary为splprot.2da新增STONESKINS判断行的编号
+
 ADD_PROJECTILE ~%MOD_FOLDER%/WeaponStyleRebalance/pro/SH#WPSDA.pro~
 //PRINT ~新增投射SH#WPSDA序号为%SH#WPSDA%~
 
@@ -520,8 +567,15 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WDSRM.spl~ ~override~
 	SAY NAME1 @132	//卸除武器
 	SAY UNIDENTIFIED_DESC @132
 
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDE.spl~ ~override~
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDC.spl~ ~override~ //圣域禁止盾击
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_sanctuary%~ STR_VAR resource = "SH#WPSDC" END
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDD.spl~ ~override~ //圣域禁止盾击
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_sanctuary%~ STR_VAR resource = "SH#WPSDD" END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDE.spl~ ~override~ //镜影石肤圣域隐形不受盾击
 	WRITE_SHORT 0x98 ~%SH#WPSDA%~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_sanctuary%~ STR_VAR resource = "SH#WPSDE" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WPSDE" END
 
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDY.spl~ ~override~	//突袭
 	SAY NAME1 @133	//突袭
@@ -535,9 +589,11 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDF.spl~ ~override~	//1星盾�
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 235 savebonus = (7 - headernum) END
 	END
-
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDH.spl~ ~override~	//2星盾击无豁免部分，并且随人物等级以不同豁免，以等级1调用SH#WPSDO（伤害档次0）
+//2星盾击无豁免部分，并且随人物等级以不同豁免，以等级1调用SH#WPSDO（伤害档次0）
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDH.spl~ ~override~	//镜影石肤圣域隐形不受盾击
 	WRITE_SHORT 0x98 ~%SH#WPSDA%~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_sanctuary%~ STR_VAR resource = "SH#WPSDH" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WPSDH" END
 	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
 		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
 		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
@@ -613,29 +669,47 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WM1HC.spl~ ~override~ ~%MOD_FOLDE
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 235 savebonus = (7 - headernum) END
 	END
-//随力量提升效果时长
-COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HD.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 15 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 15 END
-COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HE.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 22 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 22 END
-COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HF.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 30 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 30 END
-COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HG.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 37 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 37 END
-COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HH.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 45 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 45 END
-COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HI.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 52 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 52 END
+//随力量提升效果时长，并且被镜影石肤阻挡
 COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HJ.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 60 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 60 END
-//如果失能状态则不继续，无豁免部分最后统一在最上方加上
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM1HJ" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM1HJ" END
+COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HI.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 52 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 52 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM1HI" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM1HI" END
+COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HH.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 45 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 45 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM1HH" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM1HH" END
+COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HG.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 37 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 37 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM1HG" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM1HG" END
+COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HF.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 30 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 30 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM1HF" END
+COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HE.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 22 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 22 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM1HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM1HE" END
+COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HD.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 timing = 10 duration = 15 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 45 timing = 10 duration = 15 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM1HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM1HD" END
+COPY_EXISTING ~SH#WM1HC.spl~ ~override/SH#WM1HC.spl~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM1HC" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM1HC" END
+	
+//如果失能状态则不继续，无豁免部分最后统一在最上方加上，并且被镜影石肤阻挡
 COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HJ.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 3 opcode = 318 target = 2 parameter1 = 1 parameter2 = 138 probability1 = 49 STR_VAR resource = "SH#WM2HJ" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 321 target = 2 timing = 1 STR_VAR resource = "SH#WM2HJ" END
@@ -644,6 +718,8 @@ COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HJ.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 0 target = 2 timing = 0 duration = 2 parameter1 = "-2" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = "SH#SMITE" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 235 target = 2 timing = 10 duration = 2 parameter1 = 2  parameter2 = 2 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM2HJ" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM2HJ" END
 COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HI.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 3 opcode = 318 target = 2 parameter1 = 1 parameter2 = 138 probability1 = 49 STR_VAR resource = "SH#WM2HI" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 321 target = 2 timing = 1 STR_VAR resource = "SH#WM2HI" END
@@ -652,6 +728,8 @@ COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HI.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 0 target = 2 timing = 0 duration = 2 parameter1 = "-2" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = "SH#SMITE" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 235 target = 2 timing = 10 duration = 2 parameter1 = 2  parameter2 = 2 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM2HI" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM2HI" END
 COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HH.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 3 opcode = 318 target = 2 parameter1 = 1 parameter2 = 138 probability1 = 49 STR_VAR resource = "SH#WM2HH" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 321 target = 2 timing = 1 STR_VAR resource = "SH#WM2HH" END
@@ -660,6 +738,8 @@ COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HH.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 0 target = 2 timing = 0 duration = 2 parameter1 = "-2" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = "SH#SMITE" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 235 target = 2 timing = 10 duration = 2 parameter1 = 2  parameter2 = 2 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM2HH" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM2HH" END
 COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HG.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 3 opcode = 318 target = 2 parameter1 = 1 parameter2 = 138 probability1 = 49 STR_VAR resource = "SH#WM2HG" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 321 target = 2 timing = 1 STR_VAR resource = "SH#WM2HG" END
@@ -668,6 +748,8 @@ COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HG.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 0 target = 2 timing = 0 duration = 2 parameter1 = "-2" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = "SH#SMITE" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 235 target = 2 timing = 10 duration = 2 parameter1 = 2  parameter2 = 2 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM2HG" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM2HG" END
 COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HF.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 3 opcode = 318 target = 2 parameter1 = 1 parameter2 = 138 probability1 = 49 STR_VAR resource = "SH#WM2HF" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 321 target = 2 timing = 1 STR_VAR resource = "SH#WM2HF" END
@@ -676,6 +758,8 @@ COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HF.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 0 target = 2 timing = 0 duration = 2 parameter1 = "-2" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = "SH#SMITE" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 235 target = 2 timing = 10 duration = 2 parameter1 = 2  parameter2 = 2 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM2HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM2HF" END
 COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HE.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 3 opcode = 318 target = 2 parameter1 = 1 parameter2 = 138 probability1 = 49 STR_VAR resource = "SH#WM2HE" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 321 target = 2 timing = 1 STR_VAR resource = "SH#WM2HE" END
@@ -684,6 +768,8 @@ COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HE.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 0 target = 2 timing = 0 duration = 2 parameter1 = "-2" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = "SH#SMITE" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 235 target = 2 timing = 10 duration = 2 parameter1 = 2  parameter2 = 2 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM2HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM2HE" END
 COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HD.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 3 opcode = 318 target = 2 parameter1 = 1 parameter2 = 138 probability1 = 49 STR_VAR resource = "SH#WM2HD" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 321 target = 2 timing = 1 STR_VAR resource = "SH#WM2HD" END
@@ -692,12 +778,16 @@ COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HD.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 0 target = 2 timing = 0 duration = 2 parameter1 = "-2" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = "SH#SMITE" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 235 target = 2 timing = 10 duration = 2 parameter1 = 2  parameter2 = 2 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM2HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM2HD" END
 COPY_EXISTING ~SH#WM2HC.spl~ ~override/SH#WM2HC.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 3 opcode = 318 target = 2 parameter1 = 1 parameter2 = 138 probability1 = 49 STR_VAR resource = "SH#WM2HC" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 321 target = 2 timing = 1 STR_VAR resource = "SH#WM2HC" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 0 target = 2 timing = 0 duration = 2 parameter1 = "-2" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = "SH#SMITE" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 235 target = 2 timing = 10 duration = 2 parameter1 = 2  parameter2 = 2 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WM2HC" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WM2HC" END
 
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WH1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WH2HC.spl~ ~override~
 	SAY NAME1 @137	//勾拽
@@ -716,6 +806,7 @@ COPY_EXISTING ~SH#WH1HC.spl~ ~override~
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
 	END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WH1HC" END
 //专职盗贼、诗人、武僧在豁免失败时转到SH#WH1HM.spl对死亡进行豁免检定
 COPY_EXISTING ~SH#WH1HC.spl~ ~override/SH#WH1HM.spl~
 	WRITE_LONG 0x08 0xFFFFFFFF
@@ -761,6 +852,7 @@ COPY_EXISTING ~SH#WH2HC.spl~ ~override~
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
 	END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WH2HC" END
 //专职盗贼、诗人、武僧在豁免失败时转到SH#WH2HM.spl对死亡进行豁免检定
 COPY_EXISTING ~SH#WH2HC.spl~ ~override/SH#WH2HM.spl~
 	WRITE_LONG 0x08 0xFFFFFFFF
@@ -807,62 +899,97 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WS1HC.spl~ ~override~ ~%MOD_FOLDE
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
 	END
 //随力量提升效果时长
-COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HD.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 6 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 6 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 6 END
-COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HE.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 9 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 9 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 9 END
-COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HF.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 12 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 12 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 12 END
-COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HG.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 15 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 15 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 15 END
-COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HH.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 18 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 18 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 18 END
-COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HI.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 21 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 21 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 21 END
 COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HJ.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 24 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 24 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 24 END
-COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HD.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 9 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 9 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 9 END
-COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HE.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 14 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 14 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 14 END
-COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HF.spl~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS1HJ" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS1HJ" END
+COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HI.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 21 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 21 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 21 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS1HI" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS1HI" END
+COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HH.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 18 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 18 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 18 END
-COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HG.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 23 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 23 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 23 END
-COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HH.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 27 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 27 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 27 END
-COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HI.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 32 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 32 END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 32 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS1HH" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS1HH" END
+COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HG.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 15 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 15 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 15 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS1HG" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS1HG" END
+COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HF.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 12 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 12 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 12 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS1HF" END
+COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HE.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 9 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 9 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 9 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS1HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS1HE" END
+COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HD.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 6 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 6 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 6 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS1HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS1HD" END
+COPY_EXISTING ~SH#WS1HC.spl~ ~override/SH#WS1HC.spl~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS1HC" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS1HC" END
+	
 COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HJ.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 36 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 36 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 36 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS2HJ" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS2HJ" END
+COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HI.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 32 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 32 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 32 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS2HI" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS2HI" END
+COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HH.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 27 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 27 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 27 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS2HH" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS2HH" END
+COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HG.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 23 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 23 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 23 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS2HG" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS2HG" END
+COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HF.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 18 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 18 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 18 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS2HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS2HF" END
+COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HE.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 14 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 14 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 14 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS2HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS2HE" END
+COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HD.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 duration = 9 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 54 duration = 9 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 126 duration = 9 END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS2HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS2HD" END
+COPY_EXISTING ~SH#WS2HC.spl~ ~override/SH#WS2HC.spl~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SH#WS2HC" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SH#WS2HC" END
 
 COPY_EXISTING ~SH#CPF0B.bcs~ ~override~
 	DECOMPILE_AND_PATCH BEGIN

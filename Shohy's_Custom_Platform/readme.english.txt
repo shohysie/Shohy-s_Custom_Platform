@@ -1,5 +1,5 @@
 ﻿//////////////////////////////////////////////////////////////////////////////
-//////////////Shohy's customized adjustment platform v0.2///////////////
+/////////////Shohy's customized adjustment platform v0.21///////////////
 //////////////////////////////////////////////////////////////////////////////
 
 //////////////Descriptions//////////////
@@ -18,6 +18,13 @@ Current Modules:
 Platform Shutdown: Disables all modules except permanent creature effects.
 
 //////////////Version History///////////////
+
+v0.21
+
+[Weapon Styles Rebalance]
+• Shield Bash cannot be cast by creatures under the effect of Sanctuary, nor can it hit creatures under the effect of Sanctuary, Mirror Image and Stone Skin.
+• Mighty Blow, Limb Strike and Cleave can't affect creatures with Stone Skin.
+• Trip Attack, Mighty Blow, Hook and Limb Strike can't affect creatures with Mirror Image.
 
 v0.2
 
