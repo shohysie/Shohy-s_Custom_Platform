@@ -1,5 +1,5 @@
 ﻿//////////////////////////////////////////////////////////////////////////////
-/////////////Shohy's customized adjustment platform v0.21///////////////
+/////////////Shohy's customized adjustment platform v0.22//////////////
 //////////////////////////////////////////////////////////////////////////////
 
 //////////////Descriptions//////////////
@@ -18,6 +18,11 @@ Current Modules:
 Platform Shutdown: Disables all modules except permanent creature effects.
 
 //////////////Version History///////////////
+
+v0.22
+
+[Weapon Styles Rebalance]
+Avoid frequent reminders in the EEex environment "You cannot cast multiple instances of the same contingency spell on yourself."
 
 v0.21
 

@@ -1,7 +1,7 @@
 BACKUP ~Shohy's_Custom_Platform/backup~
 AUTHOR ~shohy@126.com~
 
-VERSION ~v0.2~
+VERSION ~v0.22~
 AUTO_EVAL_STRINGS
 
 README ~%MOD_FOLDER%/README.%LANGUAGE%.txt~
@@ -114,9 +114,14 @@ COPY_EXISTING ~CAMPAIGN.2da~ ~override~
 				SET "%campscript%added" = 1
 			END
 		END
-	END ELSE BEGIN
+	END
+	PATCH_IF FILE_EXISTS_IN_GAME ~baldur.bcs~ BEGIN
 		INNER_ACTION BEGIN
 			EXTEND_TOP ~baldur.bcs~ ~%MOD_FOLDER%/basis/baf/SH#CPF00.baf~
+		END
+	END
+	PATCH_IF FILE_EXISTS_IN_GAME ~baldur25.bcs~ BEGIN
+		INNER_ACTION BEGIN
 			EXTEND_TOP ~baldur25.bcs~ ~%MOD_FOLDER%/basis/baf/SH#CPF00.baf~
 		END
 	END
@@ -615,14 +620,27 @@ COPY_EXISTING ~SH#WPSDH.spl~ ~override/SH#WPSDN.spl~
 	
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SH#WPSDO.spl~ ~override~	//2星盾击有豁免部分
 	SAY NAME1 @134	//盾击
-	
-COPY_EXISTING ~SH#CPF0B.bcs~ ~override~
-	DECOMPILE_AND_PATCH BEGIN
-		FOR (n=1;n<7;++n) BEGIN
-			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SH#WPROB.baf~	//队友的武器流派平衡，每秒判断进行
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex/EEex.tp2~ 0)||(FILE_EXISTS_IN_GAME ~EEex_Action.lua~) BEGIN
+	COPY_EXISTING ~SH#CPF0B.bcs~ ~override~
+		DECOMPILE_AND_PATCH BEGIN
+			FOR (n=1;n<7;++n) BEGIN
+				APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/eeexbaf/SH#WPROB.baf~//队友的武器流派平衡，每秒判断进行
+			END
 		END
-	END
-BUT_ONLY
+	BUT_ONLY
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/eeex~ ~override~
+END ELSE BEGIN
+	COPY_EXISTING ~SH#CPF0B.bcs~ ~override~
+		DECOMPILE_AND_PATCH BEGIN
+			FOR (n=1;n<7;++n) BEGIN
+				APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/noeeexbaf/SH#WPROB.baf~//队友的武器流派平衡，每秒判断进行
+			END
+		END
+	BUT_ONLY
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/noeeex~ ~override~
+END
+
 
 // ***武器细节调整
 
