@@ -1,0 +1,8 @@
+//SY#CPF0D为生物其它脚本。建议凡是不适合放SY#CPF0B和SY#CPF0C的修正都放这个脚本里
+//如果需要计时器和计数器建议使用现有的SY#SECOND（计时1秒）、SY#CASTONCE（计数1次）之类，或者自行添加
+IF
+	False()
+THEN
+	RESPONSE #100
+		Continue()
+END

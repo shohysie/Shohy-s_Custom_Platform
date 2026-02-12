@@ -1,0 +1,52 @@
+//多星模式替换扣星模式，将SY#CPF0B里已经编译好的（来自SY#WPROB.baf的）下列内容替换成空的
+IF
+	GlobalGT("SY#WPROP","GLOBAL",0)
+	!GlobalTimerNotExpired("SY#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",MAINHAND))
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",OFFHAND))
+	!ProficiencyGT(Player%n%,PROFICIENCY2WEAPON,0)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SY#WP2W0",Player%n%)
+		Continue()
+END
+
+IF
+	GlobalGT("SY#WPROP","GLOBAL",0)
+	!GlobalTimerNotExpired("SY#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",MAINHAND))
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",OFFHAND))
+	Proficiency(Player%n%,PROFICIENCY2WEAPON,1)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SY#WP2W1",Player%n%)
+		Continue()
+END
+
+IF
+	GlobalGT("SY#WPROP","GLOBAL",0)
+	!GlobalTimerNotExpired("SY#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",MAINHAND))
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",OFFHAND))
+	Proficiency(Player%n%,PROFICIENCY2WEAPON,2)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SY#WP2W2",Player%n%)
+		Continue()
+END
+
+IF
+	GlobalGT("SY#WPROP","GLOBAL",0)
+	!GlobalTimerNotExpired("SY#SECOND","LOCALS")
+	!IsWeaponRanged(Player%n%)
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",MAINHAND))
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",OFFHAND))
+	ProficiencyGT(Player%n%,PROFICIENCY2WEAPON,2)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SY#WP2W3",Player%n%)
+		Continue()
+END

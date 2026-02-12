@@ -1,5 +1,5 @@
 ﻿//////////////////////////////////////////////////////////////////////////////
-/////////////Shohy's customized adjustment platform v0.22//////////////
+/////////////Shohy's customized adjustment platform v0.3//////////////
 //////////////////////////////////////////////////////////////////////////////
 
 //////////////Descriptions//////////////
@@ -11,13 +11,37 @@ A permanent blue button appears in the protagonist's innate ability bar on his f
 
 Current Modules:
 1. Extra modifiers of Intelligence/Wisdom/Charisma.
-2. Enemy stats grow with protagonist XP; Kill XP granted to last attacker.
+2. Enhanced Enemies (Enemy stats grow with protagonist XP); Kill XP granted to last attacker.
 3. Weapon Styles Rebalance, and Detailed Ajustments for Weapon Types (NOTE:  Incompatible with legacy Weapon Style Rebalance mods);
 4. Enemies cast innate abilities, and elevate their levels with the protagonist.
+5. Increasing AC and Hit Values for all Creatures (to prevent the AC modifier from becoming meaningless after hitting the -20 lower limit).
 
 Platform Shutdown: Disables all modules except permanent creature effects.
 
 //////////////Version History///////////////
+
+v0.3
+
+All filenames changed to start with "SY#" for compatibility. 
+New Module: Increasing AC and Hit Values for all Creatures. Recommended when AC modifiers reach the -20 lower limit. Suitable for game versions with more methods of reducing AC from various MODs.
+
+[Global Adjustment Platform]
+Disabled by default, with added options for manual enabling/disabling. All modules are also disabled by default and require manual activation.
+If the protagonist is changed in multiplayer games, the platform's settings button will appear on the new protagonist.
+
+[Extra modifiers of Intelligence/Wisdom/Charisma]
+Fixed the issue where manually disabling the additional adjustments for singing and dancing was ineffective.
+
+[Enhanced Enemies (Enemy stats grow with protagonist XP)]
+Fixed the issue of insufficient enemy stat increases.
+Enemies now gain at least 10/20/50 HP (for the three difficulty options) and slight increases in other stats.
+
+[Weapon Style Rebalance]
+No longer automatically deducts proficiency points directly; requires manual activation.
+Spinning Slash will not hit neutrals.
+
+[Enemies cast innate abilities, and elevate their levels with the protagonist]
+Reduced the number of scripts that need modification, speeding up the installation process.‌
 
 v0.22
 

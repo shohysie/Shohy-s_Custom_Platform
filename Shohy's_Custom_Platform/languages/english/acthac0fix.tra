@@ -1,0 +1,12 @@
+@301 = "Increase the AC and Hit Values of all creatures, to prevent the AC modifier from becoming meaningless after hitting the -20 lower limit."‌
+
+@310 = "Adjust the AC and Hit Values of all creatures (Recommended when AC reaches its lower limit)."‌
+@311 = "Turn off adjustment"‌
+@312 = "Increase AC and Hit Values of all creatures by +10"‌
+@313 = "Increase AC and Hit Values of all creatures by +20"‌
+@314 = "Keep current settings (adjustment off) and return to previous menu"‌
+@315 = "Keep current settings (+10 increase) and return to previous menu"‌
+@316 = "Keep current settings (+20 increase) and return to previous menu"‌
+@317 = "View detailed explanation of Increasing AC and Hit Values for all Creatures"‌
+@318 = "A lower AC makes a creature harder to hit, while a lower Hit Value makes it easier to hit others. The game imposes a lower limit of -20 on AC modifiers, but there is no lower limit for Hit Value modifiers, which means that even maximizing efforts to lower AC can be rendered ineffective against opponents with sufficiently low Hit Values."‌
+@319 = "Increasing the AC and Hit Values of all creatures simultaneously grants AC more room for downward adjustment. This has minimal impact on normal gameplay but is suitable for game versions with more methods of reducing AC from various MODs."‌

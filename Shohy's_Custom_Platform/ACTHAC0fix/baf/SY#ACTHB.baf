@@ -1,0 +1,10 @@
+//全部生物的AC和命中数值上调
+
+IF
+	GlobalGT("SY#ACTHA","GLOBAL",0)
+	!GlobalTimerNotExpired("SY#SECOND","LOCALS")
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SY#ACTH1",Player%n%)	//显示图标
+		Continue()
+END

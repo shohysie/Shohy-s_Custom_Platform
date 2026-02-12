@@ -1,0 +1,28 @@
+//写入全局脚本，仅战斗中生效，战斗外施法生效
+IF
+	!TriggerOverride(Player1,HaveKnownSpellRES("SY#CPF0Z"))
+	!CombatCounter(0)
+THEN
+	RESPONSE #100
+		ActionOverride(Player1,AddSpecialAbility("SY#CPF0Z"))	//主角获得召唤技能SY#CPF0Z进行全局调整
+		Continue()
+END
+
+IF
+	GlobalGT("SY#CPF00","GLOBAL",0)	//值大于0开启，否则关闭所有机能
+	!GlobalTimerNotExpired("SY#CPF0T","GLOBAL")
+	!Exists("SY#CPF0A")
+	OR(7)
+		!CombatCounter(0)
+		SpellCastRES("0",Player1)
+		SpellCastRES("0",Player2)
+		SpellCastRES("0",Player3)
+		SpellCastRES("0",Player4)
+		SpellCastRES("0",Player5)
+		SpellCastRES("0",Player6)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("SY#CPF0T","GLOBAL",6)
+		CreateCreatureObject("SY#CPF0A",Player1,0,0,0) 
+		Continue()
+END

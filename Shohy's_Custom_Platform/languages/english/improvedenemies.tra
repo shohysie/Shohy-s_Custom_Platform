@@ -1,4 +1,4 @@
-@41 = "Enemy stats grow with protagonist XP"
+@41 = "Enhanced Enemies (Enemy stats grow with protagonist XP)"
 @42 = "Kill XP granted to last attacker"
 
 @45 = "'Enemy Enhancement Level' = (Level of a pure-class fighter with protagonist's XP) / 2.
@@ -10,8 +10,8 @@ For example: When the protagonist reaches 8 million experience points, the enemi
 @48 = "Hard: for each 'Enemy Enhance Level' the enemies gets 50% health and 4% of all damage; for every 'difficulty levels' the enemies get 1 point of magic resistance; for every 3 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 5 'difficulty levels' they get +1 bonus to all saving throws.
 For example: When the protagonist reaches 8 million experience points, the enemies increase their HP by 1000%, all damage made by 100%, magic resistance by 20%. They also get +7 bonus on  AC and THACO, +4 bonus on all saving throws. "
 
-@51 = "Settings of 'Attributes of enemies grow with experience or level of the protagonist' (disabled by default)"
-@52 = "Settings of 'Attributes of enemies grow with experience or level of the protagonist' (apply as 5-minute temporary effects and reapplied if in combat)"
+@51 = "Settings of 'Enhanced Enemies (Enemy stats grow with protagonist XP)'"
+@52 = "Settings of 'Enhanced Enemies (Enemy stats grow with protagonist XP)' (apply as 5-minute temporary effects and reapplied if in combat)"
 @53 = "Turns off, attributes of enemies won't increase"
 @54 = "Easy, attributes of enemies increase slightly"
 @55 = "Noraml, attributes of enemies increase normally"

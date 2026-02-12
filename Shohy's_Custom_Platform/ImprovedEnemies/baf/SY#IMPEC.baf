@@ -1,0 +1,48 @@
+//玩家和附近敌人的属性调整，以Player1~6为中心施展范围法术
+//需要等待生物等级调整完毕SY#LVADJUST=1再施法
+
+//敌人数值少许提升
+IF
+	Global("SY#LVADJUST","LOCALS",1)
+	Global("SY#IMPE0","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SY#IMPE1",Player1)
+		ReallyForceSpellRes("SY#IMPE1",Player2)
+		ReallyForceSpellRes("SY#IMPE1",Player3)
+		ReallyForceSpellRes("SY#IMPE1",Player4)
+		ReallyForceSpellRes("SY#IMPE1",Player5)
+		ReallyForceSpellRes("SY#IMPE1",Player6)
+		SetGlobal("SY#LVADJUST","LOCALS",2)
+		Continue()
+END
+//敌人数值中等提升
+IF
+	Global("SY#LVADJUST","LOCALS",1)
+	Global("SY#IMPE0","GLOBAL",2)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SY#IMPE2",Player1)
+		ReallyForceSpellRes("SY#IMPE2",Player2)
+		ReallyForceSpellRes("SY#IMPE2",Player3)
+		ReallyForceSpellRes("SY#IMPE2",Player4)
+		ReallyForceSpellRes("SY#IMPE2",Player5)
+		ReallyForceSpellRes("SY#IMPE2",Player6)
+		SetGlobal("SY#LVADJUST","LOCALS",2)
+		Continue()
+END
+//敌人数值大幅提升
+IF
+	Global("SY#LVADJUST","LOCALS",1)
+	Global("SY#IMPE0","GLOBAL",3)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SY#IMPE3",Player1)
+		ReallyForceSpellRes("SY#IMPE3",Player2)
+		ReallyForceSpellRes("SY#IMPE3",Player3)
+		ReallyForceSpellRes("SY#IMPE3",Player4)
+		ReallyForceSpellRes("SY#IMPE3",Player5)
+		ReallyForceSpellRes("SY#IMPE3",Player6)
+		SetGlobal("SY#LVADJUST","LOCALS",2)
+		Continue()
+END
