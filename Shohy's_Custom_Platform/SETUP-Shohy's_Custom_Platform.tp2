@@ -432,7 +432,7 @@ COPY_EXISTING ~splprot.2da~ ~override~
 	END
 	PATCH_IF (splprot_stonskins = 0) BEGIN
 		SET "splprot_stonskins" = "%rows%"
-		INSERT_2DA_ROW rows 4 ~%rows%_STONESKINS>=n                          88                                            -1                                            4~
+		INSERT_2DA_ROW rows 4 ~%rows%_STONESKINS=n                           88                                            -1                                            4~
 	END
 BUT_ONLY	//splprot_stonskins为splprot.2da新增STONESKINS判断行的编号
 
@@ -1584,7 +1584,7 @@ COPY_EXISTING ~splprot.2da~ ~override~
 	END
 	PATCH_IF (splprot_stonskins = 0) BEGIN
 		SET "splprot_stonskins" = "%rows%"
-		INSERT_2DA_ROW rows 4 ~%rows%_STONESKINS>=n                          88                                            -1                                            4~
+		INSERT_2DA_ROW rows 4 ~%rows%_STONESKINS=n                           88                                            -1                                            4~
 	END
 BUT_ONLY	//splprot_stonskins为splprot.2da新增STONESKINS判断行的编号
 

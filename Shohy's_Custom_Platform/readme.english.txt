@@ -11,7 +11,7 @@ A permanent blue button appears in the protagonist's innate ability bar on his f
 
 Current Modules:
 1. Extra modifiers of Intelligence/Wisdom/Charisma.
-2. Enhanced Enemies (Enemy stats grow with protagonist XP); Kill XP granted to last attacker.
+2. Enemy stats grow with protagonist XP; Kill XP granted to last attacker.
 3. Weapon Styles Rebalance, and Detailed Ajustments for Weapon Types (NOTE:  Incompatible with legacy Weapon Style Rebalance mods);
 4. Enemies cast innate abilities, and elevate their levels with the protagonist.
 5. Increasing AC and Hit Values for all Creatures (to prevent the AC modifier from becoming meaningless after hitting the -20 lower limit).
@@ -32,7 +32,7 @@ If the protagonist is changed in multiplayer games, the platform's settings butt
 [Extra modifiers of Intelligence/Wisdom/Charisma]
 Fixed the issue where manually disabling the additional adjustments for singing and dancing was ineffective.
 
-[Enhanced Enemies (Enemy stats grow with protagonist XP)]
+[Enemy stats grow with protagonist XP]
 Fixed the issue of insufficient enemy stat increases.
 Enemies now gain at least 10/20/50 HP (for the three difficulty options) and slight increases in other stats.
 
