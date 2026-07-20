@@ -2,18 +2,50 @@
 @22 = "Since the modifiers of casting level cannot be accumulated, the effect of increasing casting level on equipment will be changed to increase Intelligence/Wisdom. Recommended to install after item MODs"
 @23 = "'Extra modifiers of Intelligence/Wisdom/Charisma' should be installed first"
 
-@26 = "Intelligence modifies the casting level of Wizards; Wisdom modifies the casting levels of Clerics, Druids, Paladins, Rangers, and Shamans, and modifies the AC of Monks; Charisma modifies the casting levels of Sorcerers and Bards (optionally modified with intelligence), and modifies the turn undead levels of Paladins and Clerics, as well as the AC of dancing Shamans, the save bonus of Bard songs vs. school of Conjurer, Enchanter and Necromancer. "
-@27 = "Relationship between the above modifiers and the corresponding attributes: When the attribute reaches 13/15/17/19/21/23/25, the character will receive 1/-2/-3/-4/-5/-6/-7 modifiers respectively; When the attribute is as low as 7/6/5/4/3/2/1, the character will receive-1/-2/-3/-4/-5/-6/-7 modifiers respectively"
-@28 = "Wisdom also modifies everyone's ability to resist spells. When the Wisdom value reaches 15/16/17/18, the character gets +1/2/3/4 bonus on saving vs. spell; when the perception value is down to 7/4/3/2/1, the character gets -1/-2/-3/-4/-6 penalty on saving vs. spell respectively. "
-@29 = "When the Wisdom reaches 19/20/21/22/23/24/25, the character obtains immuninty to Command, Spook, Charm Person, Sleep/Hold Person, Ray of Enfeeblement, Horror/Dire Charm/Mental Domination, Confusion, Emotion: Hopelessness/Chaos, Feeblemind, Hold Monster/Domination/Death Spell. "
+@24 = "Module function settings: Extra modifiers of Intelligence/Wisdom/Charisma"
+@25 = "Set the modifier of Intelligence, Wisdom, and Charisma to caster level (overrides other effects that modify caster level)"
+@26 = "Set other modifiers of Intelligence (mimicking 4e rules: modify wizard's casting speed)"
+@27 = "Set other modifiers of Wisdom and Charisma (mimicking 3e rules: Wisdom modifies monk's AC, Charisma modifies paladin and cleric's turn undead level, shaman's AC while dancing, and bard's song effects)"
+@28 = "Set high Wisdom's spell resistance bonus (mimicking 2e rules: high Wisdom characters gain extra saving throws against spells and immunity to some mind-affecting spells)"
 
-@31 = "Settings of 'Extra modifiers of Intelligence/Wisdom/Charisma' (enabled by default)"
-@32 = "Settings of 'Extra modifiers of Intelligence/Wisdom/Charisma'"
-@33 = "Enable all modifiers, with the casting level modifiers of Sorcerers and Bards dependenting on Charisma (default)"
-@34 = "Enable all modifiers, with the casting level modifiers of Sorcerers and Bards dependenting on Intelligence"
-@35 = "Disable all extra modifiers of Intelligence/Wisdom/Charisma"
+@30 = "Disable caster level modifier"
+@31 = "Enable modifier, and use Charisma to modify sorcerer and bard caster level"
+@32 = "Enable modifier, and use Intelligence to modify sorcerer and bard caster level"
+@33 = "Keep current setting (caster level modifier disabled) and return to previous menu"
+@34 = "Keep current setting (Charisma modifies sorcerer and bard caster level) and return to previous menu"
+@35 = "Keep current setting (Intelligence modifies sorcerer and bard caster level) and return to previous menu"
 
-@38 = "
-The bonus of wizard casting level has been altered to bonus of intelligence."
-@39 = "
-The bonus of cleric casting level has been altered to bonus of wisdom."
+@36 = "Disable Intelligence modifier to casting speed"
+@37 = "Enable Intelligence modifier to casting speed, only for wizard class"
+@38 = "Enable Intelligence modifier to casting speed, effective for wizards, bards, and sorcerers"
+@39 = "Keep current setting (Intelligence does not modify wizard's casting speed) and return to previous menu"
+@40 = "Keep current setting (Intelligence modifies wizard's casting speed) and return to previous menu"
+@41 = "Keep current setting (Intelligence modifies wizard, bard, and sorcerer casting speed) and return to previous menu"
+
+@42 = "Disable Wisdom and Charisma modifiers to other stats"
+@43 = "Enable Wisdom and Charisma modifiers to other stats"
+@44 = "Keep current setting (Wisdom and Charisma have no modifiers to other stats) and return to previous menu"
+@45 = "Keep current setting (Wisdom and Charisma have modifiers to other stats) and return to previous menu"
+
+@46 = "Disable high Wisdom spell resistance bonus"
+@47 = "Enable high Wisdom spell resistance bonus"
+@48 = "Keep current setting (high Wisdom has no spell resistance bonus) and return to previous menu"
+@49 = "Keep current setting (high Wisdom has spell resistance bonus) and return to previous menu"
+
+@50 = "Since spell DC adjustment is difficult to implement, wizard caster level and casting speed adjustments are used as substitutes."
+@51 = "Intelligence modifies the casting level of Wizards; Wisdom modifies the casting levels of Clerics, Druids, Paladins, Rangers, and Shamans; Charisma modifies the casting levels of Sorcerers and Bards (optionally modified with intelligence)"
+@52 = "Wisdom modifies the AC of Monks, Charisma modifies the turn undead levels of Paladins and Clerics, as well as the AC of dancing Shamans, the save bonus of Bard songs vs. school of Conjurer, Enchanter and Necromancer. "
+@53 = "Relationship between the above modifiers and the corresponding attributes: When the attribute reaches 13/15/17/19/21/23/25, the character will receive 1/2/3/4/5/6/7  modifiers respectively; When the attribute is as low as 7/6/5/4/3/2/1, the character will receive -1/-2/-3/-4/-5/-6/-7 modifiers respectively."
+@54 = "Intelligence modifies wizard's casting speed: When Intelligence reaches 18/20/22/24, the character gains 1/2/3/4 casting speed modifier respectively."
+@55 = "Wisdom also modifies everyone's ability to resist spells. When the Wisdom value reaches 15/16/17/18, the character gets +1/2/3/4 bonus on saving vs. spell; when the perception value is down to 7/4/3/2/1, the character gets -1/-2/-3/-4/-6 penalty on saving vs. spell respectively. "
+@56 = "When the Wisdom reaches 19/20/21/22/23/24/25, the character obtains immunity to Command, Spook, Charm Person, Sleep/Hold Person, Ray of Enfeeblement, Horror/Dire Charm/Mental Domination, Confusion, Emotion: Hopelessness/Chaos, Feeblemind, Hold Monster/Domination/Death Spell. "
+
+@57 = "^Weight[ 	?]*:[ 	?]*\([0-9]+\)[ 	?]*$"
+@58 = "
+The bonus of wizard casting level has been altered to bonus of intelligence.
+
+^Weight:\1"
+@59 = "
+The bonus of cleric casting level has been altered to bonus of wisdom.
+
+^Weight:\1"

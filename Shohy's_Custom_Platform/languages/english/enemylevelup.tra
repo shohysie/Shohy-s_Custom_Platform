@@ -1,12 +1,24 @@
-@204 = "Enemies elevate their levels with the protagonist (permanent effect), and cast innate abilities."
+@201 = "Enemies elevate their levels with the protagonist (permanent effect), and cast innate abilities."
 
+@206 = "Curse"
 @207 = "Bard Song"	//11798
 @208 = "Enhanced Bard Song"	//65599
 @209 = "Disturb Casting"
 
+@210 = "Keep current settings (No enemies grow up) and return to previous menu"
+@211 = "Keep current settings (Enemies grow up) and return to previous menu"
+@212 = "Keep current settings (No normal innate abilities) and return to previous menu"
+@213 = "Keep current settings (20%-50% casting normal innate abilities) and return to previous menu"
+@214 = "Keep current settings (40%-100% casting normal innate abilities) and return to previous menu"
+@215 = "Keep current settings (No high-level abilities) and return to previous menu"
+@216 = "Keep current settings (1-3 high-level abilities during a while) and return to previous menu"
+@217 = "Keep current settings (about 4 high-level abilities during a while) and return to previous menu"
+@218 = "Keep current settings (Skills affected by race) and return to previous menu"
+@219 = "Keep current settings (Skills not affected by race) and return to previous menu"
+
 @221 = "Settings of 'Enemies elevate their levels with the protagonist (permanent effect), and cast innate abilities'"
 @222 = "Settings of low-level enemies' growth"
-@223 = "Low-level enemies do not grow up (default)"
+@223 = "Low-level enemies do not grow up"
 @224 = "Low-level enemies elevate their levels with the protagonist, and the level related attributes also increase. (Permanent effect: Even deactivated, upgraded enemies won't drop back)"
 @225 = "Settings of enabling enemies to cast normal innate abilities (e.g. Enrage, Called Shot and Poison Weapon)"
 @226 = "Settings of enabling enemies to cast normal innate abilities"
@@ -15,11 +27,11 @@
 @229 = "An enemy has a 40%-100% probability of casting normal innate abilities, the probability increases with the enemy's level"
 @230 = "Settings of enabling enemies to cast high-level abilities (e.g. Enrage, Called Shot and Assassination)"
 @231 = "Settings of enabling enemies to cast high-level abilities"
-@232 = "Enemies will not cast high-level abilities (default)"
+@232 = "Enemies will not cast high-level abilities"
 @233 = "An enemy casts 1-3 skills during a while, including normal and high-level abilities"
 @234 = "An enemy casts about 4 skills during a while, including normal and high-level abilities"
 @235 = "Settings of whether the enemies' skills are affected by race"
-@236 = "Civilized races cast abilities well, savage races cast abilities with halved changce, and non-sapient races cast no abilities (default)"
+@236 = "Civilized races cast abilities well, savage races cast abilities with halved changce, and non-sapient races cast no abilities"
 @237 = "All races cast abilities well"
 
 @241 = "Read the detailed description of 'enemies elevate their levels with the protagonist'"

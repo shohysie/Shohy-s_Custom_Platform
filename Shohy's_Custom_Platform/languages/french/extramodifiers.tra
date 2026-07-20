@@ -1,0 +1,51 @@
+@21 = "Modificateurs supplémentaires d'Intelligence, Sagesse et Charisme"
+@22 = "Les effets d'augmentation du niveau d'incantation sur l'équipement sont transformés en augmentation d'Intelligence/Sagesse (car les modificateurs de niveau d'incantation ne se cumulent pas). Recommandé après les MODs d'objets"
+@23 = "Nécessite d'abord d'installer 'Modificateurs supplémentaires d'Intelligence, Sagesse et Charisme'"
+
+@24 = "Paramètres du module : Modificateurs supplémentaires d'Intelligence, Sagesse et Charisme"
+@25 = "Définir la modification du niveau d'incantation par l'Intelligence, la Sagesse et le Charisme (remplace les autres effets modifiant le niveau d'incantation)"
+@26 = "Définir les autres modifications de l'Intelligence (imitation des règles 4e : modifie la vitesse d'incantation du magicien)"
+@27 = "Définir les autres modifications de la Sagesse et du Charisme (imitation des règles 3e : la Sagesse modifie la CA du moine, le Charisme modifie le niveau de répulsion des morts-vivants du paladin et du clerc, la CA du chamane dansant, et les effets du chant du barde)"
+@28 = "Définir le bonus de résistance aux sorts lié à une Sagesse élevée (imitation des règles 2e : les personnages à haute Sagesse gagnent des jets de sauvegarde supplémentaires contre les sorts et une immunité à certains sorts mentaux)"
+
+@30 = "Désactiver la modification du niveau d'incantation"
+@31 = "Activer la modification, et utiliser le Charisme pour modifier le niveau d'incantation du sorcier et du barde"
+@32 = "Activer la modification, et utiliser l'Intelligence pour modifier le niveau d'incantation du sorcier et du barde"
+@33 = "Conserver le réglage actuel (modification du niveau d'incantation désactivée) et revenir au menu précédent"
+@34 = "Conserver le réglage actuel (Charisme modifie le niveau d'incantation du sorcier et du barde) et revenir au menu précédent"
+@35 = "Conserver le réglage actuel (Intelligence modifie le niveau d'incantation du sorcier et du barde) et revenir au menu précédent"
+
+@36 = "Désactiver la modification de la vitesse d'incantation par l'Intelligence"
+@37 = "Activer la modification de la vitesse d'incantation par l'Intelligence, uniquement pour la classe de magicien"
+@38 = "Activer la modification de la vitesse d'incantation par l'Intelligence, effective pour les magiciens, bardes et sorciers"
+@39 = "Conserver le réglage actuel (l'Intelligence ne modifie pas la vitesse d'incantation du magicien) et revenir au menu précédent"
+@40 = "Conserver le réglage actuel (l'Intelligence modifie la vitesse d'incantation du magicien) et revenir au menu précédent"
+@41 = "Conserver le réglage actuel (l'Intelligence modifie la vitesse d'incantation du magicien, barde et sorcier) et revenir au menu précédent"
+
+@42 = "Désactiver les modifications d'autres statistiques par la Sagesse et le Charisme"
+@43 = "Activer les modifications d'autres statistiques par la Sagesse et le Charisme"
+@44 = "Conserver le réglage actuel (Sagesse et Charisme n'ont pas de modification sur les autres statistiques) et revenir au menu précédent"
+@45 = "Conserver le réglage actuel (Sagesse et Charisme ont des modifications sur les autres statistiques) et revenir au menu précédent"
+
+@46 = "Désactiver le bonus de résistance aux sorts lié à une Sagesse élevée"
+@47 = "Activer le bonus de résistance aux sorts lié à une Sagesse élevée"
+@48 = "Conserver le réglage actuel (Sagesse élevée sans bonus de résistance aux sorts) et revenir au menu précédent"
+@49 = "Conserver le réglage actuel (Sagesse élevée avec bonus de résistance aux sorts) et revenir au menu précédent"
+
+@50 = "Étant donné que l'ajustement du DD des sorts est difficile à implémenter, on utilise à la place des ajustements du niveau d'incantation et de la vitesse d'incantation du magicien."
+@51 = "L'Intelligence modifie le niveau d'incantation des magiciens ; la Sagesse modifie celui des clercs, druides, paladins, rangers et chamans ; le Charisme modifie celui des sorciers et bardes (optionnellement modifié par l'Intelligence)"
+@52 = "La Sagesse modifie la CA du moine ; le Charisme modifie le niveau de répulsion des morts-vivants du paladin et du clerc, ainsi que la CA du chamane dansant, et le bonus aux jets de sauvegarde des chants du barde contre les écoles de convocation, enchantement et nécromancie."
+@53 = "Relation entre les modificateurs ci-dessus et les attributs correspondants : lorsque l'attribut atteint 13/15/17/19/21/23/25, le personnage gagne respectivement 1/2/3/4/5/6/7 points de modificateur ; lorsque l'attribut descend à 7/6/5/4/3/2/1, le personnage subit respectivement -1/-2/-3/-4/-5/-6/-7 points de modificateur."
+@54 = "L'Intelligence modifie la vitesse d'incantation du magicien : lorsque l'Intelligence atteint 18/20/22/24, le personnage gagne respectivement 1/2/3/4 points de modificateur de vitesse d'incantation."
+@55 = "La Sagesse modifie également la capacité de chacun à résister aux sorts. Pour une Sagesse de 15/16/17/18, le personnage gagne +1/2/3/4 aux jets de sauvegarde contre les sorts ; pour une Sagesse de 7/4/3/2/1, le personnage subit respectivement -1/-2/-3/-4/-6 aux jets de sauvegarde contre les sorts."
+@56 = "Lorsque la Sagesse atteint 19/20/21/22/23/24/25, le personnage obtient l'immunité contre : ordre suprême, peur suprême, charme-personne, sommeil / immobilisation de personne, rayons de faiblesse, terreur / charme funeste / domination mentale, confusion, émotion : désespoir / chaos, faiblesse mentale, immobilisation de monstre / domination / mort."
+
+@57 = "^Poids[ 	?]*:[ 	?]*\([0-9]+\)[ 	?]*$"
+@58 = "
+L'effet d'augmentation du niveau d'incantation arcanique de cet objet a été transformé en augmentation d'Intelligence.
+
+^Poids:\1"
+@59 = "
+L'effet d'augmentation du niveau d'incantation divin de cet objet a été transformé en augmentation de Sagesse.
+
+^Poids:\1"

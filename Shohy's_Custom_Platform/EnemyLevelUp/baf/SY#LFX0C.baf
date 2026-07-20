@@ -1,0 +1,46 @@
+//写入SY#CPF0C.baf
+//施展SY#LFX01移除可能存在的队友受等级修正导致豁免变化
+IF
+	!GlobalGT("SY#CASTONCE","LOCALS",0)
+	TriggerOverride(Player2,GlobalGT("SY#LVFXD","LOCALS",0))
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES("SY#LFX01",Player2)
+		Continue()
+END
+
+IF
+	!GlobalGT("SY#CASTONCE","LOCALS",0)
+	TriggerOverride(Player3,GlobalGT("SY#LVFXD","LOCALS",0))
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES("SY#LFX01",Player3)
+		Continue()
+END
+
+IF
+	!GlobalGT("SY#CASTONCE","LOCALS",0)
+	TriggerOverride(Player4,GlobalGT("SY#LVFXD","LOCALS",0))
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES("SY#LFX01",Player4)
+		Continue()
+END
+
+IF
+	!GlobalGT("SY#CASTONCE","LOCALS",0)
+	TriggerOverride(Player5,GlobalGT("SY#LVFXD","LOCALS",0))
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES("SY#LFX01",Player5)
+		Continue()
+END
+
+IF
+	!GlobalGT("SY#CASTONCE","LOCALS",0)
+	TriggerOverride(Player6,GlobalGT("SY#LVFXD","LOCALS",0))
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES("SY#LFX01",Player6)
+		Continue()
+END

@@ -1,0 +1,12 @@
+@301 = "Augmenter la CA et la valeur de toucher (THAC0) de toutes les créatures, pour éviter que le modificateur de CA ne perde son sens après avoir atteint la limite inférieure de -20."
+
+@310 = "Ajuster la CA et la valeur de toucher de toutes les créatures (recommandé lorsque la CA atteint sa limite inférieure)"
+@311 = "Désactiver l'ajustement"
+@312 = "Augmenter CA et THAC0 de toutes les créatures de +10"
+@313 = "Augmenter CA et THAC0 de toutes les créatures de +20"
+@314 = "Conserver le réglage actuel (ajustement désactivé) et revenir au menu précédent"
+@315 = "Conserver le réglage actuel (+10) et revenir"
+@316 = "Conserver le réglage actuel (+20) et revenir"
+@317 = "Lire l'explication détaillée de l'augmentation de CA et THAC0"
+@318 = "Une CA plus basse rend plus difficile à toucher, tandis qu'une valeur de toucher plus basse facilite l'attaque. Le jeu impose une limite inférieure de -20 à la CA, mais aucune limite à la valeur de toucher. Cela peut rendre la réduction de CA inefficace face à des valeurs de toucher très basses."
+@319 = "Augmenter simultanément la CA et la valeur de toucher de toutes les créatures donne à la CA davantage de marge de manœuvre vers le bas. Cela a peu d'impact sur le jeu normal, mais convient aux versions du jeu où l'on dispose de nombreux moyens (MODs) de réduire la CA."

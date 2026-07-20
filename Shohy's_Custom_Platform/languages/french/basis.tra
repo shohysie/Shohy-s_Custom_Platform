@@ -1,0 +1,28 @@
+@1 = "Plateforme de réglage personnalisé de Shohy (base pour charger les différents modules fonctionnels)"
+@2 = "Détection d'une ancienne version de Rééquilibrage des styles d'armes incompatible. Veuillez la désinstaller d'abord"
+
+@8 = "Disponible uniquement pour les éditions EE"
+@9 = "La plateforme de réglage globale doit être installée en premier"
+
+@10 = "Lire les instructions de la plateforme"
+@11 = "Configurer les réglages personnalisés globaux"
+@12 = "Réglages terminés, quitter"
+@13 = "Fermer la plateforme (NB : tous les modules chargés seront désactivés !)"
+@14 = "Revenir aux options précédentes"
+@15 = "Lire les instructions détaillées"
+@16 = "Activer la plateforme (les modules fonctionnels ne seront effectifs qu'après activation)"
+
+@18 = "Cette plateforme s'active au combat et lors de l'incantation, permettant aux ajustements de chaque module de s'appliquer. Consultez la description de chaque module pour plus de détails. Hors combat, elle se désactive automatiquement pour économiser les ressources."
+@19 = "Si la plateforme est entièrement désactivée, les modules chargés cesseront également de fonctionner, sauf s'il s'agit d'effets persistants ou permanents."
+
+
+@10000 = "EEex détecté. L'installation du module spécial adapté à EEex permet d'obtenir des effets supplémentaires comme une attaque supplémentaire de la main secondaire, mais elles ne fonctionneront pas avec Infinity Engine 2.7 et la compatibilité n'est pas garantie.
+Entrez 1 pour installer le module spécial, ou 2 pour une installation normale :"
+@10001 = "Touché"
+@10002 = "Raté"
+@10003 = "Arme inefficace."
+@10004 = "Jet d'attaque (gauche)"
+@10005 = "Jet d'attaque "
+@10006 = "Coup critique"
+@10007 = "Échec critique"
+@10008 = "Coup critique détourné"

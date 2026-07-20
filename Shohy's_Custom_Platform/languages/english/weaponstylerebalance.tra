@@ -1,111 +1,147 @@
-@101 = "Rebalance for Weapon Styles and Detailed Ajustments for Weapon Types"
-@102 = "More proficiency points can be spent to all Weapon Styles"
-@103 = "(Recommended) No more proficiency points in fact but automaticly reduce one point on 2 and 3 ranks of each Weapon Style, in exchange for extra benefits. Compatible with everything."
-@104 = "More proficiency points indeed, but not compatible with other MODs that adjust Weapon Styles. Should be installed after all new Kit MODs." 
-@105 = "Requires the opponent 'Rebalance for Weapon Styles' to be installed first."
+@101 = "Rebalance for Weapon Styles and Detailed Adjustments for Weapon Types"
+@102 = "More proficiency slots can be spent on all Weapon Styles"
+@103 = "(Recommended) Does not actually increase the rank limit, but automatically reduces one rank when reaching rank 2 or 3 in exchange for extra bonuses (Manually operable). No compatibility issues."
+@104 = "Actually increases the proficiency rank limit, but not compatible with other MODs that alter Weapon Style rules. Must be installed after all Kit MODs."
+@105 = "Requires 'Rebalance for Weapon Styles and Detailed Adjustments for Weapon Types' to be installed first."
 
-@111 = "Rebalance for Weapon Styles: Two-Weapon Style decreases from rank 3 to 2 in exchange for extra bonus. One more decline when reaches rank 3 again. Can be closed by the protagonist's innate ability and get the deducted rank back."
-@112 = "Rebalance for Weapon Styles: Two-Weapon Style decreases from rank 2 to 1 in exchange for extra bonus. Invest one more point to reach rank 2 normally. Can be closed by the protagonist's innate ability and get the deducted rank back."
-@113 = "Rebalance for Weapon Styles: Two-Weapon Style decreases from rank 3 to 2. Invest one more point to reach rank 3 normally and remove the penalty of APR. Can be closed by the protagonist's innate ability and get the deducted rank back."
-@114 = "Rebalance for Weapon Styles: Two-Handed Weapon Style decreases from rank 2 to 1 in exchange for extra bonus. Invest one more point to reach rank 2 normally. Can be closed by the protagonist's innate ability and get the deducted rank back."
-@115 = "Rebalance for Weapon Styles: Sword and Shield Style decreases from rank 2 to 1 in exchange for extra bonus. Invest one more point to reach rank 2 normally. Can be closed by the protagonist's innate ability and get the deducted rank back."
-@116 = "Rebalance for Weapon Styles: Single-Weapon decreases from rank 2 to 1 in exchange for extra bonus. Invest one more point to reach rank 2 normally. Can be closed by the protagonist's innate ability and get the deducted rank back."
+@111 = "Weapon Style Rebalance: Two-Weapon Style reduces from rank 3 to 2, with numerical compensation already given. If raised to rank 3 again, it will be reduced once more. Can be turned off via protagonist's innate ability."
+@112 = "Weapon Style Rebalance: Two-Weapon Style reduces from rank 2 to 1, with numerical compensation already given. Can then be raised normally to rank 2. Can be turned off via protagonist's innate ability."
+@113 = "Weapon Style Rebalance: Two-Weapon Style reduces from rank 3 to 2, then can be raised normally to rank 3 and removes the attack per round penalty. Can be turned off via protagonist's innate ability."
+@114 = "Weapon Style Rebalance: Two-Handed Weapon Style reduces from rank 2 to 1, with numerical compensation already given. Can then be raised normally to rank 2. Can be turned off via protagonist's innate ability."
+@115 = "Weapon Style Rebalance: Sword and Shield Style reduces from rank 2 to 1, with numerical compensation already given. Can then be raised normally to rank 2. Can be turned off via protagonist's innate ability."
+@116 = "Weapon Style Rebalance: Single-Weapon Style reduces from rank 2 to 1, with numerical compensation already given. Can then be raised normally to rank 2. Can be turned off via protagonist's innate ability."
 
-@121 = "Rebalance for Weapon Styles: refunds one deducted Two-Weapon Style point."
-@122 = "Rebalance for Weapon Styles: refunds one deducted Two-Handed Style point."
-@123 = "Rebalance for Weapon Styles: refunds one deducted Sword and Shield Style point."
-@124 = "Rebalance for Weapon Styles: refunds one deducted Single-Weapon Style point."
+@117 = "Weapon Style Rebalance: Refunded the deducted proficiency rank for Two-Weapon Style."
+@118 = "Weapon Style Rebalance: Refunded the deducted proficiency rank for Two-Handed Weapon Style."
+@119 = "Weapon Style Rebalance: Refunded the deducted proficiency rank for Sword and Shield Style."
+@120 = "Weapon Style Rebalance: Refunded the deducted proficiency rank for Single-Weapon Style."
 
-@131 = "Trip attack"
-@132 = "Disarm"
-@133 = "Raid"
-@134 = "Shield Bash"
-@135 = "Spinning Slash"
-@136 = "Hammer Blow"
-@137 = "Hook"
-@138 = "Limb Strike"
-@139 = "Loses balance"
-@139 = "Limbs wounded"
+@121 = "Grip Throw"
+@122 = "Disarm"
+@123 = "Sudden Strike"
+@124 = "Shield Bash"
+@125 = "Spinning Slash"
+@126 = "Stunning Blow"
+@127 = "Hook and Drag"
+@128 = "Limb Strike"
+@129 = "Wound"
 
-@141 = "Settings for 'Rebalance for Weapon Styles and Detailed Ajustments for Weapon Types' (enabled by default)"
-@142 = "Settings for 'Rebalance for Weapon Styles and Detailed Ajustments for Weapon Types'"
-@143 = "Why should I deduct my rank of Weapon Style? Give it back! Then turn off this fxxking rebalance."
-@144 = "Turn off this functional module but not refund the deducted stars (the exchanged bonus will continue to take effect when turned on again)"
-@145 = "Turn off the Weapon Styles Rebalance and Detailed Ajustments for Weapon Types"
-@146 = "Activate the Weapon Styles Rebalance and Detailed Ajustments for Weapon Types, effective for all (enabled by default)"
-@147 = "Activate the Weapon Styles Rebalance and Detailed Ajustments for Weapon Types, effective for teammates only"
-@148 = "Turn off Detailed Ajustments for Weapon Types, keep the Weapon Styles Rebalance only, effective for all"
-@149 = "Turn off Detailed Ajustments for Weapon Types, keep the Weapon Styles Rebalance only, effective for teammates only"
+@131 = "Lose Balance"
+@132 = "Limb Trauma"
+@133 = "Bleeding"
 
-@151 = "Read the detailed description of 'Weapon Styles Rebalance'"
-@152 = "Read the detailed description of 'Detailed Ajustments for Weapon Types'"
-@153 = "Read the detailed description of 'More proficiency points can be spent to all Weapon Styles'"
+@134 = "Set whether to gain higher weapon style proficiency ranks by deducting a rank"
+@135 = "When proficiency reaches rank 2 or 3, automatically deduct one rank in exchange for extra bonuses (requires Weapon Style Rebalance to be enabled)"
+@136 = "Disable automatic rank deduction and refund any deducted ranks (if any)"
+@137 = "Disable automatic rank deduction but do not refund deducted ranks (extra bonuses will continue to take effect if re-enabled)"
+@138 = "Keep current setting (automatic rank deduction for extra bonuses) and return to previous menu"
+@139 = "Keep current setting (no automatic rank deduction) and return to previous menu"
 
-@156 = "Icon display on Weapon Style Rebalance taking effects"
-@157 = "Display 'Heroism' icon on teammates' portrait"
-@158 = "Do not display icons (Default)"
+@140 = "Module function settings: Weapon Style Rebalance"
+@141 = "Disable all functions (Weapon Detail Effects + Weapon Style Rebalance)"
+@142 = "Enable all functions (Weapon Detail Effects + Weapon Style Rebalance), effective for both enemies and allies"
+@143 = "Enable all functions (Weapon Detail Effects + Weapon Style Rebalance), effective only for player's party"
+@144 = "Disable Weapon Detail Effects, keep only Weapon Style Rebalance, effective for both enemies and allies"
+@145 = "Disable Weapon Detail Effects, keep only Weapon Style Rebalance, effective only for player's party"
+@146 = "Keep current setting (all functions disabled) and return to previous menu"
+@147 = "Keep current setting (all functions enabled, both enemies and allies) and return to previous menu"
+@148 = "Keep current setting (all functions enabled, only player's party) and return to previous menu"
+@149 = "Keep current setting (only Weapon Style Rebalance, both enemies and allies) and return to previous menu"
+@150 = "Keep current setting (only Weapon Style Rebalance, only player's party) and return to previous menu"
 
-@161 = "[Single-Weapon Style]
-1 Slot: +2 to attack speed, one special attack in each round for tripping your enemy, grappling him temporarily ( provides -2 penalty to his THAC0 and AC and make him unmovable ), and 75% chance to paralyze him or flip him to the floor. Additionally, when engaged in single combat (no other enemies within 4 feet), you gain a +1 bonus to attack rolls and AC for each Single-Weapon Style Slot.
-2 Slots: +4 to attack speed, one special attack in each round for tripping your enemy, grappling him temporarily ( provides -4 penalty to his THAC0 and AC and make him unmovable ), stunning or flip him to the floor, with 10% chance to disarm his weapons (only affects humanoids). Additionally, when engaged in single combat (no other enemies within 4 feet), you gain a +2 bonus to attack rolls and AC.
-The tripping takes effect when the enemy's strength does not exceed the character's strength by more than 2 points. The enemy can also make a save vs. breath with a +6 bonus to avoid being tripped (-1 save penalty for every 4 levels of the attacker).
-If you successfully tripped your opponent, or he is is already in a helpless state (stunned / hold / unconsciousness), you can continue to cast tripping without the limitation of once per round.
-A hasted character can make two trip attacks in one round.
-Some creatures (such as wraiths or slimes) can not be tripped."
-@162 = "[Two-Handed Weapon Style]
-1 Slot: +1/2 attack per round.
-2 Slots: +1 attack per round.
-Strength modifier to your melee damage is increased by 50%."
-@163 = "[Two-Weapon Style]
--1/2 attack per round, unless 5 proficiency points are put into Two-Weapon Style (See the description of 'More proficiency points can be spent to all Weapon Styles').
-0 Slot: -2 to melee damage.
-1 Slot: -2 to melee damage while +1 bonus to melee AC.
-2 Slots: -1 to melee damage while +2 bonus to melee AC.
-3 Slots: +2 bonus to melee AC."
-@164 = "[Sword and Shield Style]
-With a shield that blocks the enemy's view, you can make a sudden strike with +2 bonus to attack rolls per round.
-1 Slot: +1 bonus to melee AC, one additional Shield Bash on nearest enemy per round besides normal attacks, which can break down your enemy's defense (-2 penalty to AC) for a while and knock him back. The enemy can make a save vs. breath with a +6 bonus to avoid the shield bash (-1 save penalty for every 4 levels of the attacker).
-2 Slots: +2 bonus to melee AC, one additional Shield Bash on nearest enemy per round besides normal attacks, which casues stunning damage of 1D4 + strength modifier and an extra stunning check.  The enemy can make a save vs. breath with a +6 bonus to avoid being stunned (-1 save penalty for every 4 levels of the attacker), but he'll still suffer a defense break and being knocked back.
-A hasted character can cast sudden strike and shield bash twice in one round.
-Effects of this style are allowed when using ranged weapons, except a bow or a crossbow."
-@165 = "[Unarmed (Monks only)]
-Twice special attacks in each round for tripping your enemy. When the monk has one weaopn (no matter one or two handed) in his hand, his special attack works as a tripping of rank 1 Single-Weapon Style. While nothing in hand, it works as a tripping of rank 2 Single-Weapon Style.
-For a monk armed with 2 weaopns, he losses his tripping attack ability."
+@151 = "Read detailed description of Weapon Style Rebalance"
+@152 = "Read detailed description of Weapon Detail Adjustments"
+@153 = "Read detailed description of 'More proficiency points can be spent on Weapon Styles'"
 
-@171 = "[Light weapons]
-Holding an one-handed light weapon (dagger, short sword, wakizashi, etc., or with bare hands) with another hand holding a shield or empty, your Dexterity Modifier is added to THAC0 (the bonus is 1, 2, 3, 4, 5 when dexterity reaches 16, 17, 19, 21, 24); with another hand also armed, there is no Dexterity Modifier, but +1 bonus to melee AC and off-hand THAC0.
-Holding a two-handed light weapon (spear, staff), you gets +1 bonus to melee AC and THAC0."
-@172 = "[Long-edged weapons]
-Holding an long-edged weapon (scimitar, long sword, bastar sword, katana, etc.) only, you have 50% chance each hit to exert a small AOE with slashing damage of 1D6 plus 50% of strength modifier; with another hand also armed or holding a shield, the probability of exerting AOE is halved. 
-Holding a two-handed long-edged weapon (two-handed sword in original game, two-handed katana and bastar sword provided by other MODs), you have 50% chance each hit to exert a larger AOE with slashing damage of 1D10 plus 50% of strength modifier (as two-handed strength modifier is raised to 150%, the modifier here is actually 75% of the original strength modifier). There is also an AOE with a two-handed halberds, but the probability is halved.
-Such AOEs won't hurt teammates and your direct target."
-@173 = "[Bludgeon weapons]
-Holding an one-handed bludgeon weapon (war hammer, mace, flail, morning star, etc.) only, you can exert one mighty blow each round, which stuns a target (Duration: 1/2 + Strength modifier to hit / 2 seconds. e.g., 25 STR - 4 seconds; 7 STR - 0 seconds), break down his defense (-2 penalty to AC) for a while and knock him back. A successful saving throw negates all effects; with another hand also armed or holding a shield, the probability of mighty blow is halved. 
-Holding a two-handed hammer (provided by other MODs), you can exert one mighty blow each round, which stuns a target (150% of the duration of one-handed weapons). The target who makes a save vs. breath negates stunning, but still suffers a short penalty of -2 to AC and knocking back.
-The enemy can save vs. breath with a +6 bonus to avoid being stun (-1 save penalty for every 4 levels of the attacker).
-A hasted character can exert two mighty blows in one round."
-@174 = "[Hooking weapons]
-Holding an one-handed weapon with hooking property (axe, or one-handed halberd provided by other MODs) only, you can exert one special attack in each round that can hook your foe's weapon, aromr or limbs to drag him. The target loses his balance (-4 penalty to AC and THAC0) for a short while unless saves vs. breath; with another hand also armed or holding a shield, the probability of hooking is halved. 
-Holding an two-handed weapon with hooking property (halberd, or two-handed axe provided by other MODs), you can exert one special attack in each round that can hook your foe's weapon, aromr or limbs to drag him down to the floor unless saves vs. breath, with 10% chance to disarm his weapons (only affects humanoids). 
-The dragging takes effect when the enemy's strength does not exceed the character's strength by more than 2 points.
-The enemy can save vs. breath with a +6 bonus to avoid being dragged down (-1 save penalty for every 4 levels of the attacker).
-Tripping (Single-Weapon Style) has priority over dragging when they're both available. If the tripping fails, then dragging becomes effective on the next attack.
-A hasted character can exert two dragging attacks in one round."
-@175 = "[Piercing Weapons]
-Holding an one-handed piercing weapon (dagger, short sword, wakizashi, etc.), on a critical hit, you deal an additional 1d4 + 50% Strength modifier piercing damage.
-Holding a two-handed piercing weapon (spear, etc.), on a critical hit, you deal an additional 1d8 + 50% Strength modifier piercing damage (as two-handed Strength modifier is raised to 150%, the modifier here is actually 75% of the original Strength modifier).
-Additionally, when holding a two-handed spear, you always get +2 to damage."
-@176 = "[Long stick Weapons]
-Holding an one-handed staff (e.g. 'Staff Mace +2') only, you can exert one special attack in each round that target an enemy's limbs, attempting to impose a limb penalty. The target suffers a -1 penalty to 1d3 randomly chosen attributes from: Attack rolls, AC, or Movement speed. These penalties last for a while (Duration: 1/2 + Strength modifier to hit / 2 rounds. e.g., 25 STR - 4 rounds; 7 STR - 0 rounds) and stack; with another hand also armed or holding a shield, the probability of beating the limbs is halved. 
-Holding a two-handed staff, you can exert one special attack in each round that target an enemy's limbs, attempting to impose a limb penalty. The target suffers a -2 penalty to 1d3 randomly chosen attributes from: Attack rolls, AC, or Movement speed. These penalties last for a while (150% of the duration of one-handed weapons) and stack.
-The enemy can save vs. breath with a +6 bonus to avoid all effects (-1 save penalty for every 4 levels of the attacker). Constructs/undead creatures, or creatures lacking limbs, are completely not affected.
-A hasted character can target the limbs twice in one round."
-@177 = "To summarize, the weapon detail effects activate normally when wielding a single weapon. When a shield or off-hand weapon is carried in the secondary hand, the probability of these effects triggering decreases; whereas when dual-wielding weapons, the frequency of effect performance increases."
+@156 = "Set whether to display an icon when Weapon Style Rebalance is active"
+@157 = "Display 'Heroism' icon on character portrait as a reminder"
+@158 = "Do not display an icon"
+@159 = "Keep current setting (display icon) and return to previous menu"
+@160 = "Keep current setting (do not display icon) and return to previous menu"
 
-@181 = "Not actually increase the rank limit of Weapon Styles, it automatically deducts one rank when reaches rank 2 or 3 in exchange for additional rewards. Compatible with everything.
-When each Weapon Style reaches rank 2, it automaticly decreases to rank 1 in exchange for +1 bonus to melee damage, melee AC, tohit and attack speed (in battle only). There's no more decline when it reaches rank 2 again."
-@182 = "When Two-Weapon Style reaches rank 3, it decreases to rank 2 (in battle). When it reaches rank 3 again (5 points invested totally), the penalty of -1/2 attack per round no longer exists."
-@183 = "Can be closed and get the deducted rank back by your choice, but only for the case that no more points are invested over deducted Weapon Style slot, or there's on place to put the refunded rank."
+@161 = "Weapon Style Rebalance – Single-Weapon Style:
+Rank 1: +2 to attack speed; one melee attack per round performs a weak grip throw attempt, briefly knocking down, holding, or immobilizing the enemy (ineffective against some enemies), also imposing -2 penalty to THAC0 and AC. Additionally, when in single combat (no other enemies within 4 feet), +1 bonus to THAC0 and AC.
+Rank 2: +4 to attack speed; +0.5 attack per round; one melee attack per round performs a strong grip throw attempt, briefly knocking down, stunning, or immobilizing the enemy (ineffective against some enemies), imposing -4 penalty to THAC0 and AC, and 10% chance to disarm the enemy (humanoids only). Also, when in single combat, +2 bonus to THAC0 and AC.
+grip throw requires a strength comparison (seven tiers: ≤13/16/18/20/22/24/25). It works only if the enemy's strength tier does not exceed the attacker's, and the enemy must save vs. polymorph (initial +6 bonus, +1 save difficulty per 4 character levels; thieves, bards, and monks get an additional save vs. death if they fail the first).
+If the grip throw succeeds or the enemy is already incapacitated (stunned/held/immobilized), additional grip throws can be performed in the same round with no per-round limit.
+Hasted characters get two grip throw attempts per round."
+@162 = "Weapon Style Rebalance – Two-Handed Weapon Style:
+Rank 1: +0.5 attack per round.
+Rank 2: +1 attack per round.
+Strength damage bonus is increased by 50%."
+@163 = "Weapon Style Rebalance – Two-Weapon Style:
+-0.5 attack per round, unless 5 proficiency ranks are invested (requires higher weapon style proficiency ranks enabled).
+Rank 0: -2 weapon damage.
+Rank 1: -2 weapon damage, +1 bonus to AC vs. melee.
+Rank 2: -1 weapon damage, +2 bonus to AC vs. melee.
+Rank 3: No damage penalty, +2 bonus to AC vs. melee."
+@164 = "Weapon Style Rebalance – Sword and Shield Style:
+The first attack each round is a sudden strike with +2 bonus to THAC0.
+Rank 1: +1 bonus to AC vs. melee; one extra shield bash per round that briefly reduces enemy AC by 2 and knocks back. Enemy saves vs. breath to negate.
+Rank 2: +2 bonus to AC vs. melee; one extra shield bash per round that stuns and deals 1d4 + strength modifier blunt damage (save vs. breath negates stun but still suffers knockback and AC penalty).
+Hasted characters get two sudden strikes and two shield bashes per round.
+Sudden strike and shield bash also work with thrown weapons (e.g., throwing axes, knives) but not bows or crossbows."
+@165 = "Weapon Style Rebalance – Monk:
+Monks have two grip throw attempts per round, but cannot perform them while dual-wielding.
+When using a single weapon (one- or two-handed), they perform a weak grip throw (as Single-Weapon rank 1).
+When unarmed, they perform a strong grip throw (as Single-Weapon rank 2).
+Grip throw mechanics are the same as @161, but strength tiers are five levels: ≤13/16/19/22/25."
+@166 = "Weapon Style Rebalance – Two-Weapon Style (requires EEex support):
+The main hand suffers -0.5 attack per round.
+Rank 0: -2 weapon damage.
+Rank 1: -2 weapon damage, +1 bonus to AC vs. melee.
+Rank 2: -1 weapon damage, +2 bonus to AC vs. melee.
+Rank 3: No damage penalty, +2 bonus to AC vs. melee.
+If 5 proficiency ranks are invested in Two-Weapon Style (requires higher weapon style proficiency ranks enabled), the off-hand gains +1 attack per round, +2 when hasted (simulated but not actual extra attacks, triggered on successful main-hand hits)."
 
-@186 = "More proficiency points can be actually put on the 4 Weapon Styles, but not compatible with other MODs that also modifies Weapon Styles, and requires to be installed after all new Kits, or the Kit is unable to spent more proficiency points on them."
+@171 = "Weapon Detail Adjustments – Light Weapons:
+Wielding a one-handed light weapon (dagger, short sword, wakizashi, etc.) or unarmed, with the other hand holding a shield or empty, add Dexterity modifier to THAC0 (bonus: 1/2/3/4/5 at Dex 16/17/19/21/24). If the other hand also holds a weapon, no Dex bonus but gain +1 to melee AC and off-hand THAC0.
+Wielding a two-handed light weapon (spear, quarterstaff), gain +1 to melee AC and THAC0."
+@172 = "Weapon Detail Adjustments – Long-Bladed Weapons:
+Wielding a one-handed long-bladed weapon (scimitar, long sword, bastard sword, katana, etc.) with off-hand empty: 50% chance per hit to perform a small area cleave (1d6 + 50% Strength mod slashing damage, does not hit primary target or allies). With off-hand occupied, chance halved.
+Wielding a two-handed long-bladed weapon (two-handed sword, two-handed katana, etc.): 50% chance per hit for a larger area cleave (1d10 + 50% Strength mod slashing damage; note two-handed Strength bonus is already 150%, so actual damage bonus is 75% of original Strength mod). Halberds also have area cleave but at half probability."
+@173 = "Weapon Detail Adjustments – Bludgeoning Weapons:
+Wielding a one-handed bludgeoning weapon (war hammer, mace, flail, morning star, etc.) with off-hand empty: one stunning blow per round that briefly stuns (duration: 0.5 + Strength to-hit modifier/2 seconds; 25 Str = 4 sec, 7 Str = 0), reduces AC by 2, and knocks back. Save vs. breath negates all. With off-hand occupied, chance halved.
+Wielding a two-handed hammer: one stunning blow per round with 1.5x stun duration; even on successful save, enemy still suffers AC penalty and knockback.
+Axes can also perform stunning blows but at half probability.
+Enemy save vs. breath with +6 bonus (-1 penalty per 4 attacker levels).
+Hasted characters get two stunning blows per round."
+@174 = "Weapon Detail Adjustments – Hooking Weapons:
+Wielding a one-handed hooking weapon (axe, etc.) with off-hand empty: 0.5 melee attack per round that hooks and drags the enemy's weapon or limb, causing a temporary loss of balance (-4 penalty to THAC0 and AC) unless the enemy saves vs. breath. With off-hand occupied, chance halved.
+Wielding a two-handed hooking weapon (halberd, two-handed axe): 0.5 melee attack per round that hooks and drags; if the enemy fails the save, they fall to the ground and suffer -4 penalty to THAC0 and AC, with a 10% chance to be disarmed (humanoids only).
+Hooking requires a strength comparison (seven tiers: ≤13/16/18/20/22/24/25). It works only if the enemy's strength tier does not exceed the attacker's, and the enemy must save vs. polymorph (initial +6 bonus, +1 save difficulty per 4 character levels; thieves, bards, and monks get an additional save vs. death if they fail the first).
+Grip Throw and Hook cannot be performed simultaneously; if the Grip Throw fails, a hook attempt may trigger on the next attack.
+Hasted characters gain two hook attempts per round."
+@175 = "Weapon Detail Adjustments – Piercing Weapons:
+Wielding a one-handed piercing weapon (dagger, short sword, wakizashi, etc.) with off-hand empty: one attack per round that causes bleeding for 4 rounds (1 piercing damage per round, save vs. breath negates) and has (Strength to-hit modifier +1)*8% chance to paralyze for 1 round (save vs. death negates; 25 Str = 64%, 7 Str = 0).
+Wielding a two-handed piercing weapon (spear, etc.): bleed for 2 damage per round, and (Strength to-hit mod +1)*12% chance to paralyze (25 Str = 96%).
+Halberds have half probability.
+Lifeless creatures are immune. Save vs. breath initial +6 bonus, -1 per 4 levels.
+Additionally, two-handed spears grant +2 to damage always."
+@176 = "Weapon Detail Adjustments – Long Stick Weapons:
+Wielding a one-handed staff (e.g., Staff Mace) with off-hand empty: one attack per round that strikes limbs, inflicting -1 penalty to 1-3 randomly chosen among THAC0, AC, or movement speed. Penalties stack, duration: 0.5 + Strength to-hit mod/2 rounds (25 Str = 4 rounds). With off-hand occupied, chance halved.
+Wielding a two-handed staff: -2 penalty to 1-3 attributes, 1.5x duration.
+Save vs. breath negates. Constructs/undead and limbless creatures immune.
+Hasted characters get two limb strikes per round."
+@177 = "Weapon detail effects trigger normally when wielding a single weapon. When a shield or off-hand weapon is equipped, trigger probability is halved. When dual-wielding, the per-round limit is relaxed to about 1.5 triggers per round (about 3 when hasted)."
+@178 = "Weapon Detail Adjustments – Long-Bladed Weapons (requires EEex support):
+Wielding a one-handed long-bladed weapon with off-hand empty: one attack per round performs an area cleave that directly hits all enemies in the area (weapon's full effects apply to each, does not hit primary target or allies). With off-hand occupied, chance halved.
+Wielding a two-handed long-bladed weapon: one attack per round performs an area cleave as above.
+Halberds also have area cleave but at half probability."
 
+@181 = "Current mode: When each weapon style reaches rank 2, it automatically deducts 1 rank (triggers in combat), but grants +1 bonus to THAC0, damage, attack speed, and AC vs. melee. If later raised to rank 2 again, no further deduction occurs."
+@182 = "When Two-Weapon Style reaches rank 3, it automatically deducts 1 rank (triggers in combat). If later raised to rank 3 again (total 5 ranks invested), the -0.5 attack per round penalty is removed."
+@183 = "You can choose to refund deducted ranks and disable Weapon Style Rebalance, but only if you have not invested additional ranks beyond the deducted rank; otherwise there is no slot to place the refunded rank."
+@184 = "When Two-Weapon Style reaches rank 3, it automatically deducts 1 rank (triggers in combat). If later raised to rank 3 again (total 5 ranks invested), the main hand suffers -0.5 attack per round but the off-hand gains +1 attack per round (requires EEex support)."
+
+@186 = "Current mode actually increases the proficiency rank cap (may have compatibility issues if Kit or rule-adjusting MODs are installed later). Two-Weapon Style can be raised to rank 5; the other three styles can be raised to rank 3."
+
+@191 = "Set whether weapon detail effects are affected by corresponding weapon proficiency (requires Weapon Detail Effects enabled)"
+@192 = "Probability of weapon detail effects is proportional to the character's proficiency in the corresponding weapon: base 25%, plus 15% per proficiency slot"
+@193 = "Weapon detail effects always occur (100%), unaffected by proficiency"
+@194 = "Keep current setting (weapon detail effects affected by weapon proficiency) and return to previous menu"
+@195 = "Keep current setting (weapon detail effects always occur) and return to previous menu"
+
+@197 = "Target's strength too high; grip throw resisted."
+@198 = "Target's strength too high; hook resisted."
+@199 = "Target's immobile; continuing suppression."

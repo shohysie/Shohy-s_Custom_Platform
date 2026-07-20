@@ -3,7 +3,7 @@
 //武器流派调整和武器细节调整都有
 IF
 	!GlobalGT("SY#CASTONCE","LOCALS",0)
-	GlobalGT("SY#WPROP","GLOBAL",1)
+	Global("SY#WPROP","GLOBAL",1)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SY#WPE00",Player1)

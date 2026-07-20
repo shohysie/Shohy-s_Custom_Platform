@@ -1,228 +1,10 @@
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,4000)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,16000)
-	OR(2)
-		XPGT(Player1,3999)
-		LevelGT(Player1,2)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX03",Myself)	//LV3
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,64000)
-	OR(2)
-		XPGT(Player1,15999)
-		LevelGT(Player1,4)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX05",Myself)	//LV5
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,250000)
-	OR(2)
-		XPGT(Player1,63999)
-		LevelGT(Player1,6)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX07",Myself)	//LV7
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,750000)
-	OR(2)
-		XPGT(Player1,249999)
-		LevelGT(Player1,8)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX09",Myself)	//LV9
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,1500000)
-	OR(2)
-		XPGT(Player1,749999)
-		LevelGT(Player1,10)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX11",Myself)	//LV11
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,2250000)
-	OR(2)
-		XPGT(Player1,149999)
-		LevelGT(Player1,13)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX14",Myself)	//LV14
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,3000000)
-	OR(2)
-		XPGT(Player1,2249999)
-		LevelGT(Player1,16)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX17",Myself)	//LV17
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,4000000)
-	OR(2)
-		XPGT(Player1,2999999)
-		LevelGT(Player1,19)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX20",Myself)	//LV20
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,5000000)
-	OR(2)
-		XPGT(Player1,3999999)
-		LevelGT(Player1,23)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX24",Myself)	//LV24
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,6000000)
-	OR(2)
-		XPGT(Player1,4999999)
-		LevelGT(Player1,27)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX28",Myself)	//LV28
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,7000000)
-	OR(2)
-		XPGT(Player1,5999999)
-		LevelGT(Player1,31)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX32",Myself)	//LV32
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	XPLT(Player1,8000000)
-	OR(2)
-		XPGT(Player1,6999999)
-		LevelGT(Player1,35)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX36",Myself)	//LV36
-		Continue()
-END
-
-IF
-	Global("SY#LVFIX","GLOBAL",1)
-	!GlobalGT("SY#LVFIXED","LOCALS",0)
-	Allegiance(Myself,ENEMY)
-	Detect([GOODCUTOFF])
-	OR(2)
-		XPGT(Player1,7999999)
-		LevelGT(Player1,39)
-THEN
-	RESPONSE #100
-		SetGlobal("SY#LVFIXED","LOCALS",1)
-		ReallyForceSpellRes("SY#LFX40",Myself)	//LV40
-		Continue()
-END
-
 /////////////////
 //施展高阶技能
 /////////////////
 
 //次数减半的控制
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	Global("SY#SKILLHLA","GLOBAL",1)
 	Allegiance(Myself,ENEMY)
 	Detect([GOODCUTOFF])
@@ -231,11 +13,13 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIH2",Myself)	//在1-5轮后移除SY#LFHXX
+		ReallyForceSpellRes("SY#LFX03",Myself)	//免疫36秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 END
 //施展高阶远程技能
 //人族等正常施展
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLHLA","GLOBAL",0)
 	!GlobalGT("SY#SKILLRACE","GLOBAL",0)
 	Allegiance(Myself,ENEMY)
@@ -271,6 +55,7 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIH0",Myself)	//使用远程高阶技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #30
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -278,6 +63,7 @@ THEN
 END
 //亚人族减半施展（弱鸡不施展高阶）
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLHLA","GLOBAL",0)
 	!GlobalGT("SY#SKILLRACE","GLOBAL",0)
 	Allegiance(Myself,ENEMY)
@@ -296,9 +82,11 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIH0",Myself)	//使用远程高阶技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
+		ReallyForceSpellRes("SY#LFX03",Myself)	//免疫36秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #60
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -306,6 +94,7 @@ THEN
 END
 //不以种族区分
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLHLA","GLOBAL",0)
 	GlobalGT("SY#SKILLRACE","GLOBAL",0)
 	Allegiance(Myself,ENEMY)
@@ -319,6 +108,7 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIH0",Myself)	//使用远程高阶技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #30
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -327,6 +117,7 @@ END
 //施展高阶近战技能
 //人族等正常施展
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLHLA","GLOBAL",0)
 	!GlobalGT("SY#SKILLRACE","GLOBAL",0)
 	Allegiance(Myself,ENEMY)
@@ -368,6 +159,7 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIH1",Myself)	//使用近战高阶技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #30
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -375,6 +167,7 @@ THEN
 END
 //亚人族减半施展（弱鸡不施展高阶）
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLHLA","GLOBAL",0)
 	!GlobalGT("SY#SKILLRACE","GLOBAL",0)
 	Allegiance(Myself,ENEMY)
@@ -392,9 +185,11 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIH1",Myself)	//使用近战高阶技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
+		ReallyForceSpellRes("SY#LFX03",Myself)	//免疫36秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #60
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -402,6 +197,7 @@ THEN
 END
 //不以种族区分
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLHLA","GLOBAL",0)
 	GlobalGT("SY#SKILLRACE","GLOBAL",0)
 	Allegiance(Myself,ENEMY)
@@ -415,6 +211,7 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIH1",Myself)	//使用近战高阶技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #30
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -427,6 +224,7 @@ END
 
 //概率减半的控制
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	Global("SY#SKILLNLA","GLOBAL",1)	
 	Allegiance(Myself,ENEMY)
 	Detect([GOODCUTOFF])
@@ -435,11 +233,13 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIX2",Myself)	//一半概率免疫SY#LFIX0/1
+		ReallyForceSpellRes("SY#LFX03",Myself)	//免疫36秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 END
 //施展普通远程技能
 //人族等正常施展
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLNLA","GLOBAL",0)	//施展普通技能
 	!GlobalGT("SY#SKILLRACE","GLOBAL",0)	//以种族区分普通技能
 	Allegiance(Myself,ENEMY)
@@ -472,6 +272,7 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIX0",Myself)	//使用远程普通技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #30
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -479,6 +280,7 @@ THEN
 END
 //亚人族减半施展
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLNLA","GLOBAL",0)
 	!GlobalGT("SY#SKILLRACE","GLOBAL",0)
 	Allegiance(Myself,ENEMY)
@@ -500,9 +302,11 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIX0",Myself)	//使用远程普通技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
+		ReallyForceSpellRes("SY#LFX03",Myself)	//免疫36秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #60
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -510,6 +314,7 @@ THEN
 END
 //不以种族区分
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLNLA","GLOBAL",0)
 	GlobalGT("SY#SKILLRACE","GLOBAL",0)
 	Allegiance(Myself,ENEMY)
@@ -520,6 +325,7 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIX0",Myself)	//使用远程普通技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #30
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -528,6 +334,7 @@ END
 //施展普通近战技能
 //人族等正常施展
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLNLA","GLOBAL",0)	//施展普通技能
 	!GlobalGT("SY#SKILLRACE","GLOBAL",0)	//以种族区分普通技能
 	Allegiance(Myself,ENEMY)
@@ -565,6 +372,7 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIX1",Myself)	//使用近战普通技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #30
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -572,6 +380,7 @@ THEN
 END
 //亚人族减半施展
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLNLA","GLOBAL",0)	//减半施展普通技能
 	!GlobalGT("SY#SKILLRACE","GLOBAL",0)	//以种族区分普通技能
 	Allegiance(Myself,ENEMY)
@@ -589,9 +398,11 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIX1",Myself)	//使用近战普通技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
+		ReallyForceSpellRes("SY#LFX03",Myself)	//免疫36秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #60
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)
@@ -599,6 +410,7 @@ THEN
 END
 //不以种族区分
 IF
+	Global("SY#LVFXD","LOCALS",1)
 	GlobalGT("SY#SKILLNLA","GLOBAL",0)	//施展普通技能
 	GlobalGT("SY#SKILLRACE","GLOBAL",0)	//不以种族区分普通技能
 	Allegiance(Myself,ENEMY)
@@ -609,6 +421,7 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",36)
 		ReallyForceSpellRes("SY#LFIX1",Myself)	//使用近战普通技能
+		ReallyForceSpellRes("SY#LFX02",Myself)	//免疫600秒SY#LFX00防止待机动作（由于需要待机中断攻击来强制启动脚本）
 		Continue()
 	RESPONSE #30
 		SetGlobalTimer("SY#LVFIXGAP","LOCALS",6)

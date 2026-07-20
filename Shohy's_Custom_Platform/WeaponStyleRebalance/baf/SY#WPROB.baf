@@ -1,15 +1,6 @@
 //武器流派调整，对Player1~6，每秒计数并生效一次。加入到SY#CPF0B.bcs
 //必定安装，兼容武器流派可投入更多星数的扣星模式。选择加星模式时需要修改SY#CPF0B将下列内容中和SY#WPROX.baf一致的部分删除，并修改星数判断
 
-IF
-	GlobalGT("SY#WPICON","GLOBAL",0)
-	!GlobalTimerNotExpired("SY#SECOND","LOCALS")
-THEN
-	RESPONSE #100
-		ReallyForceSpellRes("SY#WPICO",Player%n%)	//显示图标
-		Continue()
-END
-
 //右手对鸟无效为双手武器
 //双手武器攻击次数调整
 IF
@@ -136,8 +127,9 @@ IF
 	!IsWeaponRanged(Player%n%)
 	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",MAINHAND))
 	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",OFFHAND))
-	!ProficiencyGT(Player%n%,PROFICIENCY2WEAPON,2)
-	!TriggerOverride(Player%n%,GlobalGT("SY#WP2WS","LOCALS",1))
+	OR(2)
+		!ProficiencyGT(Player%n%,PROFICIENCY2WEAPON,2)
+		!TriggerOverride(Player%n%,GlobalGT("SY#WP2WS","LOCALS",1))
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SY#WPAR0",Player%n%)	//攻击次数-0.5
@@ -148,21 +140,33 @@ END
 //剑盾流特效可以在持有远程武器时施展（限飞刀投石索等。排除弓箭放到spl里了）
 IF
 	GlobalGT("SY#WPROP","GLOBAL",0)
-	!GlobalGT("SY#CASTONCE","LOCALS",0)
 	!GlobalTimerNotExpired("SY#SECOND","LOCALS")
-	//!HasItemCategory(Player%n%,BOW,TRUE)
-	//!HasItemCategory(Player%n%,XBOW,TRUE)
 	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",MAINHAND))
-	//HasItemCategory(Player%n%,SHIELD,TRUE)
 	HasItemSlot(Player%n%,SLOT_SHIELD)
 	!TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",OFFHAND))	
-	ProficiencyGT(Player%n%,PROFICIENCYSWORDANDSHIELD,0)
+	Proficiency(Player%n%,PROFICIENCYSWORDANDSHIELD,1)
 THEN
 	RESPONSE #100
 		ReallyForceSpellRes("SY#WPSDX",Player%n%)	//初次攻击命中+2，命中后自动移除此法术
+		ReallyForceSpellRes("SY#WPSDP",Player%n%)	//近战AC+1有利
 		Continue()
 END
 
+IF
+	GlobalGT("SY#WPROP","GLOBAL",0)
+	!GlobalTimerNotExpired("SY#SECOND","LOCALS")
+	TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",MAINHAND))
+	HasItemSlot(Player%n%,SLOT_SHIELD)
+	!TriggerOverride(Player%n%,WeaponEffectiveVs("SY#CPF0A",OFFHAND))	
+	ProficiencyGT(Player%n%,PROFICIENCYSWORDANDSHIELD,1)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRes("SY#WPSDX",Player%n%)	//初次攻击命中+2，命中后自动移除此法术
+		ReallyForceSpellRes("SY#WPSDQ",Player%n%)	//近战AC+2有利
+		Continue()
+END
+
+//为了避免盾击提示“相同的意外法术”，#232被设为每轮一次
 IF
 	GlobalGT("SY#WPROP","GLOBAL",0)
 	!GlobalGT("SY#CASTONCE","LOCALS",0)

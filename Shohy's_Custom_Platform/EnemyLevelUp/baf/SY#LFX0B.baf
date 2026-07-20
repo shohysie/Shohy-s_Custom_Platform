@@ -1,0 +1,20 @@
+//玩家和附近敌人的属性调整，以Player1~6为中心施展范围法术
+//需要等待生物等级调整完毕SY#LVADJUST=1再施法
+
+//敌人修正到玩家等级附近
+IF
+	!GlobalTimerNotExpired("SY#SECOND","LOCALS")
+	Global("SY#LVADJUST","LOCALS",1)
+	Global("SY#LVFIX","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES("SY#LFX00",Player1)
+		ReallyForceSpellRES("SY#LFX00",Player2)
+		ReallyForceSpellRES("SY#LFX00",Player3)
+		ReallyForceSpellRES("SY#LFX00",Player4)
+		ReallyForceSpellRES("SY#LFX00",Player5)
+		ReallyForceSpellRES("SY#LFX00",Player6)
+		SetGlobalTimer("SY#SECOND","LOCALS",1)
+		IncrementGlobal("SY#COUNT","LOCALS",1)
+		Continue()
+END

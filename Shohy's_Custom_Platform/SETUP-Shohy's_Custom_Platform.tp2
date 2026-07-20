@@ -1,7 +1,7 @@
 BACKUP ~Shohy's_Custom_Platform/backup~
 AUTHOR ~shohy@126.com~
 
-VERSION ~v0.3~
+VERSION ~v0.4~
 AUTO_EVAL_STRINGS
 
 README ~%MOD_FOLDER%/README.%LANGUAGE%.txt~
@@ -12,20 +12,27 @@ ALWAYS
 END
 
 
-LANGUAGE ~American English~ ~english~ ~%MOD_FOLDER%/languages/english/basis.tra~
-                                      ~%MOD_FOLDER%/languages/english/extramodifiers.tra~
-                                      ~%MOD_FOLDER%/languages/english/improvedenemies.tra~
-                                      ~%MOD_FOLDER%/languages/english/weaponstylerebalance.tra~
-                                      ~%MOD_FOLDER%/languages/english/enemylevelup.tra~
-                                      ~%MOD_FOLDER%/languages/english/acthac0fix.tra~
+LANGUAGE	~American English~	~english~	~%MOD_FOLDER%/languages/english/basis.tra~
+											~%MOD_FOLDER%/languages/english/extramodifiers.tra~
+											~%MOD_FOLDER%/languages/english/improvedenemies.tra~
+											~%MOD_FOLDER%/languages/english/weaponstylerebalance.tra~
+											~%MOD_FOLDER%/languages/english/enemylevelup.tra~
+											~%MOD_FOLDER%/languages/english/acthac0fix.tra~
 
-LANGUAGE ~Simplified Chinese~ ~schinese~ ~%MOD_FOLDER%/languages/schinese/basis.tra~
-                                         ~%MOD_FOLDER%/languages/schinese/extramodifiers.tra~
-                                         ~%MOD_FOLDER%/languages/schinese/improvedenemies.tra~
-                                         ~%MOD_FOLDER%/languages/schinese/weaponstylerebalance.tra~
-                                         ~%MOD_FOLDER%/languages/schinese/enemylevelup.tra~
-                                         ~%MOD_FOLDER%/languages/schinese/acthac0fix.tra~
+LANGUAGE	~Simplified Chinese~ ~schinese~	~%MOD_FOLDER%/languages/schinese/basis.tra~
+											~%MOD_FOLDER%/languages/schinese/extramodifiers.tra~
+											~%MOD_FOLDER%/languages/schinese/improvedenemies.tra~
+											~%MOD_FOLDER%/languages/schinese/weaponstylerebalance.tra~
+											~%MOD_FOLDER%/languages/schinese/enemylevelup.tra~
+											~%MOD_FOLDER%/languages/schinese/acthac0fix.tra~
 
+LANGUAGE	~Francais~			~french~	~%MOD_FOLDER%/languages/french/basis.tra~
+											~%MOD_FOLDER%/languages/french/extramodifiers.tra~
+											~%MOD_FOLDER%/languages/french/improvedenemies.tra~
+											~%MOD_FOLDER%/languages/french/weaponstylerebalance.tra~
+											~%MOD_FOLDER%/languages/french/enemylevelup.tra~
+											~%MOD_FOLDER%/languages/french/acthac0fix.tra~
+									  
 /* *********************全局有效平台******************* */
 
 /*原理：
@@ -248,6 +255,7 @@ REQUIRE_PREDICATE (IDS_OF_SYMBOL (~projectl~ ~SY#CPF00~)) > 0 @9
 //进行范围调整的法术，使用投射SY#CPF00
 OUTER_SET SY#CPF00 = IDS_OF_SYMBOL (~projectl~ ~SY#CPF00~) +1
 
+//当HP过高时，#326调用SY#IMPE0来防止重复作用，再#318防护自身后继所有包括HP修正。HP上限为0x7FFF即32767，确保currentHP*(IMPEHP * headernum + 100)/100<30000
 COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SY#IMPE1.spl~ ~override/SY#IMPE1.spl~
 	WRITE_SHORT   0x98 ~%SY#CPF00%~
 	//敌人数值少许提升
@@ -262,14 +270,16 @@ COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SY#IMPE1.spl~ ~override/SY#IMPE1.spl~
 			LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
 			LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = headernum END
 		END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 timing = 0 duration = 300 parameter1 = (IMPEHP * headernum + 100) parameter2 = 2 END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 timing = 0 duration = 300 parameter1 = (headernum / IMPETHAC0) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 332 timing = 0 duration = 300 parameter1 = (IMPEDAMAMGE * headernum) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 timing = 0 duration = 300 parameter1 = (headernum / IMPEAC + 1) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 timing = 0 duration = 300 parameter1 = (headernum / IMPESAVES) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 166 timing = 0 duration = 300 parameter1 = (headernum / IMPEMAGICRESIST) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 parameter1 = (3000000/(IMPEHP * headernum + 100)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 parameter1 = (3000000/(IMPEHP * headernum + 100)) STR_VAR resource = "SY#IMPE1" END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 timing = 0 duration = 600 parameter1 = (IMPEHP * headernum + 100) parameter2 = 2 END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 timing = 0 duration = 600 parameter1 = (headernum / IMPETHAC0) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 332 timing = 0 duration = 600 parameter1 = (IMPEDAMAMGE * headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 timing = 0 duration = 600 parameter1 = (headernum / IMPEAC + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 timing = 0 duration = 600 parameter1 = (headernum / IMPESAVES) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 166 timing = 0 duration = 600 parameter1 = (headernum / IMPEMAGICRESIST) END
 	END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 18 target = 2 timing = 0 duration = 300 parameter1 = 10 END	//保底HP
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 18 target = 2 timing = 0 duration = 600 parameter1 = 15 END	//保底HP
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 2 parameter2 = 102 STR_VAR resource = "SY#IMPE1" END	//友方生物不受影响
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 3 parameter2 = 102 STR_VAR resource = "SY#IMPE1" END	//友方生物不受影响
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 4 parameter2 = 102 STR_VAR resource = "SY#IMPE1" END	//友方生物不受影响
@@ -281,7 +291,7 @@ COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SY#IMPE1.spl~ ~override/SY#IMPE1.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 timing = 1 STR_VAR resource = "SY#IMPE1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 timing = 1 STR_VAR resource = "SY#IMPE2" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 timing = 1 STR_VAR resource = "SY#IMPE3" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 0 duration = 294 STR_VAR resource = "SY#IMPE1" END	//不会重复作用
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 0 duration = 594 STR_VAR resource = "SY#IMPE1" END	//不会重复作用
 
 COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SY#IMPE1.spl~ ~override/SY#IMPE2.spl~
 	WRITE_SHORT   0x98 ~%SY#CPF00%~
@@ -297,14 +307,16 @@ COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SY#IMPE1.spl~ ~override/SY#IMPE2.spl~
 			LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
 			LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = headernum END
 		END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 timing = 0 duration = 300 parameter1 = (IMPEHP * headernum + 100) parameter2 = 2 END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 timing = 0 duration = 300 parameter1 = (headernum / IMPETHAC0 + 1) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 332 timing = 0 duration = 300 parameter1 = (IMPEDAMAMGE * headernum) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 timing = 0 duration = 300 parameter1 = (headernum / IMPEAC + 1) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 timing = 0 duration = 300 parameter1 = (headernum / IMPESAVES) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 166 timing = 0 duration = 300 parameter1 = (headernum / IMPEMAGICRESIST) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 parameter1 = (3000000/(IMPEHP * headernum + 100)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 parameter1 = (3000000/(IMPEHP * headernum + 100)) STR_VAR resource = "SY#IMPE2" END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 timing = 0 duration = 600 parameter1 = (IMPEHP * headernum + 100) parameter2 = 2 END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 timing = 0 duration = 600 parameter1 = (headernum / IMPETHAC0 + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 332 timing = 0 duration = 600 parameter1 = (IMPEDAMAMGE * headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 timing = 0 duration = 600 parameter1 = (headernum / IMPEAC + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 timing = 0 duration = 600 parameter1 = (headernum / IMPESAVES) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 166 timing = 0 duration = 600 parameter1 = (headernum / IMPEMAGICRESIST) END
 	END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 18 target = 2 timing = 0 duration = 300 parameter1 = 20 END	//保底HP
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 18 target = 2 timing = 0 duration = 600 parameter1 = 30 END	//保底HP
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 2 parameter2 = 102 STR_VAR resource = "SY#IMPE2" END	//友方生物不受影响
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 3 parameter2 = 102 STR_VAR resource = "SY#IMPE2" END	//友方生物不受影响
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 4 parameter2 = 102 STR_VAR resource = "SY#IMPE2" END	//友方生物不受影响
@@ -316,7 +328,7 @@ COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SY#IMPE1.spl~ ~override/SY#IMPE2.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 timing = 1 STR_VAR resource = "SY#IMPE1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 timing = 1 STR_VAR resource = "SY#IMPE2" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 timing = 1 STR_VAR resource = "SY#IMPE3" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 0 duration = 294 STR_VAR resource = "SY#IMPE2" END	//不会重复作用
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 0 duration = 594 STR_VAR resource = "SY#IMPE2" END	//不会重复作用
 
 COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SY#IMPE1.spl~ ~override/SY#IMPE3.spl~
 	WRITE_SHORT   0x98 ~%SY#CPF00%~
@@ -332,14 +344,16 @@ COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SY#IMPE1.spl~ ~override/SY#IMPE3.spl~
 			LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
 			LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = headernum END
 		END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 timing = 0 duration = 300 parameter1 = (IMPEHP * headernum + 100) parameter2 = 2 END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 timing = 0 duration = 300 parameter1 = (headernum / IMPETHAC0 + 1) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 332 timing = 0 duration = 300 parameter1 = (IMPEDAMAMGE * headernum + 1) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 timing = 0 duration = 300 parameter1 = (headernum / IMPEAC + 1) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 timing = 0 duration = 300 parameter1 = (headernum / IMPESAVES) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 166 timing = 0 duration = 300 parameter1 = (headernum / IMPEMAGICRESIST) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 parameter1 = (3000000/(IMPEHP * headernum + 100)) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 parameter1 = (3000000/(IMPEHP * headernum + 100)) STR_VAR resource = "SY#IMPE3" END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 timing = 0 duration = 600 parameter1 = (IMPEHP * headernum + 100) parameter2 = 2 END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 timing = 0 duration = 600 parameter1 = (headernum / IMPETHAC0 + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 332 timing = 0 duration = 600 parameter1 = (IMPEDAMAMGE * headernum + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 timing = 0 duration = 600 parameter1 = (headernum / IMPEAC + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 timing = 0 duration = 600 parameter1 = (headernum / IMPESAVES) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 166 timing = 0 duration = 600 parameter1 = (headernum / IMPEMAGICRESIST) END
 	END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 18 target = 2 timing = 0 duration = 300 parameter1 = 50 END	//保底HP
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 18 target = 2 timing = 0 duration = 600 parameter1 = 75 END	//保底HP
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 2 parameter2 = 102 STR_VAR resource = "SY#IMPE3" END	//友方生物不受影响
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 3 parameter2 = 102 STR_VAR resource = "SY#IMPE3" END	//友方生物不受影响
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 4 parameter2 = 102 STR_VAR resource = "SY#IMPE3" END	//友方生物不受影响
@@ -351,14 +365,16 @@ COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/SY#IMPE1.spl~ ~override/SY#IMPE3.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 timing = 1 STR_VAR resource = "SY#IMPE1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 timing = 1 STR_VAR resource = "SY#IMPE2" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 insert_point = 0 target = 2 timing = 1 STR_VAR resource = "SY#IMPE3" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 0 duration = 294 STR_VAR resource = "SY#IMPE3" END	//不会重复作用
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 0 duration = 594 STR_VAR resource = "SY#IMPE3" END	//不会重复作用
 
 COPY ~%MOD_FOLDER%/ImprovedEnemies/spl/noname~ ~override~
-//给SY#CPF0A添加等级调整功能，可按主角经验对应战士等级的一半进行等级修正
-EXTEND_BOTTOM ~SY#CPF0A.bcs~ ~%MOD_FOLDER%/ImprovedEnemies/baf/SY#IMPEA.baf~
+//给SY#CPF0A添加等级调整功能，鸟按主角经验对应战士等级的一半进行等级修正
+ACTION_IF NOT FILE_CONTAINS_EVALUATED (~%SY#CPF0A%.bcs~ ~SY#LVADJUST~) THEN BEGIN
+	EXTEND_BOTTOM ~SY#CPF0A.bcs~ ~%MOD_FOLDER%/ImprovedEnemies/baf/SY#IMPEA.baf~
+END
 
-//施展法术，放在SY#CPF0C.bcs
-EXTEND_BOTTOM ~SY#CPF0C.bcs~ ~%MOD_FOLDER%/ImprovedEnemies/baf/SY#IMPEC.baf~
+//判断自身等级修正后，每秒施法，放在SY#CPF0B.bcs
+EXTEND_BOTTOM ~SY#CPF0B.bcs~ ~%MOD_FOLDER%/ImprovedEnemies/baf/SY#IMPEB.baf~
 
 //给鸟添加对话控制
 COMPILE ~%MOD_FOLDER%/ImprovedEnemies/dlg/SY#IMPE0.d~
@@ -414,6 +430,15 @@ COMPILE ~%MOD_FOLDER%/ImprovedEnemies/dlg/SY#IMXP0.d~
 BEGIN @101
 REQUIRE_PREDICATE (IDS_OF_SYMBOL (~projectl~ ~SY#CPF00~)) > 0 @9
 
+ACTION_IF RESOURCE_CONTAINS ~ACTION.IDS~ ~EEex_LuaAction~ THEN BEGIN
+	OUTER_WHILE NOT(IS_AN_INT %howtodoeeex%) || (%howtodoeeex% > 2) || (%howtodoeeex% < 1) BEGIN
+		PRINT @10000	//检测到EEex存在。若安装适配EEex的特殊模块，可实现更多效果如副手多攻击一次，但不保证兼容性。输入1安装特殊模块，输入2正常安装：
+		ACTION_READLN  howtodoeeex
+	END
+END ELSE BEGIN
+	OUTER_SET howtodoeeex = 2
+END
+
 // ***武器流派平衡
 
 //添加石肤和圣域的标记（镜影不用添加）
@@ -432,7 +457,7 @@ COPY_EXISTING ~splprot.2da~ ~override~
 	END
 	PATCH_IF (splprot_stonskins = 0) BEGIN
 		SET "splprot_stonskins" = "%rows%"
-		INSERT_2DA_ROW rows 4 ~%rows%_STONESKINS=n                           88                                            -1                                            4~
+		INSERT_2DA_ROW rows 4 ~%rows%_STONESKINS>=n                          88                                            -1                                            4~
 	END
 BUT_ONLY	//splprot_stonskins为splprot.2da新增STONESKINS判断行的编号
 
@@ -477,6 +502,30 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/noname~ ~override~
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WP1HC.spl~ ~override~
 	SAY NAME1 @121	//绊摔
 	SAY UNIDENTIFIED_DESC @121
+	//没有脚的不怕摔
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 119 parameter2 = 104 STR_VAR resource = "SY#WP1HC" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 132 parameter2 = 104 STR_VAR resource = "SY#WP1HC" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 134 parameter2 = 104 STR_VAR resource = "SY#WP1HC" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 136 parameter2 = 104 STR_VAR resource = "SY#WP1HC" END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WP1HD.spl~ ~override~
+	SAY NAME1 @121	//绊摔
+	SAY UNIDENTIFIED_DESC @121
+	//没有脚的不怕摔
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 119 parameter2 = 104 STR_VAR resource = "SY#WP1HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 132 parameter2 = 104 STR_VAR resource = "SY#WP1HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 134 parameter2 = 104 STR_VAR resource = "SY#WP1HD" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 136 parameter2 = 104 STR_VAR resource = "SY#WP1HD" END
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPPT1.spl~ ~override/SY#WPPT1.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@197) END	//对方力量过高，擒拿被抵抗
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPPT1.spl~ ~override/SY#WPPT2.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@198) END	//对方力量过高，勾挂被抵抗
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WP1HY.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@199) END	//对方失能，继续压制
+
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WP1HE.spl~ ~override~
 	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN	//随等级提升豁免难度
 		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
 		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
@@ -488,13 +537,12 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WP1HC.spl~ ~override~
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 185 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
-		//LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
 	END
-//专职盗贼、诗人、武僧在豁免失败时转到SY#WP1HM.spl对死亡进行豁免检定
-COPY_EXISTING ~SY#WP1HC.spl~ ~override/SY#WP1HM.spl~
+//专职盗贼、诗人、武僧在豁免失败时转到SY#WP1HV.spl对死亡进行豁免检定
+COPY_EXISTING ~SY#WP1HE.spl~ ~override/SY#WP1HV.spl~
 	WRITE_LONG 0x08 0xFFFFFFFF
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 318 END
-	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 324 END
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 326 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 savingthrow = 4 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savingthrow = 4 END
@@ -505,32 +553,40 @@ COPY_EXISTING ~SY#WP1HC.spl~ ~override/SY#WP1HM.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 savingthrow = 4 END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
 //特殊生物免疫，力量更高免疫，修改所免疫的法术文件名
-COPY_EXISTING ~SY#WP1HC.spl~ ~override/SY#WP1HG.spl~
+COPY_EXISTING ~SY#WP1HE.spl~ ~override/SY#WP1HK.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HK" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
+COPY_EXISTING ~SY#WP1HE.spl~ ~override/SY#WP1HJ.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HJ" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 25 parameter2 = 124 STR_VAR resource = "SY#WP1HJ" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 25 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
+COPY_EXISTING ~SY#WP1HE.spl~ ~override/SY#WP1HI.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HI" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 23 parameter2 = 124 STR_VAR resource = "SY#WP1HI" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 23 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
+COPY_EXISTING ~SY#WP1HE.spl~ ~override/SY#WP1HH.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HH" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 21 parameter2 = 124 STR_VAR resource = "SY#WP1HH" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 21 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
+COPY_EXISTING ~SY#WP1HE.spl~ ~override/SY#WP1HG.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HG" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HG" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 19 parameter2 = 124 STR_VAR resource = "SY#WP1HG" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 19 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
-COPY_EXISTING ~SY#WP1HC.spl~ ~override/SY#WP1HF.spl~
+COPY_EXISTING ~SY#WP1HE.spl~ ~override/SY#WP1HF.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HF" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HF" END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 324 target = 2 parameter1 = 23 parameter2 = 124 STR_VAR resource = "SY#WP1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 17 parameter2 = 124 STR_VAR resource = "SY#WP1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 17 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
-COPY_EXISTING ~SY#WP1HC.spl~ ~override/SY#WP1HE.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HE" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HE" END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 324 target = 2 parameter1 = 20 parameter2 = 124 STR_VAR resource = "SY#WP1HE" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
-COPY_EXISTING ~SY#WP1HC.spl~ ~override/SY#WP1HD.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HD" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HD" END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 324 target = 2 parameter1 = 17 parameter2 = 124 STR_VAR resource = "SY#WP1HD" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
-COPY_EXISTING ~SY#WP1HC.spl~ ~override~
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SY#WP1HC" END
+COPY_EXISTING ~SY#WP1HE.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SY#WP1HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
 
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WP1HH.spl~ ~override~
-	SAY NAME1 @121	//绊摔
-	SAY UNIDENTIFIED_DESC @121
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WP1HL.spl~ ~override~
 	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN	//随等级提升豁免难度
 		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
 		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
@@ -545,11 +601,10 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WP1HH.spl~ ~override~
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
 	END
-//专职盗贼、诗人、武僧在豁免失败时转到SY#WP1HN.spl对死亡进行豁免检定
-COPY_EXISTING ~SY#WP1HH.spl~ ~override/SY#WP1HN.spl~
+//专职盗贼、诗人、武僧在豁免失败时转到SY#WP1HW.spl对死亡进行豁免检定
+COPY_EXISTING ~SY#WP1HL.spl~ ~override/SY#WP1HW.spl~
 	WRITE_LONG 0x08 0xFFFFFFFF
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 318 END
-	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 324 END
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 326 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 0 savingthrow = 4 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savingthrow = 4 END
@@ -560,27 +615,43 @@ COPY_EXISTING ~SY#WP1HH.spl~ ~override/SY#WP1HN.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 savingthrow = 4 END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
 //特殊生物免疫，力量更高免疫，修改所免疫的法术文件名
-COPY_EXISTING ~SY#WP1HH.spl~ ~override/SY#WP1HL.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HL" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HL" END
+COPY_EXISTING ~SY#WP1HL.spl~ ~override/SY#WP1HR.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HR" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HR" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
-COPY_EXISTING ~SY#WP1HH.spl~ ~override/SY#WP1HK.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HK" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HK" END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SY#WP1HK" END
+COPY_EXISTING ~SY#WP1HL.spl~ ~override/SY#WP1HQ.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HQ" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HQ" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 25 parameter2 = 124 STR_VAR resource = "SY#WP1HQ" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 25 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
-COPY_EXISTING ~SY#WP1HH.spl~ ~override/SY#WP1HJ.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HJ" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HJ" END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SY#WP1HJ" END
+COPY_EXISTING ~SY#WP1HL.spl~ ~override/SY#WP1HP.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HP" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HP" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 23 parameter2 = 124 STR_VAR resource = "SY#WP1HP" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 23 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
-COPY_EXISTING ~SY#WP1HH.spl~ ~override/SY#WP1HI.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HI" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HI" END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SY#WP1HI" END
+COPY_EXISTING ~SY#WP1HL.spl~ ~override/SY#WP1HO.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HO" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HO" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 21 parameter2 = 124 STR_VAR resource = "SY#WP1HO" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 21 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
-COPY_EXISTING ~SY#WP1HH.spl~ ~override~
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 4 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SY#WP1HH" END
+COPY_EXISTING ~SY#WP1HL.spl~ ~override/SY#WP1HN.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HN" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HN" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 19 parameter2 = 124 STR_VAR resource = "SY#WP1HN" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 19 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
+COPY_EXISTING ~SY#WP1HL.spl~ ~override/SY#WP1HM.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WP1HM" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = "SY#WP1HM" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 17 parameter2 = 124 STR_VAR resource = "SY#WP1HM" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 17 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
+COPY_EXISTING ~SY#WP1HL.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SY#WP1HL" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 14 parameter2 = 124 STR_VAR resource = "SY#WPPT1" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = "SY#WP1HX" END
 
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WDSRM.spl~ ~override~
@@ -592,10 +663,8 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDC.spl~ ~override~ //圣域禁
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDD.spl~ ~override~ //圣域禁止盾击
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_sanctuary%~ STR_VAR resource = "SY#WPSDD" END
 
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDE.spl~ ~override~ //镜影石肤圣域隐形不受盾击
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDE.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDG.spl~ ~override~
 	WRITE_SHORT 0x98 ~%SY#WPSDA%~
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_sanctuary%~ STR_VAR resource = "SY#WPSDE" END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#WPSDE" END
 
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDY.spl~ ~override~	//突袭
 	SAY NAME1 @123	//突袭
@@ -606,44 +675,131 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDF.spl~ ~override~	//1星盾�
 		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
 		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 0 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 174 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 235 savebonus = (7 - headernum) END
 	END
-//2星盾击无豁免部分，并且随人物等级以不同豁免，以等级1调用SY#WPSDO（伤害档次0）
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDH.spl~ ~override~	//镜影石肤圣域隐形不受盾击
-	WRITE_SHORT 0x98 ~%SY#WPSDA%~
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_sanctuary%~ STR_VAR resource = "SY#WPSDH" END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#WPSDH" END
+	//镜影石肤圣域隐形不受盾击
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_sanctuary%~ STR_VAR resource = "SY#WPSDF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#WPSDF" END
+//2星盾击，豁免随等级，部分效果无豁免
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDH.spl~ ~override~
+	SAY NAME1 @124	//盾击
 	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
 		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
 		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = (4 * (headernum - 1)) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 146 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 12 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 45 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
 	END
-//2星盾击无豁免部分，以等级2~7调用SY#WPSDO（伤害档次不同）
+	//镜影石肤圣域隐形不受盾击
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_sanctuary%~ STR_VAR resource = "SY#WPSDH" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#WPSDH" END
+//伤害不同
 COPY_EXISTING ~SY#WPSDH.spl~ ~override/SY#WPSDI.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 2 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDI"  END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 parameter1 = 1 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDI"  END
 COPY_EXISTING ~SY#WPSDH.spl~ ~override/SY#WPSDJ.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 3 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDJ"  END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 parameter1 = 3 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDJ"  END
 COPY_EXISTING ~SY#WPSDH.spl~ ~override/SY#WPSDK.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 4 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDK"  END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 parameter1 = 7 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDK"  END
 COPY_EXISTING ~SY#WPSDH.spl~ ~override/SY#WPSDL.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 5 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDL"  END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 parameter1 = 9 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDL"  END
 COPY_EXISTING ~SY#WPSDH.spl~ ~override/SY#WPSDM.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 6 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDM"  END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 parameter1 = 11 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDM"  END
 COPY_EXISTING ~SY#WPSDH.spl~ ~override/SY#WPSDN.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 146 parameter1 = 7 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDN"  END
-	
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDO.spl~ ~override~	//2星盾击有豁免部分
-	SAY NAME1 @124	//盾击
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 parameter1 = 14 END LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WPSDN"  END
 
-COPY_EXISTING ~SY#CPF0B.bcs~ ~override~
-	DECOMPILE_AND_PATCH BEGIN
-		FOR (n=1;n<7;++n) BEGIN
-			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SY#WPROB.baf~//队友的武器流派平衡，每秒判断进行
+//如果已经安装EEex，检测有没有自定义函数
+ACTION_IF howtodoeeex == 1 THEN BEGIN
+	ACTION_IF FILE_EXISTS_IN_GAME ~M_Stick.lua~ THEN BEGIN	//已经安装了StickLuaFunctions？
+		ACTION_IF NOT ((RESOURCE_CONTAINS ~M_Stick.lua~ ~ST_GetCurrentWeapon~) && (RESOURCE_CONTAINS ~M_Stick.lua~ ~ST_MockAttack~)) THEN BEGIN	//没有必须函数，可能是低版本或其它函数
+			COPY_EXISTING ~M_Stick.lua~ ~override~
+				APPEND_FILE ~%MOD_FOLDER%/LUA/M_Stick.lua~
+			BUT_ONLY
+		END ELSE BEGIN	//有必须函数，检测版本能不能用
+			ACTION_IF NOT (RESOURCE_CONTAINS ~M_Stick.lua~ ~return weaponRes1, weaponRes2, fightingStyle, isLeftAttack~) THEN BEGIN	//可能是旧版，函数输出不合适
+				COPY ~%MOD_FOLDER%/LUA/M_Stick.lua~ ~override~
+			END
 		END
+	END ELSE BEGIN	//没有此函数文件
+		COPY ~%MOD_FOLDER%/LUA/M_Stick.lua~ ~override~
 	END
-BUT_ONLY
-
+	//修改文字
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~statsIndex >= 89 and statsIndex <= 108~ THEN BEGIN
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			REPLACE_TEXTUALLY ~statsIndex >= 89 and statsIndex <= 108~ ~statsIndex <= 108~
+	END
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~weaponProficiencyIndex >= 89 and weaponProficiencyIndex <= 108~ THEN BEGIN
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			REPLACE_TEXTUALLY ~weaponProficiencyIndex >= 89 and weaponProficiencyIndex <= 108~ ~weaponProficiencyIndex <= 108~
+	END
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~Infinity_FetchString(16460)~ THEN BEGIN	//命中 没中 Hit Miss Touché Raté
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			SET tempstres = RESOLVE_STR_REF(@10001)
+			REPLACE_TEXTUALLY ~Infinity_FetchString(16461)~ ~Infinity_FetchString(%tempstres%)~
+	END
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~Infinity_FetchString(16461)~ THEN BEGIN	//命中 没中 Hit Miss Touché Raté
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			SET tempstres = RESOLVE_STR_REF(@10002)
+			REPLACE_TEXTUALLY ~Infinity_FetchString(16461)~ ~Infinity_FetchString(%tempstres%)~
+	END
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~Infinity_FetchString(11025)~ THEN BEGIN	//武器无效。 Weapon Ineffective. Arme inefficace.
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			SET tempstres = RESOLVE_STR_REF(@10003)
+			REPLACE_TEXTUALLY  ~Infinity_FetchString(11025)~ ~Infinity_FetchString(%tempstres%)~
+	END
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~Infinity_FetchString(8715)~ THEN BEGIN	//副手攻击 Attack Roll (Off-hand) Jet d'attaque (gauche)
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			SET tempstres = RESOLVE_STR_REF(@10004)
+			REPLACE_TEXTUALLY  ~Infinity_FetchString(8715)~ ~Infinity_FetchString(%tempstres%)~
+	END
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~Infinity_FetchString(14643)~ THEN BEGIN	//攻击检定 Attack Roll  Jet d'attaque （英文法文有空格）
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			SET tempstres = RESOLVE_STR_REF(@10005)
+			REPLACE_TEXTUALLY  ~Infinity_FetchString(14643)~ ~Infinity_FetchString(%tempstres%)~
+	END
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~Infinity_FetchString(16462)~ THEN BEGIN	//致命一击 严重失误 Critical Hit Critical Miss Coup critique Échec critique
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			SET tempstres = RESOLVE_STR_REF(@10006)
+			REPLACE_TEXTUALLY ~Infinity_FetchString(16462)~  ~Infinity_FetchString(%tempstres%)~
+	END
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~Infinity_FetchString(16463)~ THEN BEGIN	//致命一击 严重失误 Critical Hit Critical Miss Coup critique Échec critique
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			SET tempstres = RESOLVE_STR_REF(@10007)
+			REPLACE_TEXTUALLY ~Infinity_FetchString(16463)~  ~Infinity_FetchString(%tempstres%)~
+	END
+	ACTION_IF RESOURCE_CONTAINS ~M_Stick.lua~ ~Infinity_FetchString(20696)~ THEN BEGIN	//致命一击被头盔挡住 Critical Hit Averted Coup critique détourné
+		COPY_EXISTING ~M_Stick.lua~ ~override~
+			SET tempstres = RESOLVE_STR_REF(@10008)
+			REPLACE_TEXTUALLY ~Infinity_FetchString(20696)~  ~Infinity_FetchString(%tempstres%)~
+	END
+	//有EEex，添加自定义函数
+	COPY ~%MOD_FOLDER%/LUA/M_SYATK.lua~ ~override~
+	//剑盾，不一样的触发，避免显示意外术文字
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WPSDA.spl~ ~override~
+	//双武器，强化双武器流派（主手-0.5次攻击，5星时副手+1次攻击）
+	COPY_EXISTING ~SY#CPF0B.bcs~ ~override~
+		DECOMPILE_AND_PATCH BEGIN
+			FOR (n=1;n<7;++n) BEGIN
+				APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WPROB.baf~//队员的武器流派平衡，每秒判断进行
+			END
+		END
+	BUT_ONLY
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WP2WA.spl~ ~override~	//双武器5星时给予近战效果
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WP2WB.eff~ ~override~
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WP2WB.spl~ ~override~	//近战攻击触发，模拟副手攻击
+END ELSE BEGIN	//没有EEex
+	//剑盾，使用#232
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDA.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WPSDB.spl~ ~override~
+	//正常双武器流派（5星之前主手-0.5次攻击，5星正常化）
+	COPY_EXISTING ~SY#CPF0B.bcs~ ~override~
+		DECOMPILE_AND_PATCH BEGIN
+			FOR (n=1;n<7;++n) BEGIN
+				APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SY#WPROB.baf~//队员的武器流派平衡，每秒判断进行
+			END
+		END
+	BUT_ONLY	
+END
 
 // ***武器细节调整
 
@@ -660,32 +816,65 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eff1/~ ~override~
 
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/noname1~ ~override~
 
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/wav/~ ~override~
+
+//回旋斩共通部分
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WE1HL.spl~ ~override~	//单手回旋斩不让砍背后
-	WRITE_SHORT   0x98 ~%SY#WE1HL%~
+WRITE_SHORT   0x98 ~%SY#WE1HL%~
+//回旋斩区别部分
+ACTION_IF howtodoeeex == 1 THEN BEGIN
+	//有EEex，使用新版回旋斩	
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WE1HB.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WE2HB.spl~ ~override~
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WE1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WE2HC.spl~ ~override~
+	//仅回旋斩确定施展时显示文字，且只显示一次
+	OUTER_SET slashstres = RESOLVE_STR_REF(@125)
+	COPY_EXISTING ~M_SYATK.lua~ ~override~
+		REPLACE_TEXTUALLY ~] = 11768,~ ~] = %slashstres%,~
+	BUT_ONLY
+	
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WE1HK.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR header = 1 projectile = ~%SY#WE1HC%~ END
+	//回旋斩不砍中立生物
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 29 parameter2 = 102 STR_VAR resource = "SY#WE1HK" END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 128 parameter2 = 102 STR_VAR resource = "SY#WE1HK" END
 
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WE1HK.spl~ ~override~
-	SAY NAME1 @125	//回旋斩
-	LPF ALTER_SPELL_HEADER INT_VAR projectile = ~%SY#WE1HC%~ END
-//回旋斩不砍中立生物
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 29 parameter2 = 102 STR_VAR resource = "SY#WE1HK" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 128 parameter2 = 102 STR_VAR resource = "SY#WE1HK" END
-//双武时回旋斩要对其它技能加短暂限制
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 20 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WM1HB" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 20 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WH1HB" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 20 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WS1HB" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 40 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WM1HB" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 40 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WH1HB" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 40 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WS1HB" END
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WE1HK.spl~ ~override/SY#WE2HK.spl~
+		LPF ALTER_SPELL_HEADER INT_VAR header = 2 projectile = ~%SY#WE2HC%~ END
+	//回旋斩不砍中立生物
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 29 parameter2 = 102 STR_VAR resource = "SY#WE2HK" END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 128 parameter2 = 102 STR_VAR resource = "SY#WE2HK" END
+	
+END ELSE BEGIN
+	//没有EEex，使用旧版回旋斩	
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WE1HB.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WE2HB.spl~ ~override~
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WE1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WE2HC.spl~ ~override~
+	
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WE1HK.spl~ ~override~
+		SAY NAME1 @125	//回旋斩
+		LPF ALTER_SPELL_HEADER INT_VAR projectile = ~%SY#WE1HC%~ END
+	//回旋斩不砍中立生物
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 29 parameter2 = 102 STR_VAR resource = "SY#WE1HK" END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 128 parameter2 = 102 STR_VAR resource = "SY#WE1HK" END
+	//双武时回旋斩要对其它技能加短暂限制
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 20 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WM1HB" END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 20 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WH1HB" END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 20 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WS1HB" END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 40 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WM1HB" END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 40 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WH1HB" END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 40 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WS1HB" END
 
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WE2HK.spl~ ~override~
-	SAY NAME1 @125	//回旋斩
-	LPF ALTER_SPELL_HEADER INT_VAR projectile = ~%SY#WE2HC%~ END
-//回旋斩不砍中立生物
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 29 parameter2 = 102 STR_VAR resource = "SY#WE2HK" END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 128 parameter2 = 102 STR_VAR resource = "SY#WE2HK" END
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WE2HK.spl~ ~override~
+		SAY NAME1 @125	//回旋斩
+		LPF ALTER_SPELL_HEADER INT_VAR projectile = ~%SY#WE2HC%~ END
+	//回旋斩不砍中立生物
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 29 parameter2 = 102 STR_VAR resource = "SY#WE2HK" END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 insert_point = 0 target = 2 duration = 1 parameter1 = 128 parameter2 = 102 STR_VAR resource = "SY#WE2HK" END
+END
 
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WM1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WM2HC.spl~ ~override~
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WM1HA.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WM2HA.spl~ ~override~
 	SAY NAME1 @126	//锤击
+	
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WM1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WM2HC.spl~ ~override~
 //随等级提升豁免难度
 	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
 		LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END
@@ -816,8 +1005,24 @@ COPY_EXISTING ~SY#WM2HC.spl~ ~override/SY#WM2HC.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SY#WM2HC" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#WM2HC" END
 
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WH1HA.spl~ ~override~
+	SAY NAME1 @127	//勾挂
+	SAY UNIDENTIFIED_DESC @127
+	//没有脚的不怕勾
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 119 parameter2 = 104 STR_VAR resource = "SY#WH1HA" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 132 parameter2 = 104 STR_VAR resource = "SY#WH1HA" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 134 parameter2 = 104 STR_VAR resource = "SY#WH1HA" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 136 parameter2 = 104 STR_VAR resource = "SY#WH1HA" END
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WH2HA.spl~ ~override~
+	SAY NAME1 @127	//勾挂
+	SAY UNIDENTIFIED_DESC @127
+	//没有脚的不怕勾
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 119 parameter2 = 104 STR_VAR resource = "SY#WH2HA" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 132 parameter2 = 104 STR_VAR resource = "SY#WH2HA" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 134 parameter2 = 104 STR_VAR resource = "SY#WH2HA" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 324 target = 2 parameter1 = 136 parameter2 = 104 STR_VAR resource = "SY#WH2HA" END
+	
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WH1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WH2HC.spl~ ~override~
-	SAY NAME1 @127	//勾拽
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@131) END	//重心不稳
 //单手勾，随等级提升豁免难度
 COPY_EXISTING ~SY#WH1HC.spl~ ~override~
@@ -833,9 +1038,9 @@ COPY_EXISTING ~SY#WH1HC.spl~ ~override~
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
 	END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SY#WH1HC" END
-//专职盗贼、诗人、武僧在豁免失败时转到SY#WH1HM.spl对死亡进行豁免检定
-COPY_EXISTING ~SY#WH1HC.spl~ ~override/SY#WH1HM.spl~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SY#WH1HC" END	//镜影免疫
+//专职盗贼、诗人、武僧在豁免失败时转到SY#WH1HK.spl对死亡进行豁免检定
+COPY_EXISTING ~SY#WH1HC.spl~ ~override/SY#WH1HK.spl~
 	WRITE_LONG 0x08 0xFFFFFFFF
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 318 END
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 324 END
@@ -847,24 +1052,36 @@ COPY_EXISTING ~SY#WH1HC.spl~ ~override/SY#WH1HM.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 savingthrow = 4 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 235 savingthrow = 4 END
 //力量更高免疫，修改所免疫的法术文件名
+COPY_EXISTING ~SY#WH1HC.spl~ ~override/SY#WH1HI.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH1HI" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 target = 0 END
+COPY_EXISTING ~SY#WH1HC.spl~ ~override/SY#WH1HH.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH1HH" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 25 STR_VAR resource = "SY#WH1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 25 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
 COPY_EXISTING ~SY#WH1HC.spl~ ~override/SY#WH1HG.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH1HG" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 target = 0 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 23 STR_VAR resource = "SY#WH1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 23 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
 COPY_EXISTING ~SY#WH1HC.spl~ ~override/SY#WH1HF.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH1HF" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 23 STR_VAR resource = "SY#WH1HF" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 21 STR_VAR resource = "SY#WH1HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 21 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
 COPY_EXISTING ~SY#WH1HC.spl~ ~override/SY#WH1HE.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH1HE" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 20 STR_VAR resource = "SY#WH1HE" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 19 STR_VAR resource = "SY#WH1HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 19 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
 COPY_EXISTING ~SY#WH1HC.spl~ ~override/SY#WH1HD.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH1HD" END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 17 STR_VAR resource = "SY#WH1HD" END
-COPY_EXISTING ~SY#WH1HC.spl~ ~override~ ~SY#WH1HD.spl~ ~override~ ~SY#WH1HE.spl~ ~override~ ~SY#WH1HF.spl~ ~override~ ~SY#WH1HG.spl~ ~override~ ~SY#WH1HM.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 17 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
+COPY_EXISTING ~SY#WH1HC.spl~ ~override~ ~SY#WH1HD.spl~ ~override~ ~SY#WH1HE.spl~ ~override~ ~SY#WH1HF.spl~ ~override~ ~SY#WH1HG.spl~ ~override~ ~SY#WH1HK.spl~ ~override~
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 insert_point = 12 STR_VAR resource = "SY#SMITE" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WH1HB" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 20 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WM1HB" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WH1HB" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 10 duration = 40 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WM1HB" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 new_opcode = 318 END
 //双手勾，随等级提升豁免难度
 COPY_EXISTING ~SY#WH2HC.spl~ ~override~
 	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
@@ -879,9 +1096,9 @@ COPY_EXISTING ~SY#WH2HC.spl~ ~override~
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 318 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 326 savebonus = (7 - headernum) END
 	END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SY#WH2HC" END
-//专职盗贼、诗人、武僧在豁免失败时转到SY#WH2HM.spl对死亡进行豁免检定
-COPY_EXISTING ~SY#WH2HC.spl~ ~override/SY#WH2HM.spl~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SY#WH2HC" END	//镜影免疫
+//专职盗贼、诗人、武僧在豁免失败时转到SY#WH2HK.spl对死亡进行豁免检定
+COPY_EXISTING ~SY#WH2HC.spl~ ~override/SY#WH2HK.spl~
 	WRITE_LONG 0x08 0xFFFFFFFF
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 318 END
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete  = 324 END
@@ -893,28 +1110,42 @@ COPY_EXISTING ~SY#WH2HC.spl~ ~override/SY#WH2HM.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 savingthrow = 4 END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 235 savingthrow = 4 END
 //力量更高免疫，修改所免疫的法术文件名
+COPY_EXISTING ~SY#WH2HC.spl~ ~override/SY#WH2HI.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH2HI" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 target = 0 END
+COPY_EXISTING ~SY#WH2HC.spl~ ~override/SY#WH2HH.spl~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH2HH" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 25 STR_VAR resource = "SY#WH2HH" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 25 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
 COPY_EXISTING ~SY#WH2HC.spl~ ~override/SY#WH2HG.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH2HG" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 target = 0 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 23 STR_VAR resource = "SY#WH2HG" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 23 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
 COPY_EXISTING ~SY#WH2HC.spl~ ~override/SY#WH2HF.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH2HF" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 23 STR_VAR resource = "SY#WH2HF" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 21 STR_VAR resource = "SY#WH2HF" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 21 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
 COPY_EXISTING ~SY#WH2HC.spl~ ~override/SY#WH2HE.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH2HE" END
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 20 STR_VAR resource = "SY#WH2HE" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 19 STR_VAR resource = "SY#WH2HE" END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 19 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
 COPY_EXISTING ~SY#WH2HC.spl~ ~override/SY#WH2HD.spl~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 STR_VAR resource = "SY#WH2HD" END
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 parameter1 = 17 STR_VAR resource = "SY#WH2HD" END
-COPY_EXISTING ~SY#WH2HC.spl~ ~override~ ~SY#WH2HD.spl~ ~override~ ~SY#WH2HE.spl~ ~override~ ~SY#WH2HF.spl~ ~override~ ~SY#WH2HG.spl~ ~override~ ~SY#WH2HM.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 326 target = 2 parameter1 = 17 parameter2 = 124 STR_VAR resource = "SY#WPPT2" END
+COPY_EXISTING ~SY#WH2HC.spl~ ~override~ ~SY#WH2HD.spl~ ~override~ ~SY#WH2HE.spl~ ~override~ ~SY#WH2HF.spl~ ~override~ ~SY#WH2HG.spl~ ~override~ ~SY#WH2HK.spl~ ~override~
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WH2HB" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WL2HB" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 2 parameter1 = 32768 parameter2 = 138 STR_VAR resource = "SY#WM2HB" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WH2HB" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WL2HB" END
 	LPF ADD_SPELL_EFFECT INT_VAR opcode = 318 target = 9 timing = 0 duration = 5 parameter1 = 32768 parameter2 = 139 STR_VAR resource = "SY#WM2HB" END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 new_opcode = 318 END
 
-COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WS1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WS2HC.spl~ ~override~
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WS1HA.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WS2HA.spl~ ~override~
 	SAY NAME1 @128	//抽打四肢
+	
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WS1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WS2HC.spl~ ~override~
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@132) END	//肢体受创
 //随等级提升豁免难度
 	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
@@ -1017,9 +1248,11 @@ COPY_EXISTING ~SY#WS2HC.spl~ ~override/SY#WS2HD.spl~
 COPY_EXISTING ~SY#WS2HC.spl~ ~override/SY#WS2HC.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SY#WS2HC" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#WS2HC" END
+	
+COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WT1HA.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WT2HA.spl~ ~override~
+	SAY NAME1 @129	//创伤攻击
 
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WT1HC.spl~ ~override~ ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WT2HC.spl~ ~override~
-	SAY NAME1 @129	//创伤攻击
 	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@133) END	//流血
 //随等级提升豁免难度
 	FOR (headernum = 2 ; headernum < 14 ; ++headernum) BEGIN
@@ -1029,7 +1262,7 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/SY#WT1HC.spl~ ~override~ ~%MOD_FOLDE
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 39 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 109 savebonus = (7 - headernum) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 139 savebonus = (7 - headernum) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 215 savebonus = (7 - headernum) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 170 savebonus = (7 - headernum) END
 	END
 //随力量提升昏迷概率
 COPY_EXISTING ~SY#WT1HC.spl~ ~override/SY#WT1HK.spl~
@@ -1120,10 +1353,16 @@ COPY_EXISTING ~SY#WT2HC.spl~ ~override/SY#WT2HC.spl~
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 0x40000000 parameter2 = 138 STR_VAR resource = "SY#WT2HC" END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 2 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#WT2HC" END
 
+//队员的武器细节调整，每秒判断进行
 COPY_EXISTING ~SY#CPF0B.bcs~ ~override~
 	DECOMPILE_AND_PATCH BEGIN
+		PATCH_IF howtodoeeex == 1 THEN BEGIN
+			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WPROG.baf~
+		END// ELSE BEGIN
+//			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SY#WPROG.baf~
+//		END
 		FOR (n=1;n<7;++n) BEGIN
-			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SY#WPROE.baf~	//队友的武器细节调整，每秒判断进行
+			APPEND_FILE_EVALUATE ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SY#WPROE.baf~
 		END
 	END
 BUT_ONLY
@@ -1139,7 +1378,20 @@ COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/noname2~ ~override~
 
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eff2/~ ~override~
 
-EXTEND_BOTTOM ~SY#CPF0C.bcs~ ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SY#WPROC.baf~	//附近敌我的武器流派调整和武器细节调整
+
+ACTION_IF howtodoeeex == 1 THEN BEGIN
+	//有EEex
+	EXTEND_BOTTOM ~SY#CPF0C.bcs~ ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WPROC.baf~	//附近敌我的武器流派调整和武器细节调整
+	COMPILE ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WPRO0.d~	//对话进行设置
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WPBLK.spl~ ~override~
+	COPY ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WPE04.spl~ ~override~
+		WRITE_SHORT   0x98 ~%SY#CPF00%~
+	BUT_ONLY
+END ELSE BEGIN
+	//无EEex
+	EXTEND_BOTTOM ~SY#CPF0C.bcs~ ~%MOD_FOLDER%/WeaponStyleRebalance/baf/SY#WPROC.baf~	//附近敌我的武器流派调整和武器细节调整
+	COMPILE ~%MOD_FOLDER%/WeaponStyleRebalance/dlg/SY#WPRO0.d~
+END
 
 
 // ******************武器流派平衡补充模块：四种武器流派可投入更多星数***************
@@ -1172,8 +1424,12 @@ COPY_EXISTING ~SY#CPF0Z.bcs~ ~override~
 		END
 	END
 BUT_ONLY
-//对话返还扣星
-COMPILE ~%MOD_FOLDER%/WeaponStyleRebalance/dlg/SY#WPRO0.d~
+//对话进行设置
+ACTION_IF howtodoeeex == 1 THEN BEGIN
+	COMPILE ~%MOD_FOLDER%/WeaponStyleRebalance/eeex/SY#WPRO1.d~	//有EEex
+END ELSE BEGIN
+	COMPILE ~%MOD_FOLDER%/WeaponStyleRebalance/dlg/SY#WPRO1.d~	//无EEex
+END
 //返还扣星用法术
 COPY ~%MOD_FOLDER%/WeaponStyleRebalance/spl/noname3~ ~override~
 
@@ -1209,8 +1465,6 @@ COPY_EXISTING ~SY#CPF0B.BCS~ ~override~
 		END
 	END
 BUT_ONLY
-//对话不需要返还扣星
-COMPILE ~%MOD_FOLDER%/WeaponStyleRebalance/dlg/SY#WPRO1.d~
 
 //修改2DA以投入更多星数
 OUTER_SET "ALREADY2H3" = 0
@@ -1324,9 +1578,76 @@ BUT_ONLY
 /************模块：敌人随玩家提升等级并使用技能***********/
 //#########################################################
 //#########################################################
-BEGIN @204
+BEGIN @201	//难度保持（敌人随主角升级）
 REQUIRE_PREDICATE (IDS_OF_SYMBOL (~projectl~ ~SY#CPF00~)) > 0 @9
 
+//添加等级判断
+OUTER_SET "splprot_levelgt" = 0
+COPY_EXISTING ~splprot.2da~ ~override~
+	COUNT_2DA_ROWS 4 rows
+	FOR ( index = 0 ; index < rows ; index = index + 1 ) BEGIN
+		READ_2DA_ENTRY "%index%" 1 4 "splprot_stat"
+		READ_2DA_ENTRY "%index%" 2 4 "splprot_value"
+		READ_2DA_ENTRY "%index%" 3 4 "splprot_relation"
+	  //PATCH_PRINT ~%index% %splprot_stat% %splprot_value% %splprot_relation%~
+		PATCH_IF ("%splprot_stat%" STRING_COMPARE_CASE "34" = 0) & ("%splprot_value%" STRING_COMPARE_CASE "-1" = 0) & ("%splprot_relation%" STRING_COMPARE_CASE "4" = 0) BEGIN	//有现成的LEVEL>=判断行
+			SET "splprot_levelgt" = "%index%"
+			SET "index" = "%rows%" + 1 // kills loop
+		END
+	END
+	PATCH_IF (splprot_levelgt = 0) BEGIN
+		SET "splprot_levelgt" = "%rows%"
+		INSERT_2DA_ROW rows 4 ~%rows%_LEVEL>=n                          34                                            -1                                            4~
+	END
+BUT_ONLY	//splprot_levelgt为splprot.2da新增LEVEL判断行的编号
+
+//如果ImprovedEnemies模块未安装，借用其功能给SY#CPF0A添加等级调整，鸟按主角经验对应战士等级的一半进行等级修正
+ACTION_IF NOT FILE_CONTAINS_EVALUATED (~%SY#CPF0A%.bcs~ ~SY#LVADJUST~) THEN BEGIN
+	EXTEND_BOTTOM ~SY#CPF0A.bcs~ ~%MOD_FOLDER%/ImprovedEnemies/baf/SY#IMPEA.baf~
+END
+//敌人等级和数值修正，SY#LFX00.spl。时间模式为1时为数值永久增加而不是人物挂载eff。豁免修正包括#325，时间模式选1数值永久增加会溢出
+EXTEND_BOTTOM ~SY#CPF0B.bcs~ ~%MOD_FOLDER%/EnemyLevelUp/baf/SY#LFX0B.baf~
+//由于时间模式1永久的豁免变化会溢出，只能用时间模式9，需要判断并以SY#LFX01.spl移除队员的豁免变化。spl中改变SY#LVFXD变量记录变化
+EXTEND_BOTTOM ~SY#CPF0C.bcs~ ~%MOD_FOLDER%/EnemyLevelUp/baf/SY#LFX0C.baf~
+
+//进行范围调整的法术，使用投射SY#CPF00
+OUTER_SET SY#CPF00 = IDS_OF_SYMBOL (~projectl~ ~SY#CPF00~) +1
+
+//SY#LFX00.spl鸟根据自身等级判断要把敌人升到多少级，基本上是鸟等级2倍。升级完毕给敌人施法调整等级等数值（永久），同时令敌人做待机动作
+//%MOD_FOLDER%/EnemyLevelUp/baf/fix0.baf为敌人动作，需要等待等级调整完毕才施展技能。
+COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFX00.spl~ ~override~
+	WRITE_SHORT   0x98 ~%SY#CPF00%~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 318 parameter2 = ~%splprot_levelgt%~ END
+	FOR (headernum = 1 ; headernum < 26; ++headernum) BEGIN
+		PATCH_IF headernum > 1 BEGIN LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END END
+		LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = headernum END
+		FOR (headertemp = 2 ; headertemp < (headernum + 1); ++headertemp) BEGIN
+			PATCH_IF (headertemp < 11) BEGIN	//20级内，豁免和命中变化
+				LPF ADD_SPELL_EFFECT INT_VAR header = headernum insert_point = 11 opcode = 325 target = 2 timing = 9 parameter1 = 1 END
+				LPF ADD_SPELL_EFFECT INT_VAR header = headernum insert_point = 11 opcode = 54 target = 2 timing = 1 parameter1 = 2 END
+			END
+			PATCH_IF (headertemp < 5) BEGIN	//9级内，HP大幅变化
+				LPF ADD_SPELL_EFFECT INT_VAR header = headernum insert_point = 11 opcode = 18 target = 2 timing = 1 parameter1 = 16 END
+			END ELSE BEGIN
+				LPF ADD_SPELL_EFFECT INT_VAR header = headernum insert_point = 11 opcode = 18 target = 2 timing = 1 parameter1 = 4 END
+			END
+			LPF ADD_SPELL_EFFECT INT_VAR header = headernum insert_point = 11 opcode = 96 target = 2 timing = 1 parameter1 = 2 END
+			LPF ADD_SPELL_EFFECT INT_VAR header = headernum insert_point = 1 opcode = 318 target = 2 parameter1 = headertemp * 2 parameter2 = ~%splprot_levelgt%~ STR_VAR resource = ~SY#LFX00~ END
+		END
+	END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 9 opcode = 309 target = 2 timing = 1 parameter1 = 1 STR_VAR resource = ~SY#LVFXD~ END	//加标记，便于移除队员豁免变化
+	LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 2 timing = 0 duration = 300 STR_VAR resource = ~SY#LFX00~ END	//短时间不再受此法术影响
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 new_opcode = 318 END
+BUT_ONLY
+//移除队员豁免变化
+COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFX01.spl~ ~override~
+//免疫600秒SY#LFX00防止做出待机动作（由于SY#LFX00以做出待机动作中断攻击来强制启动脚本）
+COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFX02.spl~ ~override~
+//免疫36秒SY#LFX00防止做出待机动作（由于SY#LFX00以做出待机动作中断攻击来强制启动脚本）
+COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFX03.spl~ ~override~
+
+
+// ******************难度保持补充模块：敌人在战斗中可施展技能***************
 COPY ~%MOD_FOLDER%/EnemyLevelUp/2da/elv#excl.2da~ ~override/elv#excl.2da~	//排除列表，含不需要修改的bcs
 
 //战役脚本放入排除列表
@@ -1494,7 +1815,7 @@ BUT_ONLY
 ACTION_PHP_EACH elvfixArray AS bcsfile => foo BEGIN
 	//在待添加列表且不在排除列表（排除CutScene和队友脚本），正式添加
 	ACTION_IF NOT FILE_CONTAINS_EVALUATED (~elv#excl.2da~ ~%bcsfile%~) BEGIN
-		ACTION_IF NOT (FILE_CONTAINS_EVALUATED (~%bcsfile%.bcs~ ~SY#LVFIXED~)) BEGIN
+		ACTION_IF NOT (FILE_CONTAINS_EVALUATED (~%bcsfile%.bcs~ ~SY#LVFXD~)) BEGIN
 			EXTEND_TOP ~%bcsfile%.bcs~ ~%MOD_FOLDER%/EnemyLevelUp/baf/fix0.baf~
 		END
 	END
@@ -1518,56 +1839,6 @@ BUT_ONLY
 
 ACTION_IF FILE_EXISTS ~override/elv#excl.2da~ BEGIN MOVE ~override/elv#excl.2da~ ~%MOD_FOLDER%/EnemyLevelUp/2da/done~ END
 
-ACTION_FOR_EACH ~playerlv~ IN 3 5 7 9 BEGIN
-	COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFX00.spl~ ~override/SY#LFX0%playerlv%.spl~
-PATCH_PRINT ~SY#LFX0%playerlv%.spl~
-		FOR (headernum = 1 ; headernum < (playerlv + 1); ++headernum) BEGIN
-			PATCH_IF headernum > 1 BEGIN LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END END
-			LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = headernum END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 0 END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 96 parameter1 = (playerlv - headernum) parameter2 = 0 END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 parameter1 = 8 * (playerlv - headernum) END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 parameter1 = (playerlv - headernum) END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 parameter1 = ((playerlv - headernum) / 2) END
-			PATCH_IF (headernum < 7)&&(playerlv > 6) BEGIN
-				LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 6 END
-			END
-		END
-		LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 206 STR_VAR resource = ~SY#LFX0%playerlv%~ END
-	BUT_ONLY
-END
-
-ACTION_FOR_EACH ~playerlv~ IN 11 13 15 17 20 24 28 32 36 40 BEGIN
-	COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFX00.spl~ ~override/SY#LFX%playerlv%.spl~	//修正到接近玩家等级
-PATCH_PRINT ~SY#LFX%playerlv%.spl~
-		FOR (headernum = 1 ; headernum < (playerlv + 1); ++headernum) BEGIN
-			PATCH_IF headernum > 1 BEGIN LPF ADD_SPELL_HEADER INT_VAR copy_header = 1 END END
-			LPF ALTER_SPELL_HEADER INT_VAR header = headernum min_level = headernum END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 0 END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 96 parameter1 = (playerlv - headernum) parameter2 = 0 END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 18 parameter1 = (headernum < 10 ? ((10 - headernum)* 8 + (playerlv - 10)* 3 ) : ((playerlv - headernum)* 3)) END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 54 parameter1 = (headernum < 20 ? ((20 - headernum)* 3 / 4) : 0) END
-			LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 325 parameter1 = (headernum < 21 ? ((21 - headernum) / 2) : 0) END
-			PATCH_IF (headernum < 7)&&(playerlv > 6)&&(playerlv < 13) BEGIN
-				LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 6 END
-			END
-			PATCH_IF (headernum > 6)&&(headernum < 13)&&(playerlv > 12) BEGIN
-				LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 6 END
-			END
-			PATCH_IF (headernum < 7)&&(playerlv > 12) BEGIN
-				LPF ALTER_SPELL_EFFECT INT_VAR header = headernum match_opcode = 1 parameter1 = 1 END
-			END
-		END
-		LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 206 STR_VAR resource = ~SY#LFX%playerlv%~ END
-	BUT_ONLY
-END
-
-//ADD_PROJECTILE ~%MOD_FOLDER%/EnemyLevelUp/pro/SY#LFIX1.pro~
-//PRINT ~新增投射SY#LFIX1序号为%SY#LFIX1%~
-
-//COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFIX1.spl~ ~override~ ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFIH1.spl~ ~override~
-//	WRITE_SHORT 0x98 ~SY#LFIX1~	//#183需要范围pro才能起效
-
 //添加石肤的标记（镜影不用添加）
 OUTER_SET "splprot_stonskins" = 0
 COPY_EXISTING ~splprot.2da~ ~override~
@@ -1588,28 +1859,39 @@ COPY_EXISTING ~splprot.2da~ ~override~
 	END
 BUT_ONLY	//splprot_stonskins为splprot.2da新增STONESKINS判断行的编号
 
-//SY#LFIX0判断职业施展远程普通技能 SY#LFIX1判断职业和武器施展近战普通技能 SY#LFIX2降低SY#LFIX0/1的概率
+//SY#LFIX0判断职业施展远程普通技能 SY#LFIX1判断职业和武器施展近战普通技能 SY#LFIX2降低SY#LFIX0/1的概率（免疫36秒SY#LFX00.spl，防止目盲打断脚本，因为在SY#LFX00要加目盲让敌人启动脚本）
 //SY#LFXBA诗人攻击 SY#LFXBR诗人防御 SY#LFXCL牧师 SY#LFXFI战士近战 SY#LFXFR战士远程 SY#LFXFA野蛮人 SY#LFXFS战士刀刃 SY#LFXMO武僧 SY#LFXPA圣武 SY#LFXTH盗贼 SY#LFXMA法师 SY#LFXDR德和萨满
 //SY#LFXUD不死近战 SY#LFXUR不死远程 SY#LFXWS法师杀手
 
-//SY#LFIH0判断职业施展远程高阶技能 SY#LFIH1判断职业和武器施展近战高阶技能
+//SY#LFIH0判断职业施展远程高阶技能 SY#LFIH1判断职业和武器施展近战高阶技能（免疫SY#LFX00.spl，防止目盲打断脚本）
 //SY#LFHSH萨满 SY#LFHCL牧师 SY#LFHBA诗人 SY#LFHTH盗贼近战 SY#LFHTR盗贼远程 SY#LFHPR圣武 SY#LFHFA野蛮人 SY#LFHFS战士刀刃 SY#LFHFZ防护SY#LFHFI SY#LFHFI战士兜底 SY#LFHMO武僧
 //SY#LFHUD不死近战 SY#LFHUR不死远程
  
 COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFXBA.spl~ ~override~ ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFXBR.spl~ ~override~
-LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@207) END
+LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@207) END	//诗人战歌提示
 
 COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFXMA.spl~ ~override~	//法师判断加石肤
 	LPF ADD_SPELL_EFFECT INT_VAR header = 3 insert_point = 0 opcode = 318 target = 1 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#LFXMA" END
 COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFXDR.spl~ ~override~	//德判断加石肤
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point = 0 opcode = 318 target = 1 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#LFXDR" END
+	LPF ADD_SPELL_EFFECT INT_VAR header = 2 insert_point = 4 opcode = 318 target = 1 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#LFXDR" END
+	LPF ADD_SPELL_EFFECT INT_VAR header = 3 insert_point = 5 opcode = 318 target = 1 parameter1 = 1 parameter2 = ~%splprot_stonskins%~ STR_VAR resource = "SY#LFXDR" END
 
-COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFHBA.spl~ ~override~
-LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@208) END
-
+COPY_EXISTING ~spcl412.spl~ ~override/SY#LFXTR.spl~ ~spcl414.spl~ ~override/SY#LFXTS.spl~	//陷阱
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 252 new_opcode = 148 END
+	WRITE_SHORT 0x19 0b01000000
+COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFXCS.spl~ ~override~
+	SAY NAME1 @206	//诅咒
+	SAY UNIDENTIFIED_DESC @206
 COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFXWS.spl~ ~override~
 	SAY NAME1 @209	//干扰施法
 	SAY UNIDENTIFIED_DESC @209
+
+COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/SY#LFHBA.spl~ ~override~
+LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF(@208) END	//诗人战歌提示
+
+COPY_EXISTING ~spcl910.spl~ ~override/SY#LFHTS.spl~ ~spcl911.spl~ ~override/SY#LFHTB.spl~	//高阶陷阱
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 252 new_opcode = 148 END
+	WRITE_SHORT 0x19 0b01000000
 
 COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/normal~ ~override~
 COPY ~%MOD_FOLDER%/EnemyLevelUp/spl/high~ ~override~
@@ -1618,6 +1900,8 @@ COPY ~%MOD_FOLDER%/EnemyLevelUp/eff/high~ ~override~
 
 //给鸟添加对话控制，SY#LVFIX为1表示开启等级修正，SY#SKILLNLA表示施展普通技能概率，SY#SKILLHLA表示施展高阶技能数量，SY#SKILLRACE表示种族区分技能
 COMPILE ~%MOD_FOLDER%/EnemyLevelUp/dlg/elvfix.d~
+
+
 
 
 

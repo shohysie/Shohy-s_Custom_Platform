@@ -10,7 +10,20 @@
 @13 = "Shut down the entire platform (most functional modules will be invalid)"
 @14 = "Return to previous level options"
 @15 = "Read the detailed instructions"
+@16 = "Enable the platform (functional modules take effect only after activation)?"
 
 @18 = "This platform is activated on combat and casting, allowing adjustments of each carried module to take effect.
 While not in battle, it becomes inactive, in order to save game resources. "
 @19 = "If the platform is entirely turned off, the carried modules will also be invalid, unless they're persistent or permanent effects."
+
+
+@10000 = "EEex detected. Installing the special module adapted for EEex can enable additional effects such as an extra off-hand attack, but they will not work with Infinity Engine 2.7 and compatibility is not guaranteed.
+Enter 1 to install the special module, or 2 to install normally:"
+@10001 = "Hit"
+@10002 = "Miss"
+@10003 = "Weapon Ineffective."
+@10004 = "Attack Roll (Off-hand)"
+@10005 = "Attack Roll "
+@10006 = "Critical Hit"
+@10007 = "Critical Miss"
+@10008 = "Critical Hit Averted"

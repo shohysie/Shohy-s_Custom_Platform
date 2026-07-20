@@ -1,0 +1,147 @@
+@101 = "Rééquilibrage des styles d'armes et ajustements détaillés par type d'arme"
+@102 = "Davantage de slots de maîtrise peuvent être investis dans tous les styles d'armes"
+@103 = "(Recommandé) N'augmente pas réellement la limite d'étoiles, mais réduit automatiquement d'une étoile lorsqu'on atteint 2 ou 3 étoiles en échange de bonus supplémentaires (réglable manuellement). Aucun problème de compatibilité."
+@104 = "Augmente réellement la limite d'étoiles, mais incompatible avec d'autres MODs modifiant les règles des styles d'armes. Doit être installé après tous les MODs de kits"
+@105 = "Nécessite d'abord d'installer 'Rééquilibrage des styles d'armes et ajustements détaillés par type d'arme'"
+
+@111 = "Rééquilibrage des styles d'armes : Style à deux armes passe de 3 étoiles à 2, avec compensation numérique déjà donnée. Si les 3 étoiles sont à nouveau atteintes, la réduction se reproduira. Peut être désactivé via la capacité innée du protagoniste."
+@112 = "Style à deux armes passe de 2 étoiles à 1, compensation donnée. Peut ensuite être normalement augmenté à 2 étoiles."
+@113 = "Style à deux armes passe de 3 étoiles à 2, puis peut être normalement augmenté à 3 étoiles et supprime la pénalité d'attaques par round."
+@114 = "Style à deux mains passe de 2 étoiles à 1, compensation donnée. Peut ensuite être augmenté à 2 étoiles."
+@115 = "Style épée et bouclier passe de 2 étoiles à 1, compensation donnée. Peut ensuite être augmenté à 2 étoiles."
+@116 = "Style à une main passe de 2 étoiles à 1, compensation donnée. Peut ensuite être augmenté à 2 étoiles."
+
+@117 = "Rééquilibrage : Le étoile de compétence déduit pour le style à deux armes a été remboursé."
+@118 = "Rééquilibrage : Le étoile de compétence déduit pour le style à deux mains a été remboursé."
+@119 = "Rééquilibrage : Le étoile de compétence déduit pour le style épée et bouclier a été remboursé."
+@120 = "Rééquilibrage : Le étoile de compétence déduit pour le style à une main a été remboursé."
+
+@121 = "Saisie-projection"
+@122 = "Désarmement"
+@123 = "Attaque soudaine"
+@124 = "Coup de bouclier"
+@125 = "Tourbillon"
+@126 = "Coup étourdissant"
+@127 = "Crochet et Traînée"
+@128 = "Frappe de membre"
+@129 = "Blessure saignante"
+
+@131 = "Perte d'équilibre"
+@132 = "Traumatisme de membre"
+@133 = "Saignement"
+
+@134 = "Définir s'il faut obtenir des niveaux de maîtrise supérieurs en déduisant une étoile"
+@135 = "Lorsque la maîtrise atteint 2 ou 3 étoiles, déduit automatiquement une étoile en échange de bonus supplémentaires (nécessite l'activation du Rééquilibrage)"
+@136 = "Désactiver la déduction automatique et rembourser les étoiles déjà déduites (le cas échéant)"
+@137 = "Désactiver la déduction automatique sans remboursement (les bonus supplémentaires resteront effectifs si réactivé)"
+@138 = "Conserver le réglage actuel (déduction auto pour bonus) et revenir au menu précédent"
+@139 = "Conserver le réglage actuel (pas de déduction auto) et revenir au menu précédent"
+
+@140 = "Paramètres du module : Rééquilibrage des styles d'armes"
+@141 = "Désactiver toutes les fonctions (Effets détaillés des armes + Rééquilibrage)"
+@142 = "Activer toutes les fonctions, effectif pour ennemis et alliés"
+@143 = "Activer toutes les fonctions, uniquement pour l'équipe du joueur"
+@144 = "Désactiver les effets détaillés des armes, ne garder que le Rééquilibrage, effectif pour ennemis et alliés"
+@145 = "Désactiver les effets détaillés, ne garder que le Rééquilibrage, uniquement pour l'équipe du joueur"
+@146 = "Conserver le réglage actuel (tout désactivé) et revenir au menu précédent"
+@147 = "Conserver le réglage actuel (tout activé, ennemis et alliés) et revenir au menu précédent"
+@148 = "Conserver le réglage actuel (tout activé, seulement équipe joueur) et revenir au menu précédent"
+@149 = "Conserver le réglage actuel (Rééquilibrage seulement, ennemis et alliés) et revenir au menu précédent"
+@150 = "Conserver le réglage actuel (Rééquilibrage seulement, équipe joueur) et revenir au menu précédent"
+
+@151 = "Lire la description détaillée du Rééquilibrage des styles d'armes"
+@152 = "Lire la description détaillée des ajustements par type d'arme"
+@153 = "Lire la description détaillée de 'Plus de points de compétence dans les styles d'armes'"
+
+@156 = "Définir si une icône doit être affichée lorsque le Rééquilibrage est actif"
+@157 = "Afficher l'icône 'Héroïsme' sur le portrait du personnage comme rappel"
+@158 = "Ne pas afficher d'icône"
+@159 = "Conserver le réglage actuel (afficher l'icône) et revenir au menu précédent"
+@160 = "Conserver le réglage actuel (ne pas afficher d'icône) et revenir au menu précédent"
+
+@161 = "Rééquilibrage – Style à une main :
+1 étoile : +2 à la vitesse d'attaque ; une attaque de mêlée par round tente un saisie-projection faible, faisant tomber, immobiliser ou clouer l'ennemi (inefficace sur certains), pénalité -2 à THAC0 et CA. De plus, en combat singulier (pas d'autre ennemi à 1,20 m), +1 à THAC0 et CA.
+2 étoiles : +4 vitesse d'attaque ; +0,5 attaque par round ; une attaque par round tente un saisie-projection fort, étourdissant, pénalité -4 à THAC0 et CA, 10% de chance de désarmer (humanoïdes seulement). En combat singulier, +2 à THAC0 et CA.
+Le saisie-projection nécessite une comparaison de Force (7 paliers : ≤13/16/18/20/22/24/25). Réussi si le palier de l'ennemi ne dépasse pas celui de l'attaquant, et l'ennemi doit réussir un jet de sauvegarde contre la polymorphe (bonus initial +6, +1 difficulté par 4 niveaux ; voleurs, bardes et moines obtiennent un second jet contre la mort en cas d'échec).
+Si le saisie-projection réussit ou si l'ennemi est déjà incapable d'agir, les tentatives peuvent se répéter sans limite par round.
+Les personnages hâtés obtiennent deux tentatives par round."
+@162 = "Rééquilibrage – Style à deux mains :
+1 étoile : +0,5 attaque par round.
+2 étoiles : +1 attaque par round.
+Le bonus de dégâts de Force est augmenté de 50%."
+@163 = "Rééquilibrage – Style à deux armes :
+-0,5 attaque par round, sauf si 5 étoiles sont investis (nécessite l'activation des étoiles supérieurs).
+0 étoile : -2 dégâts d'arme.
+1 étoile : -2 dégâts, +1 bonus à CA contre mêlée.
+2 étoiles : -1 dégât, +2 bonus à CA contre mêlée.
+3 étoiles : Pas de pénalité de dégâts, +2 bonus à CA contre mêlée."
+@164 = "Rééquilibrage – Style épée et bouclier :
+La première attaque de chaque round est une attaque soudaine avec +2 à THAC0.
+1 étoile : +1 CA contre mêlée ; un coup de bouclier supplémentaire par round qui réduit brièvement la CA de l'ennemi de 2 et le repousse. Jet de sauvegarde contre souffle pour annuler.
+2 étoiles : +2 CA contre mêlée ; un coup de bouclier qui étourdit et inflige 1d4+mod Force (contondant), le jet de sauvegarde évite l'étourdissement mais pas le recul ni la pénalité de CA.
+Hâte donne deux attaques soudaines et deux coups de bouclier par round.
+L'attaque soudaine et le coup de bouclier fonctionnent aussi avec les armes de jet (haches, couteaux) mais pas les arcs ou arbalètes."
+@165 = "Rééquilibrage – Moine :
+Le moine a deux tentatives de saisie-projection par round, mais ne peut pas les effectuer en dual-wielding.
+Avec une seule arme (à une ou deux mains), il effectue un saisie-projection faible (comme style à une main 1 étoile).
+À mains nues, il effectue un saisie-projection fort (comme 2 étoiles).
+Mécanique identique au @161, mais les paliers de Force sont : ≤13/16/19/22/25."
+@166 = "Rééquilibrage – Style à deux armes (nécessite EEex) :
+La main principale subit -0,5 attaque par round.
+0 étoile : -2 dégâts.
+1 étoile : -2 dégâts, +1 CA mêlée.
+2 étoiles : -1 dégât, +2 CA mêlée.
+3 étoiles : Pas de pénalité, +2 CA mêlée.
+Si 5 étoiles sont investis dans le style à deux armes (nécessite étoiles supérieurs), la main secondaire gagne +1 attaque par round, +2 avec hâte (attaques simulées déclenchées par les attaques réussies de la main principale)."
+
+@171 = "Ajustements détaillés – Armes légères :
+Arme légère à une main (dague, épée courte, wakizashi, etc.) ou à mains nues, avec l'autre main tenant un bouclier ou vide : ajoute le modificateur de Dextérité au THAC0 (bonus : 1/2/3/4/5 à Dex 16/17/19/21/24). Si l'autre main tient aussi une arme, pas de bonus de Dex mais +1 à CA contre mêlée et au THAC0 de la main secondaire.
+Arme légère à deux mains (lance, bâton) : +1 à CA mêlée et au THAC0."
+@172 = "Ajustements – Armes à longue lame :
+Arme à une main (cimeterre, épée longue, épée bâtarde, katana, etc.) avec main secondaire vide : 50% de chance par coup de réaliser un petit cône de taille (1d6 + 50% mod Force dégâts tranchants, ne touche pas la cible principale ni les alliés). Avec main occupée, chance divisée par deux.
+Arme à deux mains (épée à deux mains, katana à deux mains) : 50% de chance pour un cône plus large (1d10 + 50% mod Force ; le bonus de Force des armes à deux mains étant déjà 150%, le bonus réel est de 75% du mod Force). Les hallebardes ont aussi une attaque de zone mais avec probabilité réduite de moitié."
+@173 = "Ajustements – Armes contondantes :
+Arme contondante à une main (marteau, masse, fléau, etc.) avec main secondaire vide : un coup étourdissant par round qui étourdit brièvement (durée : 0,5 + mod Force (toucher)/2 secondes ; Force 25 = 4s, Force 7 = 0), réduit la CA de 2 et repousse. Jet de sauvegarde contre souffle annule tout. Avec main occupée, chance divisée par deux.
+Marteau à deux mains : durée d'étourdissement x1,5 ; même sur réussite du jet, l'ennemi subit le recul et la pénalité de CA.
+Les haches peuvent aussi faire un coup étourdissant mais probabilité divisée par deux.
+Jet de sauvegarde contre souffle avec bonus +6 (-1 par 4 niveaux de l'attaquant).
+Personnages hâtés : deux coups étourdissants par round."
+@174 = "Ajustements détaillés des armes – Armes à crochet :
+Avec une arme à crochet à une main (hache, etc.) et la main secondaire vide : 0,5 attaque de mêlée par round qui accroche et traîne l'arme ou un membre de l'ennemi, infligeant une perte d'équilibre temporaire (-4 à THAC0 et CA) sauf si jet de sauvegarde contre souffle réussi. Avec main occupée, chance divisée par deux.
+Avec une arme à deux mains (hallebarde, hache à deux mains) : 0,5 attaque par round qui accroche et traîne ; si l'ennemi rate son jet, il tombe et subit -4 à THAC0 et CA, avec 10% de chance d'être désarmé (humanoïdes uniquement).
+Le crochet nécessite une comparaison de Force (sept paliers : ≤13/16/18/20/22/24/25). Il fonctionne seulement si le palier de Force de l'ennemi ne dépasse pas celui de l'attaquant, et l'ennemi doit effectuer un jet de sauvegarde contre la polymorphe (bonus initial +6, difficulté +1 tous les 4 niveaux ; voleurs, bardes et moines obtiennent un second jet contre la mort en cas d'échec).
+La Saisie-projection et le Crochet ne peuvent pas être exécutés simultanément ; si la Saisie-projection échoue, une tentative de Crochet peut se déclencher lors de l'attaque suivante.
+Les personnages hâtés bénéficient de deux tentatives de Crochet par round."
+@175 = "Ajustements – Armes perforantes :
+Arme perforante à une main (dague, épée courte, etc.) avec main secondaire vide : une attaque par round qui cause un saignement pendant 4 rounds (1 dégât perforant par round, jet de sauvegarde contre souffle annule) et a (mod Force toucher +1)*8% de chance de paralysie 1 round (jet contre mort ; Force 25 = 64%, Force 7 = 0).
+Arme perforante à deux mains (lance) : saignement 2 dégâts/round, chance de paralysie (mod Force+1)*12% (Force 25 = 96%).
+Hallebardes : probabilité divisée par deux.
+Les créatures sans vie sont immunisées. Jet de sauvegarde contre souffle bonus +6, -1 par 4 niveaux.
+De plus, les lances à deux mains octroient +2 aux dégâts en permanence."
+@176 = "Ajustements – Bâtons longs :
+Bâton à une main (ex. masse-bâton +2) avec main secondaire vide : une attaque par round qui frappe les membres, infligeant -1 à 1-3 attributs choisis aléatoirement parmi THAC0, CA ou vitesse de déplacement. Cumulable, durée : 0,5 + mod Force (toucher)/2 rounds (Force 25 = 4 rounds). Avec main occupée, chance divisée par deux.
+Bâton à deux mains : -2 à 1-3 attributs, durée x1,5.
+Jet de sauvegarde contre souffle annule. Les créatures sans vie ou sans membres sont immunisées.
+Personnages hâtés : deux frappes de membre par round."
+@177 = "Les effets détaillés des armes se déclenchent normalement avec une seule arme. Avec un bouclier ou une arme secondaire, la probabilité est divisée par deux. En dual-wielding, la limite par round est assouplie à environ 1,5 déclenchements par round (environ 3 avec hâte)."
+@178 = "Ajustements – Armes à longue lame (nécessite EEex) :
+Arme à une main avec main secondaire vide : une attaque par round effectue un cône de taille touchant directement tous les ennemis dans la zone (effets complets de l'arme sur chacun, sans toucher la cible principale ni les alliés). Avec main occupée, chance divisée par deux.
+Arme à deux mains : une attaque par round effectue un cône similaire.
+Hallebardes : probabilité divisée par deux."
+
+@181 = "Mode actuel : Lorsqu'un style d'armes atteint 2 étoiles, il déduit automatiquement 1 étoile (déclenché en combat), mais accorde +1 à THAC0, dégâts, vitesse d'attaque et CA contre mêlée. Si les 2 étoiles sont à nouveau atteintes plus tard, il n'y a pas de nouvelle déduction."
+@182 = "Lorsque le style à deux armes atteint 3 étoiles, il déduit automatiquement 1 étoile. Si les 3 étoiles sont à nouveau atteintes (total de 5 étoiles investies), la pénalité de -0,5 attaque par round est supprimée."
+@183 = "Vous pouvez choisir de rembourser les étoiles déduites et désactiver le Rééquilibrage, mais uniquement si vous n'avez pas investi d'étoiles supplémentaires au-delà de l'étoile déduite ; sinon il n'y a pas d'emplacement pour rembourser."
+@184 = "Lorsque le style à deux armes atteint 3 étoiles, il déduit automatiquement 1 étoile. Si les 3 étoiles sont à nouveau atteintes (total 5 étoiles), la main principale subit -0,5 attaque par round mais la main secondaire gagne +1 attaque par round (nécessite EEex)."
+
+@186 = "Le mode actuel augmente effectivement le plafond d'étoiles (peut causer des problèmes de compatibilité avec des MODs de kits ou de règles installés après). Le style à deux armes peut atteindre 5 étoiles ; les trois autres styles peuvent atteindre 3 étoiles."
+
+@191 = "Définir si les effets détaillés des armes sont affectés par la maîtrise correspondante de l'arme (nécessite que les effets détaillés des armes soient activés)"
+@192 = "La probabilité des effets détaillés des armes est proportionnelle à la maîtrise de l'arme du personnage : 25% de base, plus 15% par étoile de maîtrise"
+@193 = "Les effets détaillés des armes se produisent toujours (100%), sans influence de la maîtrise"
+@194 = "Conserver le réglage actuel (effets détaillés affectés par la maîtrise) et revenir au menu précédent"
+@195 = "Conserver le réglage actuel (effets détaillés toujours à 100%) et revenir au menu précédent"
+
+@197 = "La force de la cible est trop élevée ; saisie-projection résistée."
+@198 = "La force de la cible est trop élevée ; crochet résistée."
+@199 = "Cible immobilisée ; suppression continue."

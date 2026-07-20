@@ -1,26 +1,35 @@
-@41 = "Enemy stats grow with protagonist XP"
-@42 = "Kill XP granted to last attacker"
+@61 = "Enhanced Enemies (Enemy stats grow with protagonist XP)"
+@62 = "Extra Kill XP granted to last attacker"
 
-@45 = "'Enemy Enhancement Level' = (Level of a pure-class fighter with protagonist's XP) / 2.
-After the protagonist accumulates 8 million XP, +1 'Enemy Enhancement Level' per 500k XP, capped at Lv40 at 18 million XP."
-@46 = "Easy: for each 'Enemy Enhance Level' the enemies gets 10% health and 1% of all damage; for every 4 'difficulty levels' the enemies get 1 point of magic resistance; for every 7 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 10 'difficulty levels' they get +1 bonus to all saving throws.
-For example: When the protagonist reaches 8 million experience points, the enemies increase their HP by 200%, all damage made by 20%, magic resistance by 5%. They also get +2 bonus on  AC and THACO, +2 bonus on all saving throws. "
-@47 = "Normal: for each 'Enemy Enhance Level' the enemies gets 20% health and 2% of all damage; for every 2 'difficulty levels' the enemies get 1 point of magic resistance; for every 5 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 8 'difficulty levels' they get +1 bonus to all saving throws.
-For example: When the protagonist reaches 8 million experience points, the enemies increase their HP by 400%, all damage made by 40%, magic resistance by 10%. They also get +4 bonus on  AC and THACO, +2 bonus on all saving throws. "
-@48 = "Hard: for each 'Enemy Enhance Level' the enemies gets 50% health and 4% of all damage; for every 'difficulty levels' the enemies get 1 point of magic resistance; for every 3 'difficulty levels' they get +1 bonus of AC and THAC0 ; for every 5 'difficulty levels' they get +1 bonus to all saving throws.
-For example: When the protagonist reaches 8 million experience points, the enemies increase their HP by 1000%, all damage made by 100%, magic resistance by 20%. They also get +7 bonus on  AC and THACO, +4 bonus on all saving throws. "
+@65 = "Enemies' 'Enhancement Level' = (Level of a pure-class fighter with protagonist's XP) / 2.
+After the protagonist accumulates 8 million XP, +1 'Enhancement Level' per 500k XP, capped at Lv40 at 18 million XP."
+@66 = "Easy: for each 'Enhancement Level' the enemies gets 10% health and 1% of all damage; for every 4 'Enhancement Levels' the enemies gain 1 point of magic resistance; for every 7 'Enhancement Levels' they gain +1 bonus of AC and THAC0 ; for every 10 'Enhancement Levels' they gain +1 bonus to all saving throws.
+For example: When the protagonist reaches 8 million XP, enemies gain 200% health, 20% all damage, 5% magic resistance, +2 bonus to AC and THAC0, and +2 bonus to all saving throws. "
+@67 = "Normal: for each 'Enhancement Level' the enemies gets 20% health and 2% of all damage; for every 2 'Enhancement Levels' the enemies gain 1 point of magic resistance; for every 5 'Enhancement Levels' they gain +1 bonus of AC and THAC0 ; for every 8 'Enhancement Levels' they gain +1 bonus to all saving throws.
+For example: When the protagonist reaches 8 million XP, enemies gain 400% health, 40% all damage, 10% magic resistance, +4 bonus to AC and THAC0, and +2 bonus to all saving throws. "
+@68 = "Hard: for each 'Enhancement Level' the enemies gets 50% health and 5% of all damage; for every 'Enhancement Level' the enemies gain 1 point of magic resistance; for every 3 'Enhancement Levels' they gain +1 bonus of AC and THAC0 ; for every 5 'Enhancement Levels' they gain +1 bonus to all saving throws.
+For example: When the protagonist reaches 8 million XP, enemies gain 1000% health, 100% all damage, 20% magic resistance, +6 bonus to AC and THAC0, and +4 bonus to all saving throws. "
+@69 = "Enemies gain temporary enhancements during combat based on settings, lasting 10 minutes. After expiration, the enhancement is reapplied."
 
-@51 = "Settings of 'Attributes of enemies grow with experience or level of the protagonist' (disabled by default)"
-@52 = "Settings of 'Attributes of enemies grow with experience or level of the protagonist' (apply as 5-minute temporary effects and reapplied if in combat)"
-@53 = "Turns off, attributes of enemies won't increase"
-@54 = "Easy, attributes of enemies increase slightly"
-@55 = "Noraml, attributes of enemies increase normally"
-@56 = "Hard, attributes of enemies increase greatly"
+@70 = "Module function settings: Enhanced Enemies (enemy stats increase)"
+@71 = "Module function settings: Enemy stats increase (lasts 10 minutes, reapplies after expiration)"
+@72 = "Disable, enemies do not get stat increases"
+@73 = "Easy, enemies get minor stat increases"
+@74 = "Normal, enemies get moderate stat increases"
+@75 = "Hard, enemies get large stat increases"
+@76 = "Keep current setting (enemies do not get stat increases) and return to previous menu"
+@77 = "Keep current setting (Easy) and return to previous menu"
+@78 = "Keep current setting (Normal) and return to previous menu"
+@79 = "Keep current setting (Hard) and return to previous menu"
 
-@61 = "Settings of 'Give the last attacker a certain amount of experience when an enemy dies' (disabled by default)"
-@62 = "Settings of 'Give the last attacker a certain amount of experience when an enemy dies'"
-@63 = "Turns off, no extra experience from enemies"
-@64 = "50 experience points per enemy level"
-@65 = "100 experience points per enemy level"
-@66 = "200 experience points per enemy level"
-@67 = "500 experience points per enemy level"
+@80 = "Module function settings: Kill XP granted to last attacker"
+@81 = "Disable, enemies grant no bonus XP"
+@82 = "Enemies grant 50 Kill XP per level"
+@83 = "Enemies grant 100 Kill XP per level"
+@84 = "Enemies grant 200 Kill XP per level"
+@85 = "Enemies grant 500 Kill XP per level"
+@86 = "Keep current setting (enemies grant no extra Kill XP) and return to previous menu"
+@87 = "Keep current setting (enemies grant 50 Kill XP per level) and return to previous menu"
+@88 = "Keep current setting (enemies grant 100 Kill XP per level) and return to previous menu"
+@89 = "Keep current setting (enemies grant 200 Kill XP per level) and return to previous menu"
+@90 = "Keep current setting (enemies grant 500 Kill XP per level) and return to previous menu"
