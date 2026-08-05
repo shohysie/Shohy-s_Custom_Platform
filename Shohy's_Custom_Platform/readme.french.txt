@@ -42,7 +42,7 @@ Quand la Saisie-projection ou le Crochet échouent à cause d’une Force ennemi
 La portée du Bouclier-bélier passe de 5 pieds à 4 pieds.
 Suppression de la fonction qui affichait l'icône « Héroïsme » sur le portrait du personnage lorsque le rééquilibrage des styles d'armes est actif.
 Si vous installez le module spécial adapté à EEex : après avoir investi 5 rangs dans le style à deux armes, non seulement la pénalité d’attaques par round de la main principale est supprimée, mais la main secondaire a 50% (rang 2) / 100% (rang 5) de chances par round d’effectuer une attaque supplémentaire (attaque simulée, nécessite une touche avec une arme valide).
-Si vous installez le module spécial adapté à EEex : le Cercle tournoyant ne se déclenche qu’une fois par round (deux fois sous Hâte), appliquant à tous les ennemis dans la zone les effets complets de l’arme (pas seulement les dégâts).
+Si vous installez le module spécial adapté à EEex : le Cercle tournoyant ne se déclenche qu’une fois par round (deux fois sous Hâte), appliquant à tous les ennemis dans la zone les effets complets de l’arme (pas seulement les dégâts), et ne se déclenche pas s'il n'y a qu'un seul ennemi à proximité.
 Si vous installez le module spécial adapté à EEex : option pour utiliser les rangs de maîtrise de l’arme pour déterminer la probabilité des effets détaillés des armes.
 
 v0.3

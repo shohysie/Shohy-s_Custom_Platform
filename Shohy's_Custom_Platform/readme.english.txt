@@ -42,7 +42,7 @@ When Grip Throw or Hook fail due to high enemy strength, a warning message is no
 Shield Bash range reduced from 5 feet to 4 feet.
 Removed the function that displays the "Heroism" icon on character portraits when Weapon Style Rebalance is active.
 If the special module adapted for EEex is installed: After investing 5 ranks in Two-Weapon Style, not only is the main-hand APR penalty removed, but the off-hand also gains a 50% (at rank 2) / 100% (at rank 5) chance per round to make an extra attack (simulated off-hand attack, requires a successful hit with a valid weapon).
-If the special module adapted for EEex is installed: Cleave now triggers only once per round (twice when hasted), applying the weapon's full attack effects (not just damage) to all enemies in the area.
+If the special module adapted for EEex is installed: Cleave now triggers only once per round (twice when hasted), applying the weapon's full attack effects (not just damage) to all enemies in the area, and will not trigger when there is only a single enemy nearby.
 If the special module adapted for EEex is installed: Option to use weapon proficiency ranks to determine the probability of weapon detail effects.
 
 v0.3

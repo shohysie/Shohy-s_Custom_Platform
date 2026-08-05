@@ -98,8 +98,8 @@ Si 5 étoiles sont investis dans le style à deux armes (nécessite étoiles sup
 Arme légère à une main (dague, épée courte, wakizashi, etc.) ou à mains nues, avec l'autre main tenant un bouclier ou vide : ajoute le modificateur de Dextérité au THAC0 (bonus : 1/2/3/4/5 à Dex 16/17/19/21/24). Si l'autre main tient aussi une arme, pas de bonus de Dex mais +1 à CA contre mêlée et au THAC0 de la main secondaire.
 Arme légère à deux mains (lance, bâton) : +1 à CA mêlée et au THAC0."
 @172 = "Ajustements – Armes à longue lame :
-Arme à une main (cimeterre, épée longue, épée bâtarde, katana, etc.) avec main secondaire vide : 50% de chance par coup de réaliser un petit cône de taille (1d6 + 50% mod Force dégâts tranchants, ne touche pas la cible principale ni les alliés). Avec main occupée, chance divisée par deux.
-Arme à deux mains (épée à deux mains, katana à deux mains) : 50% de chance pour un cône plus large (1d10 + 50% mod Force ; le bonus de Force des armes à deux mains étant déjà 150%, le bonus réel est de 75% du mod Force). Les hallebardes ont aussi une attaque de zone mais avec probabilité réduite de moitié."
+Arme à une main (cimeterre, épée longue, épée bâtarde, katana, etc.) avec main secondaire vide : 50% de chance par coup de réaliser un Cercle tournoyant de petite taille (1d6 + 50% mod Force dégâts tranchants, ne touche pas la cible principale ni les alliés). Avec main occupée, chance divisée par deux.
+Arme à deux mains (épée à deux mains, katana à deux mains) : 50% de chance pour un Cercle tournoyant plus large (1d10 + 50% mod Force ; le bonus de Force des armes à deux mains étant déjà 150%, le bonus réel est de 75% du mod Force). Les hallebardes ont aussi un Cercle tournoyant mais avec une probabilité réduite de moitié."
 @173 = "Ajustements – Armes contondantes :
 Arme contondante à une main (marteau, masse, fléau, etc.) avec main secondaire vide : un coup étourdissant par round qui étourdit brièvement (durée : 0,5 + mod Force (toucher)/2 secondes ; Force 25 = 4s, Force 7 = 0), réduit la CA de 2 et repousse. Jet de sauvegarde contre souffle annule tout. Avec main occupée, chance divisée par deux.
 Marteau à deux mains : durée d'étourdissement x1,5 ; même sur réussite du jet, l'ennemi subit le recul et la pénalité de CA.
@@ -124,15 +124,17 @@ Bâton à deux mains : -2 à 1-3 attributs, durée x1,5.
 Jet de sauvegarde contre souffle annule. Les créatures sans vie ou sans membres sont immunisées.
 Personnages hâtés : deux frappes de membre par round."
 @177 = "Les effets détaillés des armes se déclenchent normalement avec une seule arme. Avec un bouclier ou une arme secondaire, la probabilité est divisée par deux. En dual-wielding, la limite par round est assouplie à environ 1,5 déclenchements par round (environ 3 avec hâte)."
-@178 = "Ajustements – Armes à longue lame (nécessite EEex) :
-Arme à une main avec main secondaire vide : une attaque par round effectue un cône de taille touchant directement tous les ennemis dans la zone (effets complets de l'arme sur chacun, sans toucher la cible principale ni les alliés). Avec main occupée, chance divisée par deux.
-Arme à deux mains : une attaque par round effectue un cône similaire.
-Hallebardes : probabilité divisée par deux."
+@178 = "Ajustements détaillés des armes – Armes à longue lame (nécessite EEex) : Avec une arme à une main (cimeterre, épée longue, épée bâtarde, katana, etc.) et la main secondaire vide : une attaque de mêlée par round effectue un Cercle tournoyant de petite taille touchant tous les ennemis dans la zone avec les effets complets de l'arme (ne touche ni la cible principale ni les alliés). Si l'autre main tient une arme ou un bouclier, la probabilité de ce Cercle tournoyant est divisée par deux. 
+Avec une arme à deux mains (épée à deux mains, ou autres épées/katanas à deux mains fournis par des MODs) : une attaque de mêlée par round effectue un Cercle tournoyant avec les mêmes effets. 
+Les hallebardes tenues à deux mains bénéficient également d'un Cercle tournoyant, mais avec une probabilité divisée par deux. 
+Le Cercle tournoyant ne se déclenche pas s'il n'y a qu'un seul ennemi à proximité."
 
 @181 = "Mode actuel : Lorsqu'un style d'armes atteint 2 étoiles, il déduit automatiquement 1 étoile (déclenché en combat), mais accorde +1 à THAC0, dégâts, vitesse d'attaque et CA contre mêlée. Si les 2 étoiles sont à nouveau atteintes plus tard, il n'y a pas de nouvelle déduction."
 @182 = "Lorsque le style à deux armes atteint 3 étoiles, il déduit automatiquement 1 étoile. Si les 3 étoiles sont à nouveau atteintes (total de 5 étoiles investies), la pénalité de -0,5 attaque par round est supprimée."
 @183 = "Vous pouvez choisir de rembourser les étoiles déduites et désactiver le Rééquilibrage, mais uniquement si vous n'avez pas investi d'étoiles supplémentaires au-delà de l'étoile déduite ; sinon il n'y a pas d'emplacement pour rembourser."
-@184 = "Lorsque le style à deux armes atteint 3 étoiles, il déduit automatiquement 1 étoile. Si les 3 étoiles sont à nouveau atteintes (total 5 étoiles), la main principale subit -0,5 attaque par round mais la main secondaire gagne +1 attaque par round (nécessite EEex)."
+@184 = "Lorsque le style à deux armes atteint le rang 3, il déduit automatiquement 1 rang (déclenché en combat). 
+Si le rang 3 est ensuite à nouveau atteint (total de 5 rangs investis), la pénalité d'attaques par round de la main principale est supprimée, et la main secondaire gagne des attaques supplémentaires selon sa maîtrise : au rang 2, 50% de chances par round d'une attaque supplémentaire ; au rang 5, 100% de chances par round (nécessite EEex). 
+Comme il s'agit d'une attaque simulée de la main secondaire, elle nécessite une touche normale avec une arme valide pour se déclencher."
 
 @186 = "Le mode actuel augmente effectivement le plafond d'étoiles (peut causer des problèmes de compatibilité avec des MODs de kits ou de règles installés après). Le style à deux armes peut atteindre 5 étoiles ; les trois autres styles peuvent atteindre 3 étoiles."
 

@@ -98,8 +98,8 @@ If 5 proficiency ranks are invested in Two-Weapon Style (requires higher weapon 
 Wielding a one-handed light weapon (dagger, short sword, wakizashi, etc.) or unarmed, with the other hand holding a shield or empty, add Dexterity modifier to THAC0 (bonus: 1/2/3/4/5 at Dex 16/17/19/21/24). If the other hand also holds a weapon, no Dex bonus but gain +1 to melee AC and off-hand THAC0.
 Wielding a two-handed light weapon (spear, quarterstaff), gain +1 to melee AC and THAC0."
 @172 = "Weapon Detail Adjustments – Long-Bladed Weapons:
-Wielding a one-handed long-bladed weapon (scimitar, long sword, bastard sword, katana, etc.) with off-hand empty: 50% chance per hit to perform a small area cleave (1d6 + 50% Strength mod slashing damage, does not hit primary target or allies). With off-hand occupied, chance halved.
-Wielding a two-handed long-bladed weapon (two-handed sword, two-handed katana, etc.): 50% chance per hit for a larger area cleave (1d10 + 50% Strength mod slashing damage; note two-handed Strength bonus is already 150%, so actual damage bonus is 75% of original Strength mod). Halberds also have area cleave but at half probability."
+Wielding a one-handed long-bladed weapon (scimitar, long sword, bastard sword, katana, etc.) with off-hand empty: 50% chance per hit to perform a small-area Spinning Slash (1d6 + 50% Strength mod slashing damage, does not hit primary target or allies). With off-hand occupied, chance halved.
+Wielding a two-handed long-bladed weapon (two-handed sword, two-handed katana, etc.): 50% chance per hit for a larger-area Spinning Slash (1d10 + 50% Strength mod slashing damage; note two-handed Strength bonus is already 150%, so actual damage bonus is 75% of original Strength mod). Halberds also have a Spinning Slash but at half probability."
 @173 = "Weapon Detail Adjustments – Bludgeoning Weapons:
 Wielding a one-handed bludgeoning weapon (war hammer, mace, flail, morning star, etc.) with off-hand empty: one stunning blow per round that briefly stuns (duration: 0.5 + Strength to-hit modifier/2 seconds; 25 Str = 4 sec, 7 Str = 0), reduces AC by 2, and knocks back. Save vs. breath negates all. With off-hand occupied, chance halved.
 Wielding a two-handed hammer: one stunning blow per round with 1.5x stun duration; even on successful save, enemy still suffers AC penalty and knockback.
@@ -124,15 +124,17 @@ Wielding a two-handed staff: -2 penalty to 1-3 attributes, 1.5x duration.
 Save vs. breath negates. Constructs/undead and limbless creatures immune.
 Hasted characters get two limb strikes per round."
 @177 = "Weapon detail effects trigger normally when wielding a single weapon. When a shield or off-hand weapon is equipped, trigger probability is halved. When dual-wielding, the per-round limit is relaxed to about 1.5 triggers per round (about 3 when hasted)."
-@178 = "Weapon Detail Adjustments – Long-Bladed Weapons (requires EEex support):
-Wielding a one-handed long-bladed weapon with off-hand empty: one attack per round performs an area cleave that directly hits all enemies in the area (weapon's full effects apply to each, does not hit primary target or allies). With off-hand occupied, chance halved.
-Wielding a two-handed long-bladed weapon: one attack per round performs an area cleave as above.
-Halberds also have area cleave but at half probability."
+@178 = "Weapon Detail Adjustments – Long-Bladed Weapons (requires EEex support): Wielding a one-handed long-bladed weapon (scimitar, long sword, bastard sword, katana, etc.) with off-hand empty: one melee attack per round performs a Spinning Slash that hits all enemies in a small area with the weapon's full attack effects (does not hit the primary target or allies). If the other hand holds a weapon or shield, the chance for this Spinning Slash is halved. 
+Wielding a two-handed long-bladed weapon (two-handed sword, or other two-handed swords/katanas provided by MODs): one melee attack per round performs a Spinning Slash with the same effect. 
+Halberds wielded two-handed also have a Spinning Slash, but at half probability. 
+The Spinning Slash will not trigger when there is only a single enemy nearby."
 
 @181 = "Current mode: When each weapon style reaches rank 2, it automatically deducts 1 rank (triggers in combat), but grants +1 bonus to THAC0, damage, attack speed, and AC vs. melee. If later raised to rank 2 again, no further deduction occurs."
 @182 = "When Two-Weapon Style reaches rank 3, it automatically deducts 1 rank (triggers in combat). If later raised to rank 3 again (total 5 ranks invested), the -0.5 attack per round penalty is removed."
 @183 = "You can choose to refund deducted ranks and disable Weapon Style Rebalance, but only if you have not invested additional ranks beyond the deducted rank; otherwise there is no slot to place the refunded rank."
-@184 = "When Two-Weapon Style reaches rank 3, it automatically deducts 1 rank (triggers in combat). If later raised to rank 3 again (total 5 ranks invested), the main hand suffers -0.5 attack per round but the off-hand gains +1 attack per round (requires EEex support)."
+@184 = "When Two-Weapon Style reaches rank 3, it automatically deducts 1 rank (triggers in combat). 
+If later raised to rank 3 again (total 5 ranks invested), the main hand's attack per round penalty is removed, and the off-hand gains additional attacks based on its proficiency: at rank 2, 50% chance per round for an extra attack; at rank 5, 100% chance per round (requires EEex support). 
+Since this is a simulated off-hand attack, it requires a successful normal hit with a valid weapon to trigger."
 
 @186 = "Current mode actually increases the proficiency rank cap (may have compatibility issues if Kit or rule-adjusting MODs are installed later). Two-Weapon Style can be raised to rank 5; the other three styles can be raised to rank 3."
 
